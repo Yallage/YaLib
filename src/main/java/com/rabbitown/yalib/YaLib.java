@@ -23,9 +23,9 @@ public final class YaLib extends JavaPlugin {
         File config = new File("plugins/YaWhitelist/config.yml");
         File languageData = new File("plugins/YaWhitelist/message.yml");
         if (config.exists() && languageData.exists()) {
-            Bukkit.getServer().getLogger().info(ChatColor.GREEN + "[YaWhiteList] 配置文件已加载");
+            Bukkit.getServer().getLogger().info(ChatColor.BLUE + "[YaLib] 配置文件已加载");
         } else {
-            Bukkit.getServer().getLogger().info(ChatColor.GREEN + "[YaLib] 未找到配置文件 正在创建配置文件");
+            Bukkit.getServer().getLogger().info(ChatColor.BLUE + "[YaLib] 未找到配置文件 正在创建配置文件");
             saveResource("config.yml", false);
             saveResource("data/languageData.yml", false);
         }
