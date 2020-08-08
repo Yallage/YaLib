@@ -2,5 +2,6 @@
 YaLibLogo: true
 # 默认语言
 Language: zh_CN
+console-language: zh_CN
 # 使用数据库还是YAML类存储 可选输入 yaml mysql
 storage: yaml

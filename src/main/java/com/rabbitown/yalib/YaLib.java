@@ -1,5 +1,6 @@
 package com.rabbitown.yalib;
 
+import com.rabbitown.yalib.locale.YLocale;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,34 +21,18 @@ public final class YaLib extends JavaPlugin {
     @Override
     public void onEnable() {
         // 生成默认配置文件 第二个参数表示是否替换
-        File config = new File("plugins/YaWhitelist/config.yml");
-        File languageData = new File("plugins/YaWhitelist/message.yml");
-        if (config.exists() && languageData.exists()) {
-            Bukkit.getServer().getLogger().info(ChatColor.BLUE + "[YaLib] 配置文件已加载");
-        } else {
-            Bukkit.getServer().getLogger().info(ChatColor.BLUE + "[YaLib] 未找到配置文件 正在创建配置文件");
-            saveResource("config.yml", false);
-            saveResource("data/languageData.yml", false);
-        }
+        YLocale yLocale = new YLocale();
+        yLocale.verifyLanguageExist("config.yml","plugins/YaWhitelist/config.yml",this);
+        yLocale.verifyLanguageExist("data/languageData.yml","plugins/YaWhitelist/message.yml",this);
         // 显示Logo
-        if (config.exists()) {
-            if (this.getConfig().getBoolean("YaLibLogo")) {
+        if (this.getConfig().getBoolean("YaLibLogo")) {
                 Bukkit.getServer().getLogger().info(ChatColor.BLUE + "_____.___.      .____    ._____.    ");
                 Bukkit.getServer().getLogger().info(ChatColor.BLUE + "\\__  |   |____  |    |   |__\\_ |__  ");
                 Bukkit.getServer().getLogger().info(ChatColor.BLUE + " /   |   \\__  \\ |    |   |  || __ \\ ");
                 Bukkit.getServer().getLogger().info(ChatColor.BLUE + " \\____   |/ __ \\|    |___|  || \\_\\ \\");
                 Bukkit.getServer().getLogger().info(ChatColor.BLUE + " / ______(____  /_______ \\__||___  /");
                 Bukkit.getServer().getLogger().info(ChatColor.BLUE + " \\/           \\/        \\/       \\/  ");
-            }
-        } else {
-            Bukkit.getServer().getLogger().info(ChatColor.BLUE + "_____.___.      .____    ._____.    ");
-            Bukkit.getServer().getLogger().info(ChatColor.BLUE + "\\__  |   |____  |    |   |__\\_ |__  ");
-            Bukkit.getServer().getLogger().info(ChatColor.BLUE + " /   |   \\__  \\ |    |   |  || __ \\ ");
-            Bukkit.getServer().getLogger().info(ChatColor.BLUE + " \\____   |/ __ \\|    |___|  || \\_\\ \\");
-            Bukkit.getServer().getLogger().info(ChatColor.BLUE + " / ______(____  /_______ \\__||___  /");
-            Bukkit.getServer().getLogger().info(ChatColor.BLUE + " \\/           \\/        \\/       \\/  ");
         }
-
         Bukkit.getServer().getLogger().info(ChatColor.BLUE + "[YaLib] YaLib依赖已加载 感谢使用YaLib");
     }
 
