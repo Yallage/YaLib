@@ -1,5 +1,6 @@
 package com.rabbitown.yalib.locale;
 
+import com.rabbitown.yalib.YaLib;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class YLocale {
+
     /**
      * 获取hashmap的消息文字
      * Get HashMap Message
@@ -22,7 +24,7 @@ public class YLocale {
      * @return 返回消息Map
      * @author Hanbings
      */
-    public HashMap<String, HashMap<String, String>> getMessageOfHashMap(String configPath, boolean deep) {
+    public static HashMap<String, HashMap<String, String>> getMessageOfHashMap(String configPath, boolean deep) {
         HashMap<String, HashMap<String, String>> objectMap = new HashMap<>();
         HashMap<String, HashMap<String, String>> multiLanguage = new HashMap<>();
         String[] languageFileList = getFileList(configPath);
@@ -44,36 +46,35 @@ public class YLocale {
      * @param path 被扫描的目录
      * @return 文件列表Array
      */
-    public String[] getFileList(String path) {
+    public static String[] getFileList(String path) {
         return new File(path).list();
     }
 
     /**
-     * 快速验证配置文件是否存在
      * Verify that all language files in the plugin language directory exist
-     * If not exist will create that
+     * If not exist will create one.
      *
-     * @param resource   在插件内的资源目录 如 "language/xx.yml"
-     * @param config     语言文件目录 如 "plugins/xxx/language/xx.yml"
-     * @param javaPlugin 插件实例 用于保存文件
+     * @param resource 在插件内的资源目录 如 "language/xx.yml"
+     * @param config   语言文件目录 如 "plugins/xxx/language/xx.yml"
+     * @param plugin   插件实例 用于保存文件
      * @author Hanbings
      */
-    public void verifyLanguageExist(String resource, String config, JavaPlugin javaPlugin) {
+    public static void verifyLanguageExist(String resource, String config, JavaPlugin plugin) {
         File temp = new File(config);
         if (!temp.exists()) {
-            javaPlugin.saveResource(resource, true);
+            plugin.saveResource(resource, true);
         }
     }
 
     /**
-     * 获取玩家语言
-     * Get player language
+     * Get a player's language setting.
      *
-     * @param player 离线玩家对象
+     * @param player An {@link OfflinePlayer} object.
+     * @return The player's language setting.
      * @author Hanbings
      */
-    public String getPlayerLanguage(OfflinePlayer player) {
-        Plugin plugin = com.rabbitown.yalib.YaLib.getPlugin(com.rabbitown.yalib.YaLib.class);
+    public static String getPlayerLanguage(OfflinePlayer player) {
+        YaLib plugin = YaLib.instance;
         if (Objects.requireNonNull(plugin.getConfig().getString("storage")).equals("yaml")) {
             FileConfiguration data = YamlConfiguration.loadConfiguration(new File("plugins/YaLib/data/languageData.yml"));
             if (data.getString(Objects.requireNonNull(player.getName())) == null) {
@@ -86,15 +87,13 @@ public class YLocale {
     }
 
     /**
-     * 设置玩家语言
-     * Set player language
+     * Set a player's language.
      *
-     * @param player 离线玩家对象
+     * @param player An {@link OfflinePlayer} object.
      * @author Hanbings
      */
-    public void setPlayerLanguage(OfflinePlayer player, String language) {
-        Plugin plugin = com.rabbitown.yalib.YaLib.getPlugin(com.rabbitown.yalib.YaLib.class);
-        if (Objects.requireNonNull(plugin.getConfig().getString("storage")).equals("yaml")) {
+    public static void setPlayerLanguage(OfflinePlayer player, String language) {
+        if (Objects.requireNonNull(YaLib.instance.getConfig().getString("storage")).equals("yaml")) {
             FileConfiguration data = YamlConfiguration.loadConfiguration(new File("plugins/YaLib/data/languageData.yml"));
             data.set(Objects.requireNonNull(player.getName()) + ".language", language);
             data.set(Objects.requireNonNull(player.getName()) + ".uuid", player.getUniqueId().toString());
@@ -102,26 +101,22 @@ public class YLocale {
     }
 
     /**
-     * 获取默认语言
-     * Get default language
+     * Get player's default language.
      *
-     * @return 默认语言
+     * @return Player's default language.
      * @author Hanbings
      */
-    public String getDefaultLanguage() {
-        Plugin plugin = com.rabbitown.yalib.YaLib.getPlugin(com.rabbitown.yalib.YaLib.class);
-        return plugin.getConfig().getString("language");
+    public static String getDefaultLanguage() {
+        return YaLib.instance.getConfig().getString("language");
     }
 
     /**
-     * 获取控制台默认语言
-     * Get console default language
+     * Get console's default language.
      *
-     * @return 控制台默认语言
+     * @return Console's default language.
      * @author Hanbings
      */
-    public String getConsoleDefaultLanguage() {
-        Plugin plugin = com.rabbitown.yalib.YaLib.getPlugin(com.rabbitown.yalib.YaLib.class);
-        return plugin.getConfig().getString("console-language");
+    public static String getConsoleDefaultLanguage() {
+        return YaLib.instance.getConfig().getString("console-language");
     }
 }
