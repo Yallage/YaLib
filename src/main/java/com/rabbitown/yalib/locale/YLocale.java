@@ -75,15 +75,14 @@ public class YLocale {
      */
     public static String getPlayerLanguage(OfflinePlayer player) {
         YaLib plugin = YaLib.instance;
+
         if (Objects.requireNonNull(plugin.getConfig().getString("storage")).equals("yaml")) {
             FileConfiguration data = YamlConfiguration.loadConfiguration(new File("plugins/YaLib/data/languageData.yml"));
-            if (data.getString(Objects.requireNonNull(player.getName())) == null) {
-                return plugin.getConfig().getString("language");
-            } else {
+            if (data.get(Objects.requireNonNull(player.getName())) != null) {
                 return data.getString(Objects.requireNonNull(player.getName()));
             }
         }
-        return plugin.getConfig().getString("language");
+        return plugin.getConfig().getString("Language");
     }
 
     /**
