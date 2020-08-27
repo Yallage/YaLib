@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+group 'com.rabbitown'
+version '1.0.0-alpha.1'
+
+repositories {
+    mavenCentral()
+    maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi' }
+    maven { url 'http://repo.onarandombox.com/content/groups/public' }
+}
+
+dependencies {
+
+    implementation fileTree('libs')
+
+    shadow "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include 'plugin.yml' expand 'version': project.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+}
