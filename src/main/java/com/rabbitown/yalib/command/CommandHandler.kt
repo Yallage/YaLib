@@ -8,7 +8,7 @@ import javax.annotation.RegEx
  *
  * @author Yoooooory
  */
-class CommandHandler(
+open class CommandHandler(
     val command: PluginCommand,
     val sender: CommandSenderType = CommandSenderType.ALL,
     val senderMessage: String = "§cOnly {sender} can use the command.",

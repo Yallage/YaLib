@@ -21,9 +21,9 @@ public class CommandProcessor {
     final static Pattern pattern = Pattern.compile("\\{(\\w+)(: ?(.+))?}");
 
     public static boolean executeCommand(CommandSender sender, Command command, String label, String[] args, List<CommandHandler> handlers) throws InvocationTargetException, IllegalAccessException {
-        StringBuilder sb = new StringBuilder(args[0]);
+        StringBuilder sb = new StringBuilder(args.length > 0 ? args[0] : "");
         for (int i = 1; i < args.length; i++) {
-            sb.append(args[i]);
+            sb.append(" ").append(args[i]);
         }
         // handlers -> detect paths -> detect actions -> execute command
         for (CommandHandler handler : handlers) {
@@ -43,7 +43,7 @@ public class CommandProcessor {
                 // Check if matches.
                 for (Method action : actions) {
                     String ac = action.getAnnotation(Action.class).action();
-                    String replaced = "";
+                    String replaced = sb.toString();
                     Matcher matcher = pattern.matcher(ac);
                     while (matcher.find())
                         matcher.reset(replaced = matcher.replaceFirst(matcher.group(3) == null ? ".*" : matcher.group(3)));
@@ -54,20 +54,21 @@ public class CommandProcessor {
                         Map<String, String> map = new HashMap<>();
                         List<String> params = new ArrayList<>();
                         { // Get all params.
-                            String str = "";
+                            String str = sb.toString();
                             Matcher m = pattern.matcher(ac.replace("\\", "\\\\").replace("(", "\\("));
                             while (m.find()) {
                                 params.add(m.group(1));
                                 m.reset(str = m.replaceFirst(m.group(3) == null ? "(.*)" : "(" + m.group(3) + ")"));
                             }
                             m = Pattern.compile(str).matcher(sb.toString());
-                            for (int i = 0; m.find(); i++) map.put(params.get(i), m.group(1));
+                            if (m.find())
+                                for (int i = 0; i < m.groupCount(); i++) map.put(params.get(i), m.group(i + 1));
                         }
                         List<Object> arguments = new ArrayList<>();
                         for (Parameter parameter : action.getParameters()) {
                             String name = parameter.getName();
                             if (map.containsKey(name)) {
-                                arguments.add(name);
+                                arguments.add(map.get(name));
                                 continue;
                             }
                             switch (name) {
@@ -85,6 +86,8 @@ public class CommandProcessor {
                         }
                         if (action.getReturnType() == boolean.class)
                             return (boolean) action.invoke(handler, arguments.toArray());
+                        else if (action.getReturnType() == String.class)
+                            sender.sendMessage((String) action.invoke(handler, arguments.toArray()));
                         else
                             action.invoke(handler, arguments.toArray());
                         return true;
