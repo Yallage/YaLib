@@ -1,5 +1,6 @@
 package com.rabbitown.yalib;
 
+import com.rabbitown.yalib.command.CommandManager;
 import com.rabbitown.yalib.locale.YLocale;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,6 +15,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class YaLib extends JavaPlugin {
 
     public static YaLib instance;
+
+    public static CommandManager commandManager = new CommandManager();
 
     public YaLib() {
         instance = this;
