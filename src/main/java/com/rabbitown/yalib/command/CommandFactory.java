@@ -63,17 +63,33 @@ public class CommandFactory {
         return commands;
     }
 
-    public static CommandResult getCommandResult(CommandSenderType handlerSender, PluginCommand command, Action action, CommandSender sender) {
+    public static CommandResult getCommandResult(CommandHandler handler, PluginCommand command, Action action, CommandSender sender, boolean sendMessage) {
         if (sender instanceof Player) {
-            if (handlerSender == CommandSenderType.CONSOLE) return CommandResult.FAILED_COMMAND_SENDER;
-            if (command.getPermission() != null && !sender.hasPermission(command.getPermission()))
+            if (handler.getSender() == CommandSenderType.CONSOLE) {
+                if (sendMessage) sender.sendMessage(handler.getSenderMessage().replace("{sender}", "CONSOLE"));
+                return CommandResult.FAILED_COMMAND_SENDER;
+            }
+            if (command.getPermission() != null && !sender.hasPermission(command.getPermission())) {
+                if (sendMessage && command.getPermissionMessage() != null)
+                    sender.sendMessage(command.getPermissionMessage());
                 return CommandResult.FAILED_COMMAND_PERMISSION;
-            if (action.sender() == CommandSenderType.CONSOLE) return CommandResult.FAILED_ACTION_SENDER;
+            }
+            if (action.sender() == CommandSenderType.CONSOLE) {
+                if (sendMessage) sender.sendMessage(action.senderMessage().replace("{sender}", "CONSOLE"));
+                return CommandResult.FAILED_ACTION_SENDER;
+            }
             if (!action.permission().isEmpty() && !sender.hasPermission(action.permission()))
-                return CommandResult.FAILED_ACTION_PERMISSION;
+                if (sendMessage) sender.sendMessage(action.permissionMessage());
+            return CommandResult.FAILED_ACTION_PERMISSION;
         } else {
-            if (handlerSender == CommandSenderType.PLAYER) return CommandResult.FAILED_COMMAND_SENDER;
-            if (action.sender() == CommandSenderType.PLAYER) return CommandResult.FAILED_ACTION_SENDER;
+            if (handler.getSender() == CommandSenderType.PLAYER) {
+                if (sendMessage) sender.sendMessage(handler.getSenderMessage().replace("{sender}", "PLAYER"));
+                return CommandResult.FAILED_COMMAND_SENDER;
+            }
+            if (action.sender() == CommandSenderType.PLAYER) {
+                if (sendMessage) sender.sendMessage(action.senderMessage().replace("{sender}", "PLAYER"));
+                return CommandResult.FAILED_ACTION_SENDER;
+            }
         }
         return CommandResult.SUCCESS;
     }

@@ -1,7 +1,5 @@
 package com.rabbitown.yalib.annotation.command
 
-import com.rabbitown.yalib.command.CommandSenderType
-
 /**
  * @author Yoooooory
  */
@@ -13,7 +11,5 @@ annotation class ExtendHandler(
     val aliases: Array<String> = [],
     val permission: String = "",
     val permissionMessage: String = "§cYou don't have permission to use this command.",
-    val usage: String = "No usage provided.",
-    val sender: CommandSenderType = CommandSenderType.ALL,
-    val senderMessage: String = "§cOnly {sender} can use the command."
+    val usage: String = "No usage provided."
 )

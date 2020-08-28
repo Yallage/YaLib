@@ -3,6 +3,7 @@ package com.rabbitown.yalib.command;
 import com.rabbitown.yalib.annotation.command.Action;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,9 +19,15 @@ import java.util.stream.Stream;
  */
 public class CommandProcessor {
 
+    final PluginCommand pluginCommand;
+
+    public CommandProcessor(PluginCommand pluginCommand) {
+        this.pluginCommand = pluginCommand;
+    }
+
     final static Pattern pattern = Pattern.compile("\\{(\\w+)(: ?(.+))?}");
 
-    public static boolean executeCommand(CommandSender sender, Command command, String label, String[] args, List<CommandHandler> handlers) throws InvocationTargetException, IllegalAccessException {
+    public boolean executeCommand(CommandSender sender, Command command, String label, String[] args, List<CommandHandler> handlers) throws InvocationTargetException, IllegalAccessException {
         StringBuilder sb = new StringBuilder(args.length > 0 ? args[0] : "");
         for (int i = 1; i < args.length; i++) {
             sb.append(" ").append(args[i]);
@@ -42,13 +49,17 @@ public class CommandProcessor {
                 List<Method> actions = Stream.of(handler.getClass().getMethods()).filter(s -> s.getAnnotation(Action.class) != null).sorted(Comparator.comparingInt(s -> s.getAnnotation(Action.class).priority())).collect(Collectors.toList());
                 // Check if matches.
                 for (Method action : actions) {
-                    String ac = action.getAnnotation(Action.class).action();
+                    Action annotation = action.getAnnotation(Action.class);
+                    String ac = annotation.action();
                     String replaced = sb.toString();
                     Matcher matcher = pattern.matcher(ac);
                     while (matcher.find())
                         matcher.reset(replaced = matcher.replaceFirst(matcher.group(3) == null ? ".*" : matcher.group(3)));
                     if (sb.toString().matches(replaced)) {
                         // Action regex matches -> An effective action.
+                        // Check permission
+                        if (CommandFactory.getCommandResult(handler, pluginCommand, annotation, sender, true).name().startsWith("FAILED"))
+                            return true;
                         // Executing command.
                         // Map: Parameter, Value
                         Map<String, String> map = new HashMap<>();
