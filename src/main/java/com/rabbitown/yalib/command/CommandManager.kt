@@ -21,7 +21,7 @@ class CommandManager {
                     // Add the handler to a command if it is exist.
                     commands.replace(it, commands[it]!! + handlers)
                 } else {
-                    it.setExecutor { s, c, l, a -> CommandProcessor.executeCommand(s, c, l, a, commands[it]) }
+                    it.setExecutor { s, c, l, a -> CommandProcessor(it).onCommand(s, c, l, a, commands[it]) }
                     if (!CommandFactory.registerCommand(it, plugin)) return@forEach
                     commands[it] = handlers.toList()
                 }
