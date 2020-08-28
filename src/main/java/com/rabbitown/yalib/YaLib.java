@@ -2,6 +2,7 @@ package com.rabbitown.yalib;
 
 import com.rabbitown.yalib.command.CommandManager;
 import com.rabbitown.yalib.locale.YLocale;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,7 +17,7 @@ public final class YaLib extends JavaPlugin {
 
     public static YaLib instance;
 
-    public static CommandManager commandManager = new CommandManager();
+    public static CommandManager CommandManager = new CommandManager();
 
     public YaLib() {
         instance = this;
@@ -53,4 +54,5 @@ public final class YaLib extends JavaPlugin {
     public void onDisable() {
         Bukkit.getServer().getLogger().info(ChatColor.BLUE + "[YaLib] YaLib依赖已卸载");
     }
+
 }
