@@ -142,7 +142,6 @@ public class CommandProcessor {
 
     @SuppressWarnings("unchecked")
     protected List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args, List<CommandHandler> handlers) throws InvocationTargetException, IllegalAccessException {
-        long start = System.nanoTime();
         StringBuilder sb = new StringBuilder(args.length > 0 ? args[0] : "");
         for (CommandHandler handler : handlers) {
             if (handler.getPath().length == 0 || Stream.of(handler.getPath()).anyMatch(s -> {
@@ -154,7 +153,6 @@ public class CommandProcessor {
                 return false;
             })) {
                 for (Method tab : Arrays.stream(handler.getClass().getMethods()).filter(s -> s.isAnnotationPresent(Tab.class) && "java.util.List<java.lang.String>".equals(s.getGenericReturnType().getTypeName())).collect(Collectors.toList())) {
-                    System.out.println(System.nanoTime() - start);
                     return (List<String>) tab.invoke(handler, getArguments(new HashMap<>(), tab, sender, command, label, args).toArray());
                 }
             }
