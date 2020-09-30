@@ -12,7 +12,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Yoooooory
@@ -36,7 +35,7 @@ public class CommandProcessor {
         for (int i = 1; i < args.length; i++) sb.append(" ").append(args[i]);
         for (CommandHandler handler : handlers) {
             // Looking for an effective handler. (detect paths)
-            if (handler.getPath().length == 0 || Stream.of(handler.getPath()).anyMatch(s -> {
+            if (handler.getPath().size() == 0 || handler.getPath().stream().anyMatch(s -> {
                 Matcher m = Pattern.compile(s).matcher(sb.toString());
                 if (m.find() && m.start() == 0) {
                     sb.replace(0, sb.length(), sb.substring(m.end()));
@@ -144,7 +143,7 @@ public class CommandProcessor {
     protected List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args, List<CommandHandler> handlers) throws InvocationTargetException, IllegalAccessException {
         StringBuilder sb = new StringBuilder(args.length > 0 ? args[0] : "");
         for (CommandHandler handler : handlers) {
-            if (handler.getPath().length == 0 || Stream.of(handler.getPath()).anyMatch(s -> {
+            if (handler.getPath().size() == 0 || handler.getPath().stream().anyMatch(s -> {
                 Matcher m = Pattern.compile(s).matcher(sb.toString());
                 if (m.find() && m.start() == 0) {
                     sb.replace(0, sb.length(), sb.substring(m.end()));
