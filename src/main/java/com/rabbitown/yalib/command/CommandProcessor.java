@@ -49,9 +49,9 @@ public class CommandProcessor {
                     if (method.isAnnotationPresent(Action.class)) actions.add(method);
                     if (method.isAnnotationPresent(Alternate.class)) alternates.add(method);
                 }
-                before.stream().sorted(Comparator.comparingInt(s -> s.getAnnotation(Alternate.class).priority())).forEach(s -> runAction(new HashMap<>(), s, handler, sender, command, label, args));
+                before.stream().sorted(Comparator.comparingInt(s -> s.getAnnotation(Before.class).priority())).forEach(s -> runAction(new HashMap<>(), s, handler, sender, command, label, args));
                 boolean result = executeCommand(sender, command, label, args, handler, sb.toString(), actions, alternates);
-                after.stream().sorted(Comparator.comparingInt(s -> s.getAnnotation(Alternate.class).priority())).forEach(s -> runAction(new HashMap<>(), s, handler, sender, command, label, args));
+                after.stream().sorted(Comparator.comparingInt(s -> s.getAnnotation(After.class).priority())).forEach(s -> runAction(new HashMap<>(), s, handler, sender, command, label, args));
                 return result;
             }
         }
