@@ -13,10 +13,10 @@ import com.rabbitown.yalib.command.CommandSenderType
 @Repeatable
 @Target(AnnotationTarget.FUNCTION)
 annotation class Action(
-    val action: String = "",
     val permission: String = "",
     val priority: Int = 0,
     val permissionMessage: String = "§cYou don't have permission to use this command.",
     val sender: CommandSenderType = CommandSenderType.ALL,
-    val senderMessage: String = "§cOnly {sender} can use the command."
+    val senderMessage: String = "§cOnly {sender} can use the command.",
+    vararg val action: String
 )

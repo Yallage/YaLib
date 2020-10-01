@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Yoooooory
@@ -66,31 +67,32 @@ public class CommandProcessor {
         actions.sort(Comparator.comparingInt(s -> s.getAnnotation(Action.class).priority()));
         for (Method action : actions) {
             for (Action annotation : action.getAnnotationsByType(Action.class)) {
-                String ac = annotation.action();
-                String replaced = fullArgs;
-                Matcher matcher = pattern.matcher(ac);
-                while (matcher.find())
-                    matcher.reset(replaced = matcher.replaceFirst(matcher.group(3) == null ? ".*" : matcher.group(3)));
-                if (fullArgs.matches(replaced)) {
-                    // Action regex matches -> An effective action.
-                    // Check permission
-                    if (CommandFactory.getCommandResult(handler, pluginCommand, annotation, sender, true).name().startsWith("FAILED"))
-                        return true;
-                    // Executing command.
-                    // Map: Parameter, Value
-                    Map<String, String> map = new HashMap<>();
-                    // Get all params.
-                    List<String> params = new ArrayList<>();
-                    String str = fullArgs;
-                    Matcher m = pattern.matcher(ac.replace("\\", "\\\\").replace("(", "\\("));
-                    while (m.find()) {
-                        params.add(m.group(1));
-                        m.reset(str = m.replaceFirst(m.group(3) == null ? "(.*)" : "(" + m.group(3) + ")"));
+                for (String ac : annotation.action()) {
+                    String replaced = fullArgs;
+                    Matcher matcher = pattern.matcher(ac);
+                    while (matcher.find())
+                        matcher.reset(replaced = matcher.replaceFirst(matcher.group(3) == null ? ".*" : matcher.group(3)));
+                    if (fullArgs.matches(replaced)) {
+                        // Action regex matches -> An effective action.
+                        // Check permission
+                        if (CommandFactory.getCommandResult(handler, pluginCommand, annotation, sender, true).name().startsWith("FAILED"))
+                            return true;
+                        // Executing command.
+                        // Map: Parameter, Value
+                        Map<String, String> map = new HashMap<>();
+                        // Get all params.
+                        List<String> params = new ArrayList<>();
+                        String str = fullArgs;
+                        Matcher m = pattern.matcher(ac.replace("\\", "\\\\").replace("(", "\\("));
+                        while (m.find()) {
+                            params.add(m.group(1));
+                            m.reset(str = m.replaceFirst(m.group(3) == null ? "(.*)" : "(" + m.group(3) + ")"));
+                        }
+                        m = Pattern.compile(str).matcher(fullArgs);
+                        if (m.find())
+                            for (int i = 0; i < m.groupCount(); i++) map.put(params.get(i), m.group(i + 1));
+                        return runAction(map, action, handler, sender, command, label, args);
                     }
-                    m = Pattern.compile(str).matcher(fullArgs);
-                    if (m.find())
-                        for (int i = 0; i < m.groupCount(); i++) map.put(params.get(i), m.group(i + 1));
-                    return runAction(map, action, handler, sender, command, label, args);
                 }
             }
 
