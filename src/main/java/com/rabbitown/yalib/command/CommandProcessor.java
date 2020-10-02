@@ -3,7 +3,9 @@ package com.rabbitown.yalib.command;
 import com.rabbitown.yalib.annotation.command.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -112,14 +114,20 @@ public class CommandProcessor {
             }
             switch (name) {
                 case "sender":
-                    arguments.add(sender);
+                    if (parameter.getType() == Player.class) arguments.add((Player) sender);
+                    else if (parameter.getType() == ConsoleCommandSender.class)
+                        arguments.add((ConsoleCommandSender) sender);
+                    else arguments.add(sender);
                     continue;
                 case "command":
                     arguments.add(command);
+                    continue;
                 case "label":
                     arguments.add(label);
+                    continue;
                 case "args":
                     arguments.add(args);
+                    continue;
             }
             arguments.add(null);
         }
