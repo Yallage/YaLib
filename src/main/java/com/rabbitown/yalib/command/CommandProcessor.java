@@ -74,7 +74,7 @@ public class CommandProcessor {
                     Matcher matcher = pattern.matcher(ac);
                     while (matcher.find())
                         matcher.reset(replaced = matcher.replaceFirst(matcher.group(3) == null ? ".*" : matcher.group(3)));
-                    if (fullArgs.matches(replaced)) {
+                    if (ac.matches(replaced)) {
                         // Action regex matches -> An effective action.
                         // Check permission
                         if (CommandFactory.getCommandResult(handler, pluginCommand, annotation, sender, true).name().startsWith("FAILED"))
