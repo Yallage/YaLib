@@ -77,9 +77,10 @@ public class CommandFactory {
                 if (sendMessage) sender.sendMessage(action.senderMessage().replace("{sender}", "CONSOLE"));
                 return CommandResult.FAILED_ACTION_SENDER;
             }
-            if (!action.permission().isEmpty() && !sender.hasPermission(action.permission()))
+            if (!action.permission().isEmpty() && !sender.hasPermission(action.permission())) {
                 if (sendMessage) sender.sendMessage(action.permissionMessage());
-            return CommandResult.FAILED_ACTION_PERMISSION;
+                return CommandResult.FAILED_ACTION_PERMISSION;
+            }
         } else {
             if (handler.getSender() == CommandSenderType.PLAYER) {
                 if (sendMessage) sender.sendMessage(handler.getSenderMessage().replace("{sender}", "PLAYER"));
