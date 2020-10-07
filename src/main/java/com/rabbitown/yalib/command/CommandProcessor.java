@@ -70,11 +70,11 @@ public class CommandProcessor {
         for (Method action : actions) {
             for (Action annotation : action.getAnnotationsByType(Action.class)) {
                 for (String ac : annotation.action()) {
-                    String replaced = fullArgs;
+                    String replaced = ac;
                     Matcher matcher = pattern.matcher(ac);
                     while (matcher.find())
-                        matcher.reset(replaced = matcher.replaceFirst(matcher.group(3) == null ? ".*" : matcher.group(3)));
-                    if (ac.matches(replaced)) {
+                        matcher.reset(replaced = matcher.replaceFirst(matcher.group(3) == null ? ".+" : matcher.group(3)));
+                    if (fullArgs.matches(replaced)) {
                         // Action regex matches -> An effective action.
                         // Check permission
                         if (CommandFactory.getCommandResult(handler, pluginCommand, annotation, sender, true).name().startsWith("FAILED"))
@@ -114,10 +114,7 @@ public class CommandProcessor {
             }
             switch (name) {
                 case "sender":
-                    if (parameter.getType() == Player.class) arguments.add((Player) sender);
-                    else if (parameter.getType() == ConsoleCommandSender.class)
-                        arguments.add((ConsoleCommandSender) sender);
-                    else arguments.add(sender);
+                    arguments.add(sender);
                     continue;
                 case "command":
                     arguments.add(command);
