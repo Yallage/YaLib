@@ -10,11 +10,13 @@ version '1.0.0-alpha.1'
 
 repositories {
     mavenCentral()
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots' }
     maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi' }
     maven { url 'http://repo.onarandombox.com/content/groups/public' }
 }
 
 dependencies {
+    implementation 'org.spigotmc:spigot-api:1.16.3-R0.1-SNAPSHOT'
 
     implementation fileTree('libs')
 

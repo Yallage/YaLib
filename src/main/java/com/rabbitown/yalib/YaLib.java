@@ -2,6 +2,7 @@ package com.rabbitown.yalib;
 
 import com.rabbitown.yalib.command.CommandManager;
 import com.rabbitown.yalib.locale.YLocale;
+import com.rabbitown.yalib.nms.NMSBase;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,6 +19,8 @@ public final class YaLib extends JavaPlugin {
     public static YaLib instance;
 
     public static CommandManager CommandManager = new CommandManager();
+
+    public static NMSBase NMS;
 
     public YaLib() {
         instance = this;
@@ -53,6 +56,16 @@ public final class YaLib extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.getServer().getLogger().info(ChatColor.BLUE + "[YaLib] YaLib依赖已卸载");
+    }
+
+    private boolean loadNMS() {
+        try {
+            NMS = (NMSBase) Class.forName("com.rabbitown.yalib.nms." + getServer().getClass().getPackage().getName().substring(23)).newInstance();
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 }
