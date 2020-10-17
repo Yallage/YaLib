@@ -1,6 +1,10 @@
 package com.rabbitown.yalib;
 
 import com.rabbitown.yalib.command.CommandManager;
+import com.rabbitown.yalib.common.DependFile;
+import com.rabbitown.yalib.common.Resources;
+import com.rabbitown.yalib.database.DataBaseService;
+import com.rabbitown.yalib.database.impl.SQLiteDataBaseImpl;
 import com.rabbitown.yalib.locale.YLocale;
 import com.rabbitown.yalib.nms.NMSBase;
 import org.bukkit.Bukkit;
@@ -40,6 +44,23 @@ public final class YaLib extends JavaPlugin {
             getPluginLoader().disablePlugin(this);
             return;
         }
+
+        /*/////////////////////////// TEST ////////////////////////////////
+        // 下载依赖
+        DependFile dependFile = new DependFile();
+        dependFile.setList();
+        dependFile.download();
+        // 初始化SQLITE
+        DataBaseService dataBaseService = new SQLiteDataBaseImpl();
+        Resources.SQLLiteConnection = dataBaseService.loadDatabase("./libs/test.db");
+        String sql = "CREATE TABLE COMPANY " +
+                "(ID INT PRIMARY KEY     NOT NULL," +
+                " NAME           TEXT    NOT NULL, " +
+                " AGE            INT     NOT NULL, " +
+                " ADDRESS        CHAR(50), " +
+                " SALARY         REAL)";
+        ////////////////////////////////////////////////////////////////*/
+
         Bukkit.getServer().getLogger().info(ChatColor.BLUE + "[YaLib] YaLib依赖已加载 感谢使用YaLib");
     }
 
