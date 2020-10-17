@@ -15,4 +15,8 @@ interface NMSBase {
 
     fun removeNBTTag(item: ItemStack, key: String): ItemStack
 
+    fun getAllNBTTag(item: ItemStack): String
+
+    fun getAllNBTTagMap(item: ItemStack): Map<String, Any>
+
 }

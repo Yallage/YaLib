@@ -26,6 +26,15 @@ class v1_12_R1 : NMSBase {
         return CraftItemStack.asBukkitCopy(stack)
     }
 
+    override fun getAllNBTTag(item: ItemStack): String = CraftItemStack.asNMSCopy(item).tag.toString()
+
+    override fun getAllNBTTagMap(item: ItemStack): Map<String, Any> {
+        val nbt = CraftItemStack.asNMSCopy(item).tag ?: NBTTagCompound()
+        val map = mutableMapOf<String, Any>()
+        nbt.c().forEach { map[it] = fromNBTValue(nbt[it]) }
+        return map
+    }
+
     private fun toNBTValue(obj: Any): NBTBase = when (obj) {
         is Byte -> NBTTagByte(obj)
         is Short -> NBTTagShort(obj)
