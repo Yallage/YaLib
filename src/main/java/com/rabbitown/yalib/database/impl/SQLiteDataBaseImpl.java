@@ -1,6 +1,6 @@
 package com.rabbitown.yalib.database.impl;
 
-import com.rabbitown.yalib.database.DataBaseService;
+import com.rabbitown.yalib.database.DataBase;
 import org.bukkit.Bukkit;
 
 import java.sql.Connection;
@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLiteDataBaseImpl implements DataBaseService {
+public class SQLiteDataBaseImpl implements DataBase {
     @Override
     public Connection loadDatabase(String dataBaseName) {
         Connection connection;

@@ -6,7 +6,7 @@ import java.sql.Connection;
  * 因为IDEA的图标包没有DAO的图标 所以忽略DAO包吧！
  * Happy Lazy
  */
-public interface DataBaseService {
+public interface DataBase {
     /**
      * 尝试加载数据库
      * 若数据库不存在则会创建一个新的数据库db文件

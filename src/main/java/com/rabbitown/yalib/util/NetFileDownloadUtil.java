@@ -33,7 +33,7 @@ public class NetFileDownloadUtil {
         fos.write(getData);
         fos.close();
         inputStream.close();
-        System.out.println("DownLoad" + url + "Done.");
+        System.out.println("DownLoad " + url + " Done.");
     }
 
     /**
