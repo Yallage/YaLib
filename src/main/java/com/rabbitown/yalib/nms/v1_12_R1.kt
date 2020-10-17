@@ -14,9 +14,9 @@ class v1_12_R1 : NMSBase {
     override fun getNBTTag(item: ItemStack, key: String) =
         fromNBTValue((CraftItemStack.asNMSCopy(item).tag ?: NBTTagCompound()).get(key))
 
-    override fun setNBTTag(item: ItemStack, key: String, obj: Any): ItemStack {
+    override fun setNBTTag(item: ItemStack, key: String, value: Any): ItemStack {
         val stack = CraftItemStack.asNMSCopy(item)
-        stack.tag = (stack.tag ?: NBTTagCompound()).apply { set(key, toNBTValue(obj)) }
+        stack.tag = (stack.tag ?: NBTTagCompound()).apply { set(key, toNBTValue(value)) }
         return CraftItemStack.asBukkitCopy(stack)
     }
 
@@ -45,6 +45,7 @@ class v1_12_R1 : NMSBase {
         is ByteArray -> NBTTagByteArray(obj)
         is String -> NBTTagString(obj)
         is List<*> -> NBTTagList().apply { obj.forEach { add(toNBTValue(it!!)) } }
+        is Map<*, *> -> TODO("Not yet implemented")
         is IntArray -> NBTTagIntArray(obj)
         is LongArray -> NBTTagLongArray(obj)
         else -> error("Invalid NBT value type.")
@@ -60,8 +61,9 @@ class v1_12_R1 : NMSBase {
         7 -> (obj as NBTTagByteArray).c()
         8 -> (obj as NBTTagString).c_()
         9 -> TODO("Not yet implemented")
-        10 -> (obj as NBTTagIntArray).d()
-        11 -> TODO("Not yet implemented")
+        10 -> TODO("Not yet implemented")
+        11 -> (obj as NBTTagIntArray).d()
+        12 -> TODO("Not yet implemented")
         else -> error("Invalid NBT value type.")
     }
 

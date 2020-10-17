@@ -1,6 +1,6 @@
 package com.rabbitown.yalib.item
 
-import com.rabbitown.yalib.YaLib
+import com.rabbitown.yalib.YaLib.NMS
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -9,53 +9,46 @@ import org.bukkit.inventory.ItemStack
  *
  * @author Yoooooory
  */
-class NBTItem {
+class NBTItem : ItemStack {
+
+    constructor(stack: ItemStack) : super(stack)
+    constructor(type: Material) : super(type)
+    constructor(type: Material, amount: Int) : super(type, amount)
 
     /**
-     * The original [ItemStack] of the item.
+     * Check whether the item has the NBT with the specify key.
      */
-    var itemStack: ItemStack
-        private set
-
-    constructor(itemStack: ItemStack) {
-        this.itemStack = itemStack
-    }
-
-    constructor(type: Material) : this(ItemStack(type))
-    constructor(type: Material, amount: Int) : this(ItemStack(type, amount))
+    fun hasNBTTag(key: String) = NMS.hasNBTTag(this, key)
 
     /**
-     * Check whether the NBT has a key.
+     * Get the NBT value of the key.
      */
-    fun hasNBTTag(key: String) = YaLib.NMS.hasNBTTag(itemStack, key)
+    fun getNBTTag(key: String) = NMS.hasNBTTag(this, key)
 
     /**
-     * Get a nbt tag of a specify key.
+     * Set a NBT tag to the value.
      */
-    fun getNBTTag(key: String) = YaLib.NMS.getNBTTag(itemStack, key)
-
-    /**
-     * Get all nbt tags in string format.
-     */
-    fun getAllNBTTag() = YaLib.NMS.getAllNBTTag(itemStack)
-
-    /**
-     * Get the map of all nbt tags.
-     */
-    fun getAllNBTTagMap() = YaLib.NMS.getAllNBTTagMap(itemStack)
-
-    /**
-     * Set a NBT tag for the item.
-     */
-    fun setNBTTag(key: String, obj: Any) {
-        itemStack = YaLib.NMS.setNBTTag(itemStack, key, obj)
+    fun setNBTTag(key: String, value: Any) {
+        val item = NMS.setNBTTag(this, key, value)
+        if (item.itemMeta != null) this.itemMeta = NMS.setNBTTag(this, key, value).itemMeta
     }
 
     /**
-     * Remove a NBT tag from the item.
+     * Remove a NBT tag of the key.
      */
     fun removeNBTTag(key: String) {
-        itemStack = YaLib.NMS.removeNBTTag(itemStack, key)
+        val item = NMS.removeNBTTag(this, key)
+        if (item.itemMeta != null) this.itemMeta = NMS.removeNBTTag(this, key).itemMeta
     }
+
+    /**
+     * Get all the NBT tag of the item, formatted as a String.
+     */
+    fun getAllNBTTag() = NMS.getAllNBTTag(this)
+
+    /**
+     * Get a map contains all the nbt tags.
+     */
+    fun getAllNBTTagMap() = NMS.getAllNBTTagMap(this)
 
 }

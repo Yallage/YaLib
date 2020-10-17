@@ -14,9 +14,9 @@ class v1_16_R2 : NMSBase {
     override fun getNBTTag(item: ItemStack, key: String) =
         fromNBTValue((CraftItemStack.asNMSCopy(item).tag ?: NBTTagCompound()).get(key))
 
-    override fun setNBTTag(item: ItemStack, key: String, obj: Any): ItemStack {
+    override fun setNBTTag(item: ItemStack, key: String, value: Any): ItemStack {
         val stack = CraftItemStack.asNMSCopy(item)
-        stack.tag = (stack.tag ?: NBTTagCompound()).apply { set(key, toNBTValue(obj)) }
+        stack.tag = (stack.tag ?: NBTTagCompound()).apply { set(key, toNBTValue(value)) }
         return CraftItemStack.asBukkitCopy(stack)
     }
 
@@ -45,12 +45,14 @@ class v1_16_R2 : NMSBase {
         is ByteArray -> NBTTagByteArray(obj)
         is String -> NBTTagString.a(obj)
         is List<*> -> NBTTagList().apply { obj.forEach { add(toNBTValue(it!!)) } }
+        is Map<*, *> -> NBTTagCompound().apply { obj.forEach { set(it.key as String, toNBTValue(it.value!!)) } }
         is IntArray -> NBTTagIntArray(obj)
         is LongArray -> NBTTagLongArray(obj)
         else -> error("Invalid NBT value type.")
     }
 
     private fun fromNBTValue(obj: NBTBase?): Any = when (obj!!.typeId.toInt()) {
+        0 -> error("Unsupported NBT value type.")
         1 -> (obj as NBTTagByte).asByte()
         2 -> (obj as NBTTagShort).asShort()
         3 -> (obj as NBTTagInt).asInt()
@@ -59,9 +61,12 @@ class v1_16_R2 : NMSBase {
         6 -> (obj as NBTTagDouble).asDouble()
         7 -> (obj as NBTTagByteArray).bytes
         8 -> (obj as NBTTagString).asString()
-        9 -> obj as List<*>
-        10 -> (obj as NBTTagIntArray).ints
-        11 -> (obj as NBTTagLongArray).longs
+        9 -> mutableListOf<Any>().apply { (obj as NBTTagList).forEach { add(fromNBTValue(it)) } }
+        10 -> mutableMapOf<String, Any>().apply {
+            (obj as NBTTagCompound).map.forEach { set(it.key, fromNBTValue(it.value)) }
+        }
+        11 -> (obj as NBTTagIntArray).ints
+        12 -> (obj as NBTTagLongArray).longs
         else -> error("Invalid NBT value type.")
     }
 
