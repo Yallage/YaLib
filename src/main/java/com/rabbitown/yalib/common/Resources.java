@@ -1,9 +1,8 @@
 package com.rabbitown.yalib.common;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Resources {
-    // ################ List ################ //
-    // 文件列表
-    public static ArrayList<String> DependFile = new ArrayList<>();
+    // ################ Map ################ //
+    public static HashMap<String, String> DependFile = new HashMap<>();
 }
