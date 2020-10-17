@@ -16,7 +16,7 @@ public class DependFile {
         // 依赖
         Resources.DependFile.put("sqlite-jdbc-3.32.3.2.jar","https://github.com/xerial/sqlite-jdbc/releases/download/3.32.3.2/sqlite-jdbc-3.32.3.2.jar");
     }
-    public HashMap<String,String> getList(){
+    public HashMap<String,String> getMap(){
         return Resources.DependFile;
     }
     public void download(){
