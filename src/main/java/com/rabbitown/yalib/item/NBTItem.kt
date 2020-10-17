@@ -24,7 +24,7 @@ class NBTItem : ItemStack {
     /**
      * Get the NBT value of the key.
      */
-    fun getNBTTag(key: String) = NMS.hasNBTTag(this, key)
+    fun getNBTTag(key: String) = NMS.getNBTTag(this, key)
 
     /**
      * Set a NBT tag to the value.
