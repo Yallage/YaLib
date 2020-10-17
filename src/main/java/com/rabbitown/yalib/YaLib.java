@@ -3,7 +3,6 @@ package com.rabbitown.yalib;
 import com.rabbitown.yalib.command.CommandManager;
 import com.rabbitown.yalib.locale.YLocale;
 import com.rabbitown.yalib.nms.NMSBase;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,7 +35,11 @@ public final class YaLib extends JavaPlugin {
         // 生成默认配置文件 第二个参数表示是否替换
         YLocale.verifyLanguageExist("config.yml", "plugins/YaWhitelist/config.yml", this);
         YLocale.verifyLanguageExist("data/languageData.yml", "plugins/YaWhitelist/message.yml", this);
-        loadNMS();
+        if (!loadNMS()) {
+            getLogger().info("BAD!");
+            getPluginLoader().disablePlugin(this);
+            return;
+        }
         Bukkit.getServer().getLogger().info(ChatColor.BLUE + "[YaLib] YaLib依赖已加载 感谢使用YaLib");
     }
 

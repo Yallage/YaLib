@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack
  */
 class NBTItem : ItemStack {
 
+    constructor() : super()
     constructor(stack: ItemStack) : super(stack)
     constructor(type: Material) : super(type)
     constructor(type: Material, amount: Int) : super(type, amount)

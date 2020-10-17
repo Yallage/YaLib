@@ -1,13 +1,13 @@
 package com.rabbitown.yalib.nms
 
-import net.minecraft.server.v1_12_R1.*
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack
+import net.minecraft.server.v1_16_R1.*
+import org.bukkit.craftbukkit.v1_16_R1.inventory.CraftItemStack
 import org.bukkit.inventory.ItemStack
 
 /**
  * @author Yoooooory
  */
-class v1_12_R1 : NMSBase {
+class v1_16_R1 : NMSBase {
 
     override fun hasNBTTag(item: ItemStack, key: String) = CraftItemStack.asNMSCopy(item).tag?.hasKey(key) ?: false
 
@@ -31,19 +31,19 @@ class v1_12_R1 : NMSBase {
     override fun getAllNBTTagMap(item: ItemStack): Map<String, Any> {
         val nbt = CraftItemStack.asNMSCopy(item).tag ?: NBTTagCompound()
         val map = mutableMapOf<String, Any>()
-        nbt.c().forEach { map[it] = fromNBTValue(nbt[it]) }
+        nbt.keys.forEach { map[it] = fromNBTValue(nbt[it]) }
         return map
     }
 
     private fun toNBTValue(obj: Any): NBTBase = when (obj) {
-        is Byte -> NBTTagByte(obj)
-        is Short -> NBTTagShort(obj)
-        is Int -> NBTTagInt(obj)
-        is Long -> NBTTagLong(obj)
-        is Float -> NBTTagFloat(obj)
-        is Double -> NBTTagDouble(obj)
+        is Byte -> NBTTagByte.a(obj)
+        is Short -> NBTTagShort.a(obj)
+        is Int -> NBTTagInt.a(obj)
+        is Long -> NBTTagLong.a(obj)
+        is Float -> NBTTagFloat.a(obj)
+        is Double -> NBTTagDouble.a(obj)
         is ByteArray -> NBTTagByteArray(obj)
-        is String -> NBTTagString(obj)
+        is String -> NBTTagString.a(obj)
         is List<*> -> NBTTagList().apply { obj.forEach { add(toNBTValue(it!!)) } }
         is Map<*, *> -> NBTTagCompound().apply { obj.forEach { set(it.key as String, toNBTValue(it.value!!)) } }
         is IntArray -> NBTTagIntArray(obj)
@@ -51,26 +51,23 @@ class v1_12_R1 : NMSBase {
         else -> error("Invalid NBT value type.")
     }
 
-    private fun fromNBTValue(obj: NBTBase): Any = when (obj.typeId.toInt()) {
+    private fun fromNBTValue(obj: NBTBase?): Any = when (obj!!.typeId.toInt()) {
         0 -> error("Unsupported NBT value type.")
-        1 -> (obj as NBTTagByte).g()
-        2 -> (obj as NBTTagShort).f()
-        3 -> (obj as NBTTagInt).e()
-        4 -> (obj as NBTTagLong).d()
-        5 -> (obj as NBTTagFloat).i()
+        1 -> (obj as NBTTagByte).asByte()
+        2 -> (obj as NBTTagShort).asShort()
+        3 -> (obj as NBTTagInt).asInt()
+        4 -> (obj as NBTTagLong).asLong()
+        5 -> (obj as NBTTagFloat).asFloat()
         6 -> (obj as NBTTagDouble).asDouble()
-        7 -> (obj as NBTTagByteArray).c()
-        8 -> (obj as NBTTagString).c_()
-        9 -> mutableListOf<Any>().apply {
-            obj as NBTTagList
-            for (i in 0 until obj.size()) add(obj[i])
-        }
+        7 -> (obj as NBTTagByteArray).bytes
+        8 -> (obj as NBTTagString).asString()
+        9 -> mutableListOf<Any>().apply { (obj as NBTTagList).forEach { add(fromNBTValue(it)) } }
         10 -> mutableMapOf<String, Any>().apply {
             obj as NBTTagCompound
-            obj.c().forEach { set(it, fromNBTValue(obj[it])) }
+            obj.keys.forEach { set(it, fromNBTValue(obj[it])) }
         }
-        11 -> (obj as NBTTagIntArray).d()
-        12 -> TODO("Not yet implemented")
+        11 -> (obj as NBTTagIntArray).ints
+        12 -> (obj as NBTTagLongArray).longs
         else -> error("Invalid NBT value type.")
     }
 
