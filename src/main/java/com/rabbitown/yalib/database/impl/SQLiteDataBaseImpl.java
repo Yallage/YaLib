@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 public class SQLiteDataBaseImpl implements DataBase {
     @Override
-    public Connection loadDatabase(String dataBaseName) {
+    public Connection loadDataBase(String dataBaseName) {
         Connection connection;
         try {
             Class.forName("org.sqlite.JDBC");
@@ -21,6 +21,11 @@ public class SQLiteDataBaseImpl implements DataBase {
             Bukkit.getServer().getLogger().warning("[SQLITE][ERROR] 连接数据库发生错误");
             e.printStackTrace();
         }
+        return null;
+    }
+
+    @Override
+    public Connection loadDateBase(String dataBaseURL, String username, String password) {
         return null;
     }
 
