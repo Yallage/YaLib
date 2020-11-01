@@ -1,6 +1,9 @@
 package com.rabbitown.yalib;
 
 import com.rabbitown.yalib.command.CommandManager;
+import com.rabbitown.yalib.common.DependFile;
+import com.rabbitown.yalib.database.DataBase;
+import com.rabbitown.yalib.database.impl.SQLiteDataBaseImpl;
 import com.rabbitown.yalib.locale.YLocale;
 import com.rabbitown.yalib.nms.NMSBase;
 import org.bukkit.Bukkit;
@@ -35,11 +38,30 @@ public final class YaLib extends JavaPlugin {
         // 生成默认配置文件 第二个参数表示是否替换
         YLocale.verifyLanguageExist("config.yml", "plugins/YaWhitelist/config.yml", this);
         YLocale.verifyLanguageExist("data/languageData.yml", "plugins/YaWhitelist/message.yml", this);
+        
+        // TODO: 悠悠快来修修这里
         if (!loadNMS()) {
             getLogger().info("BAD!");
             getPluginLoader().disablePlugin(this);
             return;
         }
+
+        /*/////////////////////////// TEST ////////////////////////////////
+        // 下载依赖
+        DependFile dependFile = new DependFile();
+        dependFile.setDependMap();
+        dependFile.download();
+        // 初始化SQLITE
+        DataBase dataBaseService = new SQLiteDataBaseImpl();
+        String sql = "CREATE TABLE COMPANY " +
+                "(ID INT PRIMARY KEY     NOT NULL," +
+                " NAME           TEXT    NOT NULL, " +
+                " AGE            INT     NOT NULL, " +
+                " ADDRESS        CHAR(50), " +
+                " SALARY         REAL)";
+        dataBaseService.execute(dataBaseService.loadDatabase("./libs/test.db"),sql);
+        ////////////////////////////////////////////////////////////////*/
+
         Bukkit.getServer().getLogger().info(ChatColor.BLUE + "[YaLib] YaLib依赖已加载 感谢使用YaLib");
     }
 
