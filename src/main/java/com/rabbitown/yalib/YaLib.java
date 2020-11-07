@@ -38,8 +38,7 @@ public final class YaLib extends JavaPlugin {
         // 生成默认配置文件 第二个参数表示是否替换
         YLocale.verifyLanguageExist("config.yml", "plugins/YaWhitelist/config.yml", this);
         YLocale.verifyLanguageExist("data/languageData.yml", "plugins/YaWhitelist/message.yml", this);
-        
-        // TODO: 悠悠快来修修这里
+
         if (!loadNMS()) {
             getLogger().info("BAD!");
             getPluginLoader().disablePlugin(this);
