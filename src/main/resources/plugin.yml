@@ -1,5 +1,5 @@
 name: YaLib
-version: 1.0.0
+version: ${version}
 main: com.rabbitown.yalib.YaLib
 api-version: 1.13
 authors: [Hanbings, Yoooooory]
