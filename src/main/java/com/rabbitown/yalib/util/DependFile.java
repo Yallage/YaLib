@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.common;
+package com.rabbitown.yalib.util;
 
 import com.rabbitown.yalib.util.NetFileDownloadUtil;
 
