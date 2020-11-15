@@ -1,9 +1,6 @@
 package com.rabbitown.yalib;
 
 import com.rabbitown.yalib.command.CommandManager;
-import com.rabbitown.yalib.common.DependFile;
-import com.rabbitown.yalib.database.DataBase;
-import com.rabbitown.yalib.database.impl.SQLiteDataBaseImpl;
 import com.rabbitown.yalib.locale.YLocale;
 import com.rabbitown.yalib.nms.NMSBase;
 import org.bukkit.Bukkit;
