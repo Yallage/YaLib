@@ -20,3 +20,21 @@ annotation class Action(
     val sender: CommandSenderType = CommandSenderType.ALL,
     val senderMessage: String = "§cOnly {sender} can use the command."
 )
+
+/**
+ * @author Yoooooory
+ */
+@Target(AnnotationTarget.FUNCTION)
+annotation class After(val priority: Int = 0)
+
+/**
+ * @author Yoooooory
+ */
+@Target(AnnotationTarget.FUNCTION)
+annotation class Before(val priority: Int = 0)
+
+/**
+ * @author Yoooooory
+ */
+@Target(AnnotationTarget.FUNCTION)
+annotation class Alternate(val priority: Int = 0)

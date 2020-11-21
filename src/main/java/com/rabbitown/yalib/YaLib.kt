@@ -15,7 +15,7 @@ import java.lang.Exception
 /**
  * The main class.
  *
- * @author Hanbings
+ * @author Hanbings, Yoooooory
  */
 class YaLib : JavaPlugin() {
 
