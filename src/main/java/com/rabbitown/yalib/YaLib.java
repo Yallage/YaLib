@@ -19,10 +19,10 @@ public final class YaLib extends JavaPlugin {
 
     @Getter
     private static YaLib instance;
-
-    public static CommandManager CommandManager = new CommandManager();
-
-    public static NMSBase NMS;
+    @Getter
+    private static NMSBase NMS;
+    @Getter
+    private static final CommandManager CommandManager = new CommandManager();
 
     public YaLib() {
         instance = this;
