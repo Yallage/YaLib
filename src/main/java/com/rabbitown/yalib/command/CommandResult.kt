@@ -38,7 +38,7 @@ enum class CommandResult {
          * @param sendMessage Whether send command failed message to the sender or not.
          */
         @JvmStatic
-        fun getCommandResult(handler: CommandHandler, action: Action, sender: CommandSender, sendMessage: Boolean = false) =
+        fun getCommandResult(handler: CommandHandler, action: Action, sender: CommandSender, sendMessage: Boolean) =
             when {
                 // Check permission.
                 !checkSenderPerm(sender, handler.command.permission) -> {
@@ -68,16 +68,13 @@ enum class CommandResult {
             else -> type == CommandSenderType.OTHER
         }
 
-        private fun sendSenderFailed(sender: CommandSender, type: CommandSenderType, message: String) = sender.sendMessage(
-            message.replace("{sender}", type.toString())
-        )
+        private fun sendSenderFailed(sender: CommandSender, type: CommandSenderType, message: String) =
+            sender.sendMessage(message.replace("{sender}", type.toString()))
 
         private fun checkSenderPerm(sender: CommandSender, perm: String?) = perm == null || sender.hasPermission(perm)
 
         private fun sendPermFailed(sender: CommandSender, perm: String?, message: String?) =
-            if (message != null) sender.sendMessage(
-                message.replace("{permission}", perm!!)
-            ) else Unit
+            if (message != null) sender.sendMessage(message.replace("{permission}", perm!!)) else Unit
 
     }
 
