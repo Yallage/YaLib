@@ -74,7 +74,7 @@ public class YLocale {
      * @author Hanbings
      */
     public static String getPlayerLanguage(OfflinePlayer player) {
-        YaLib plugin = YaLib.instance;
+        YaLib plugin = YaLib.getInstance();
 
         if (Objects.requireNonNull(plugin.getConfig().getString("storage")).equals("yaml")) {
             FileConfiguration data = YamlConfiguration.loadConfiguration(new File("plugins/YaLib/data/languageData.yml"));
@@ -92,7 +92,7 @@ public class YLocale {
      * @author Hanbings
      */
     public static void setPlayerLanguage(OfflinePlayer player, String language) {
-        if (Objects.requireNonNull(YaLib.instance.getConfig().getString("storage")).equals("yaml")) {
+        if (Objects.requireNonNull(YaLib.getInstance().getConfig().getString("storage")).equals("yaml")) {
             FileConfiguration data = YamlConfiguration.loadConfiguration(new File("plugins/YaLib/data/languageData.yml"));
             data.set(Objects.requireNonNull(player.getName()) + ".language", language);
             data.set(Objects.requireNonNull(player.getName()) + ".uuid", player.getUniqueId().toString());
@@ -106,7 +106,7 @@ public class YLocale {
      * @author Hanbings
      */
     public static String getDefaultLanguage() {
-        return YaLib.instance.getConfig().getString("language");
+        return YaLib.getInstance().getConfig().getString("language");
     }
 
     /**
@@ -116,6 +116,6 @@ public class YLocale {
      * @author Hanbings
      */
     public static String getConsoleDefaultLanguage() {
-        return YaLib.instance.getConfig().getString("console-language");
+        return YaLib.getInstance().getConfig().getString("console-language");
     }
 }

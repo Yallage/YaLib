@@ -3,6 +3,7 @@ package com.rabbitown.yalib;
 import com.rabbitown.yalib.command.CommandManager;
 import com.rabbitown.yalib.locale.YLocale;
 import com.rabbitown.yalib.nms.NMSBase;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,7 +16,9 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public final class YaLib extends JavaPlugin {
 
-    public static YaLib instance;
+
+    @Getter
+    private static YaLib instance;
 
     public static CommandManager CommandManager = new CommandManager();
 
