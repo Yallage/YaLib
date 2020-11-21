@@ -5,6 +5,6 @@ package com.rabbitown.yalib.command
  */
 enum class CommandSenderType {
 
-    PLAYER, CONSOLE, ALL
+    PLAYER, CONSOLE, OTHER, ALL
 
 }

@@ -14,7 +14,6 @@ import javax.annotation.RegEx
 open class CommandHandler(val command: PluginCommand, @RegEx val path: List<String>) {
 
     val sender: CommandSenderType = CommandSenderType.ALL
-    val senderMessage: String = "§cOnly {sender} can use the command."
 
     constructor(
         name: String, plugin: JavaPlugin = YaLib.instance,
@@ -22,12 +21,14 @@ open class CommandHandler(val command: PluginCommand, @RegEx val path: List<Stri
         description: String = "No description provided.", permission: String = "",
         permissionMessage: String = "§cYou don't have permission to use this command.",
         usage: String = "", path: List<String> = listOf()
-    ) : this(CommandFactory.newPluginCommand(name, plugin).apply {
-        this.aliases = aliases
-        this.description = description
-        this.permission = permission
-        this.permissionMessage = permissionMessage
-        this.usage = usage
-    }, path)
+    ) : this(
+        CommandBuilder(name, plugin).aliases(aliases).description(description).permission(permission)
+            .permissionMessage(permissionMessage).usage(usage).command, path
+    )
+
+    fun getUsage() = command.usage
+    fun getDescription() = command.description
+    fun getSenderMessage() = "§cOnly {sender} can use the command."
+    fun getPermissionMessage() = command.permissionMessage ?: ""
 
 }

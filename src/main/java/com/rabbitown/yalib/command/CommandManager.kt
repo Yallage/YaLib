@@ -1,5 +1,6 @@
 package com.rabbitown.yalib.command
 
+import com.rabbitown.yalib.annotation.command.ExtendHandler
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.PluginCommand
@@ -19,7 +20,7 @@ class CommandManager {
     fun register(plugin: JavaPlugin, handlers: List<CommandHandler>): List<CommandHandler> {
         val success = mutableListOf<CommandHandler>()
         for (handler in handlers) {
-            CommandFactory.getCommands(handler, plugin).forEach {
+            getCommands(plugin, handler).forEach {
                 if (commands.containsKey(it)) {
                     // Add the handler to a command if it is exist.
                     commands.replace(it, commands[it]!! + handlers)
@@ -34,13 +35,20 @@ class CommandManager {
                             processor.onCommand(s, c, l, a, commands[it])
                     })
 //                    it.setExecutor { s, c, l, a -> CommandProcessor(it).onCommand(s, c, l, a, commands[it]) }
-                    if (!CommandFactory.registerCommand(it, plugin)) return@forEach
+                    if (!CommandBuilder(it).register()) return@forEach
                     commands[it] = handlers.toList()
                 }
                 success += handler
             }
         }
         return success
+    }
+
+    private fun getCommands(owner: JavaPlugin, handler: CommandHandler) = mutableListOf(handler.command).apply {
+        handler::class.java.getAnnotationsByType(ExtendHandler::class.java).forEach {
+            CommandBuilder(it.name, owner).description(it.description).aliases(it.aliases.toList()).usage(it.usage)
+                .permission(it.permission).permissionMessage(it.permissionMessage).command
+        }
     }
 
 }

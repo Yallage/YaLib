@@ -1,9 +1,11 @@
 package com.rabbitown.yalib.locale
 
 /**
+ * Not used yet.
+ *
  * @author Yoooooory
  */
-class YLocale {
+internal class YLocaleN {
 
 
 

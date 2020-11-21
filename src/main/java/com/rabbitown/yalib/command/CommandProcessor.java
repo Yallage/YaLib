@@ -77,7 +77,7 @@ public class CommandProcessor {
                     if (fullArgs.matches(replaced)) {
                         // Action regex matches -> An effective action.
                         // Check permission
-                        if (CommandFactory.getCommandResult(handler, pluginCommand, annotation, sender, true).name().startsWith("FAILED"))
+                        if (CommandResult.getCommandResult(handler, annotation, sender, true).name().startsWith("FAILED"))
                             return true;
                         // Executing command.
                         // Map: Parameter, Value
