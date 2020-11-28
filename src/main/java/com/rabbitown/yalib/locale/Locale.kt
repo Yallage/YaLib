@@ -1,6 +1,6 @@
 package com.rabbitown.yalib.locale
 
-import com.rabbitown.yalib.locale.YLocale.Companion.getLanguage
+import com.rabbitown.yalib.locale.YLocale.Companion.getLocaleLanguage
 import com.rabbitown.yalib.util.ExtendFunction.Companion.arg
 import com.rabbitown.yalib.util.FileUtil
 import org.bukkit.Bukkit
@@ -61,7 +61,7 @@ class Locale(
     fun getMessage(language: String, key: String) = langMap[language]!![key] as String
 
     fun send(target: CommandSender, key: String, vararg args: String) =
-        target.sendMessage(getMessage(target.getLanguage(), key).arg(*args))
+        target.sendMessage(getMessage(target.getLocaleLanguage(), key).arg(*args))
 
     fun sendToConsole(key: String, vararg args: String) = send(Bukkit.getConsoleSender(), key, *args)
 

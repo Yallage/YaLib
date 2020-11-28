@@ -1,5 +1,6 @@
 package com.rabbitown.yalib.locale
 
+import com.mojang.bridge.game.Language
 import com.rabbitown.yalib.YaLib
 import com.rabbitown.yalib.YaLibCenter
 import com.rabbitown.yalib.util.FileUtil
@@ -21,25 +22,25 @@ class YLocale {
         private fun getInvoker() = YaLibCenter.getPlugin(StackTraceUtil.getInvoker(arrayOf("com.rabbitown.yalib.i18n")))
 
         private fun checkInvoker() =
-            getInvoker().apply { if (this !is I18NPlugin) error("Only I18N plugin can use YLocale.") }!! as I18NPlugin
+            getInvoker().apply { if (this !is I18NPlugin) error("A non-I18N plugin tried to use YLocale.") }!! as I18NPlugin
 
-        fun CommandSender.getLanguage(): String {
+        @JvmStatic
+        fun getLanguage(sender: CommandSender): String {
             // Get user setting as default if exists, otherwise the global default.
-            val default = when (this) {
+            val default = when (sender) {
                 is OfflinePlayer -> {
                     val data = YamlConfiguration.loadConfiguration(
                         FileUtil.getResource(YaLib.instance, "data/languageData.yml")
                     )
-                    val name = (this as CommandSender).name
-                    if (data[name] != null) data[name] as String else YaLib.instance.config["language.default"] as String
+                    val name = (sender as CommandSender).name
+                    if (data[name] != null) data[name] as String else getDefaultLanguage()
                 }
-                is ConsoleCommandSender -> YaLib.instance.config["language.console"] as String
-                else -> YaLib.instance.config["language.default"] as String
+                is ConsoleCommandSender -> getConsoleLanguage()
+                else -> getDefaultLanguage()
             }
             // Check if the invoker plugin contains the default language.
             val plugin = getInvoker()
             return if (plugin is I18NPlugin && !plugin.locale.langMap.containsKey(default)) plugin.locale.defaultLanguage else default
-            // Return the default.
         }
 
         @JvmStatic
@@ -52,6 +53,25 @@ class YLocale {
         @JvmStatic
         fun broadcast(key: String, vararg args: String) = checkInvoker().locale.broadcast(key, *args)
 
+        @JvmStatic
+        fun getMessage(language: String, key: String) = checkInvoker().locale.getMessage(language, key)
+
+        @JvmStatic
+        fun getMessage(target: CommandSender, key: String) = checkInvoker().locale.getMessage(getLanguage(target), key)
+
+        @JvmStatic
+        fun getConsoleMessage(key: String) = checkInvoker().locale.getMessage(getConsoleLanguage(), key)
+
+        @JvmStatic
+        fun getDefaultMessage(key: String) = checkInvoker().locale.getMessage(getDefaultLanguage(), key)
+
+        @JvmStatic
+        fun getDefaultLanguage() = YaLib.instance.config["language.default"] as String
+
+        @JvmStatic
+        fun getConsoleLanguage() = YaLib.instance.config["language.console"] as String
+
+        fun CommandSender.getLocaleLanguage() = getLanguage(this)
         fun CommandSender.sendLocale(key: String, vararg args: String) = send(this, key, *args)
 
     }

@@ -22,7 +22,7 @@ class YaLib : JavaPlugin(), I18NPlugin {
     override val locale = Locale(this, "zh_CN")
 
     override fun onLoad() {
-        YaLibCenter.registerPlugin("com.rabbitown.yalib", this)
+        YaLibCenter.registerPlugin(this)
     }
 
     override fun onEnable() {

@@ -7,9 +7,11 @@ import org.bukkit.plugin.java.JavaPlugin
  */
 object YaLibCenter {
 
-    val pluginMap = mutableMapOf<String, JavaPlugin>()
+    private val pluginMap = mutableMapOf<String, JavaPlugin>()
 
-    fun registerPlugin(prefix: String, plugin: JavaPlugin) {
+    fun registerPlugin(plugin: JavaPlugin) = registerPlugin(plugin, plugin.javaClass.`package`.name)
+
+    fun registerPlugin(plugin: JavaPlugin, prefix: String) {
         pluginMap[prefix] = plugin
     }
 
