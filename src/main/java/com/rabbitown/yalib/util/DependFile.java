@@ -1,14 +1,12 @@
 package com.rabbitown.yalib.util;
 
-import com.rabbitown.yalib.util.NetFileDownloadUtil;
-
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DependFile {
+
     // ################ Map ################ //
     HashMap<String, String> DependFile = new HashMap<>();
     /**

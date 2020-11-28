@@ -2,12 +2,9 @@ package com.rabbitown.yalib
 
 import org.bukkit.plugin.java.JavaPlugin
 import com.rabbitown.yalib.nms.NMSBase
-import com.rabbitown.yalib.command.CommandManager
 import com.rabbitown.yalib.locale.I18NPlugin
 import com.rabbitown.yalib.locale.Locale
-import com.rabbitown.yalib.locale.YLocaleD
 import com.rabbitown.yalib.util.FileUtil
-import com.rabbitown.yalib.util.StackTraceUtil
 import org.bukkit.ChatColor
 import java.lang.Exception
 
