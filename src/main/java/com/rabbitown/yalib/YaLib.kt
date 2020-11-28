@@ -6,6 +6,7 @@ import com.rabbitown.yalib.command.CommandManager
 import com.rabbitown.yalib.locale.I18NPlugin
 import com.rabbitown.yalib.locale.Locale
 import com.rabbitown.yalib.locale.YLocaleD
+import com.rabbitown.yalib.util.FileUtil
 import com.rabbitown.yalib.util.StackTraceUtil
 import org.bukkit.ChatColor
 import java.lang.Exception
@@ -28,9 +29,8 @@ class YaLib : JavaPlugin(), I18NPlugin {
     }
 
     override fun onEnable() {
-        locale.broadcast("test")
         saveDefaultConfig()
-        YLocaleD.verifyLanguageExist("data/languageData.yml", "plugins/YaWhitelist/message.yml", this)
+        FileUtil.saveResource(this, "data/languageData.yml")
         if (!loadNMS()) {
             logger.severe("The version of your server is not supported.")
             pluginLoader.disablePlugin(this)
