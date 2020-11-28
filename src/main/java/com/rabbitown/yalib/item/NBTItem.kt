@@ -1,6 +1,5 @@
 package com.rabbitown.yalib.item
 
-import com.rabbitown.yalib.YaLib
 import com.rabbitown.yalib.YaLib.Companion.NMS
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack

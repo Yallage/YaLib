@@ -3,7 +3,10 @@ package com.rabbitown.yalib
 import org.bukkit.plugin.java.JavaPlugin
 import com.rabbitown.yalib.nms.NMSBase
 import com.rabbitown.yalib.command.CommandManager
-import com.rabbitown.yalib.locale.YLocale
+import com.rabbitown.yalib.locale.I18NPlugin
+import com.rabbitown.yalib.locale.Locale
+import com.rabbitown.yalib.locale.YLocaleD
+import com.rabbitown.yalib.util.StackTraceUtil
 import org.bukkit.ChatColor
 import java.lang.Exception
 
@@ -12,11 +15,22 @@ import java.lang.Exception
  *
  * @author Hanbings, Yoooooory
  */
-class YaLib : JavaPlugin() {
+class YaLib : JavaPlugin(), I18NPlugin {
+
+    init {
+        instance = this
+    }
+
+    override val locale = Locale(this, "zh_CN")
+
+    override fun onLoad() {
+        YaLibCenter.registerPlugin("com.rabbitown.yalib", this)
+    }
 
     override fun onEnable() {
-        YLocale.verifyLanguageExist("config.yml", "plugins/YaWhitelist/config.yml", this)
-        YLocale.verifyLanguageExist("data/languageData.yml", "plugins/YaWhitelist/message.yml", this)
+        locale.broadcast("test")
+        saveDefaultConfig()
+        YLocaleD.verifyLanguageExist("data/languageData.yml", "plugins/YaWhitelist/message.yml", this)
         if (!loadNMS()) {
             logger.severe("The version of your server is not supported.")
             pluginLoader.disablePlugin(this)
@@ -41,18 +55,15 @@ class YaLib : JavaPlugin() {
     }
 
     companion object {
-        @JvmStatic
-        lateinit var instance: YaLib
-            private set
+
         @JvmStatic
         lateinit var NMS: NMSBase
             private set
-        @JvmStatic
-        val CommandManager = CommandManager()
-    }
 
-    init {
-        instance = this
+        @JvmStatic
+        lateinit var instance: YaLib
+            private set
+
     }
 
 }

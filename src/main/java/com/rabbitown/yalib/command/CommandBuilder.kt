@@ -10,7 +10,7 @@ import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.SimplePluginManager
 
 /**
- * Gives a easier way to build a command.
+ * Gives an easier way to build a command.
  *
  * @author Yoooooory
  */
@@ -34,13 +34,10 @@ class CommandBuilder(val command: PluginCommand) {
     fun executor(executor: CommandExecutor) = run { command.setExecutor(executor); this }
     fun tab(completer: TabCompleter) = run { command.tabCompleter = completer; this }
 
-    fun register() = try {
-        with(SimplePluginManager::class.java.getDeclaredField("commandMap")) {
-            isAccessible = true
-            (get(Bukkit.getPluginManager()) as CommandMap).register(command.name, command)
-        }
-    } catch (e: Exception) {
-        false
+    fun register() = with(SimplePluginManager::class.java.getDeclaredField("commandMap")) {
+        isAccessible = true
+        (get(Bukkit.getPluginManager()) as CommandMap).register(command.name, command)
+        command
     }
 
 }

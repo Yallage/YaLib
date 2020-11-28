@@ -5,15 +5,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class YLocale {
+@Deprecated
+public class YLocaleD {
 
     /**
      * 获取hashmap的消息文字

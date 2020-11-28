@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin
 /**
  * @author Yoooooory
  */
-class CommandManager {
+object CommandManager {
 
     val commands = mutableMapOf<PluginCommand, List<CommandHandler>>()
 
@@ -35,20 +35,24 @@ class CommandManager {
                             processor.onCommand(s, c, l, a, commands[it])
                     })
 //                    it.setExecutor { s, c, l, a -> CommandProcessor(it).onCommand(s, c, l, a, commands[it]) }
-                    if (!CommandBuilder(it).register()) return@forEach
+                    try {
+                        CommandBuilder(it).register()
+                    } catch (e: Exception) {
+                        return@forEach
+                    }
                     commands[it] = handlers.toList()
                 }
-                success += handler
-            }
+            success += handler
         }
-        return success
     }
+    return success
+}
 
-    private fun getCommands(owner: JavaPlugin, handler: CommandHandler) = mutableListOf(handler.command).apply {
-        handler::class.java.getAnnotationsByType(ExtendHandler::class.java).forEach {
-            CommandBuilder(it.name, owner).description(it.description).aliases(it.aliases.toList()).usage(it.usage)
-                .permission(it.permission).permissionMessage(it.permissionMessage).command
-        }
+private fun getCommands(owner: JavaPlugin, handler: CommandHandler) = mutableListOf(handler.command).apply {
+    handler::class.java.getAnnotationsByType(ExtendHandler::class.java).forEach {
+        CommandBuilder(it.name, owner).description(it.description).aliases(it.aliases.toList()).usage(it.usage)
+            .permission(it.permission).permissionMessage(it.permissionMessage).command
     }
+}
 
 }
