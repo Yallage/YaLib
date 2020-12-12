@@ -40,22 +40,22 @@ internal class CommandProcessor(val remote: CommandRemote) : TabExecutor {
             val name = it.name
             CommandHandler.ActionHandler(it, completers[name], sdhMap[name], pdhMap[name])
         }
-        completers.forEach { (_, v) ->
-            v.forEach {
-                val completer = Completer.get(it)
-                if (completer.isDefault()) defaults += CommandHandler.DependentHandler(completer.id, it)
+        completers.values.forEach {
+            it.forEach { method ->
+                val completer = Completer.get(method)
+                if (completer.isDefault()) defaults += CommandHandler.DependentHandler(completer.id, method)
             }
         }
-        sdhMap.forEach { (_, v) ->
-            v.forEach {
-                val sdh = SenderDeniedHandler.get(it)
-                if (sdh.isDefault()) defaults += CommandHandler.DependentHandler(sdh.id, it)
+        sdhMap.values.forEach {
+            it.forEach { method ->
+                val sdh = SenderDeniedHandler.get(method)
+                if (sdh.isDefault()) defaults += CommandHandler.DependentHandler(sdh.id, method)
             }
         }
-        pdhMap.forEach { (_, v) ->
-            v.forEach {
-                val pdh = PermissionDeniedHandler.get(it)
-                if (pdh.isDefault()) defaults += CommandHandler.DependentHandler(pdh.id, it)
+        pdhMap.values.forEach {
+            it.forEach { method ->
+                val pdh = PermissionDeniedHandler.get(method)
+                if (pdh.isDefault()) defaults += CommandHandler.DependentHandler(pdh.id, method)
             }
         }
         this.actions.sortedWith(Comparator.comparingInt(CommandHandler::getPriority))
