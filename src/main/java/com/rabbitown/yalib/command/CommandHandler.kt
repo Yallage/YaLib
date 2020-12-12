@@ -15,6 +15,8 @@ abstract class CommandHandler(val handler: Method) {
     val path = handler.getDeclaredAnnotation(Path::class.java)
     val priority = handler.getDeclaredAnnotation(Priority::class.java)
 
+    fun getPriority() = Priority.get(handler)
+
     class ActionHandler(
         method: Method, completers: List<Method>? = emptyList(),
         senderDeniedHandlers: List<Method>? = emptyList(),
@@ -35,8 +37,6 @@ abstract class CommandHandler(val handler: Method) {
             .sortedWith(Comparator.comparingInt(Priority.Companion::get)).map {
                 DependentHandler(it.getDeclaredAnnotation(PermissionDeniedHandler::class.java).id, it)
             }
-
-        fun getPriority() = Priority.get(handler)
 
     }
 

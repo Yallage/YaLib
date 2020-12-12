@@ -1,6 +1,7 @@
 package com.rabbitown.yalib.command
 
 import com.rabbitown.yalib.command.annotation.*
+import com.rabbitown.yalib.command.annotation.Handlers.Companion.isDefault
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
@@ -22,24 +23,43 @@ internal class CommandProcessor(val remote: CommandRemote) : TabExecutor {
     fun addRemote(remote: CommandRemote) {
         val actions = mutableListOf<Method>()
         val completers = mutableMapOf<String, MutableList<Method>>()
-        val sdh = mutableMapOf<String, MutableList<Method>>()
-        val pdh = mutableMapOf<String, MutableList<Method>>()
+        val sdhMap = mutableMapOf<String, MutableList<Method>>()
+        val pdhMap = mutableMapOf<String, MutableList<Method>>()
         remote::class.java.declaredMethods.forEach { method ->
             method.declaredAnnotations.forEach {
                 when (it) {
                     is Action -> actions += method
                     is Completer -> completers[it.id] = (completers[it.id] ?: mutableListOf()).apply { add(method) }
-                    is SenderDeniedHandler -> sdh[it.id] = (sdh[it.id] ?: mutableListOf()).apply { add(method) }
-                    is PermissionDeniedHandler -> pdh[it.id] = (pdh[it.id] ?: mutableListOf()).apply { add(method) }
+                    is SenderDeniedHandler -> sdhMap[it.id] = (sdhMap[it.id] ?: mutableListOf()).apply { add(method) }
+                    is PermissionDeniedHandler -> pdhMap[it.id] =
+                        (pdhMap[it.id] ?: mutableListOf()).apply { add(method) }
                 }
             }
         }
         this.actions += actions.map {
             val name = it.name
-            CommandHandler.ActionHandler(it, completers[name], sdh[name], pdh[name])
+            CommandHandler.ActionHandler(it, completers[name], sdhMap[name], pdhMap[name])
         }
-        completers.forEach { _, v -> v.forEach { if (it) } }
-        this.actions.sortedWith(Comparator.comparingInt(CommandHandler.ActionHandler::getPriority))
+        completers.forEach { (_, v) ->
+            v.forEach {
+                val completer = Completer.get(it)
+                if (completer.isDefault()) defaults += CommandHandler.DependentHandler(completer.id, it)
+            }
+        }
+        sdhMap.forEach { (_, v) ->
+            v.forEach {
+                val sdh = SenderDeniedHandler.get(it)
+                if (sdh.isDefault()) defaults += CommandHandler.DependentHandler(sdh.id, it)
+            }
+        }
+        pdhMap.forEach { (_, v) ->
+            v.forEach {
+                val pdh = PermissionDeniedHandler.get(it)
+                if (pdh.isDefault()) defaults += CommandHandler.DependentHandler(pdh.id, it)
+            }
+        }
+        this.actions.sortedWith(Comparator.comparingInt(CommandHandler::getPriority))
+        this.defaults.sortedWith(Comparator.comparingInt(CommandHandler::getPriority))
     }
 
     override fun onTabComplete(
