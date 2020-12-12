@@ -1,34 +1,23 @@
 package com.rabbitown.yalib.command
 
-import com.rabbitown.yalib.YaLib
-import org.bukkit.command.PluginCommand
-import org.bukkit.plugin.java.JavaPlugin
-import javax.annotation.RegEx
+import com.rabbitown.yalib.command.annotation.*
+import java.lang.reflect.Method
 
 /**
- * Represent a command handler.
+ * Represents a command handler.
  *
  * @author Yoooooory
  */
-@Suppress("unused")
-open class CommandHandler(val command: PluginCommand, @RegEx val path: List<String>) {
+open class CommandHandler(val method: Method) {
 
-    val sender: CommandSenderType = CommandSenderType.ALL
+    val access = method.getDeclaredAnnotation(Access::class.java)
+    val path = method.getDeclaredAnnotation(Path::class.java)
+    val priority = method.getDeclaredAnnotation(Priority::class.java)
 
-    constructor(
-        name: String, plugin: JavaPlugin = YaLib.instance,
-        aliases: List<String> = listOf(),
-        description: String = "No description provided.", permission: String = "",
-        permissionMessage: String = "§cYou don't have permission to use this command.",
-        usage: String = "", path: List<String> = listOf()
-    ) : this(
-        CommandBuilder(name, plugin).aliases(aliases).description(description).permission(permission)
-            .permissionMessage(permissionMessage).usage(usage).command, path
-    )
+    class ActionHandler(method: Method) : CommandHandler(method) {
+        val action = method.getDeclaredAnnotation(Action::class.java)
+    }
 
-    fun getUsage() = command.usage
-    fun getDescription() = command.description
-    fun getSenderMessage() = "§cOnly {sender} can use the command."
-    fun getPermissionMessage() = command.permissionMessage ?: ""
+    class DependentHandler(val id: String, method: Method) : CommandHandler(method)
 
 }

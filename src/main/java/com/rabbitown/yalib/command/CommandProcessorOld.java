@@ -1,11 +1,10 @@
 package com.rabbitown.yalib.command;
 
 import com.rabbitown.yalib.annotation.command.*;
+import com.rabbitown.yalib.command.annotation.Action;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,29 +13,28 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Yoooooory
  */
-public class CommandProcessor {
+public class CommandProcessorOld {
 
     final PluginCommand pluginCommand;
 
-    public CommandProcessor(PluginCommand pluginCommand) {
+    public CommandProcessorOld(PluginCommand pluginCommand) {
         this.pluginCommand = pluginCommand;
     }
 
     final static Pattern pattern = Pattern.compile("\\{(\\w+)(: ?(.+))?}");
 
-    protected boolean onCommand(CommandSender sender, Command command, String label, String[] args, List<CommandHandler> handlers) {
+    protected boolean onCommand(CommandSender sender, Command command, String label, String[] args, List<CommandRemote> handlers) {
         List<Method> before = new ArrayList<>();
         List<Method> after = new ArrayList<>();
         List<Method> actions = new ArrayList<>();
         List<Method> alternates = new ArrayList<>();
         StringBuilder sb = new StringBuilder(args.length > 0 ? args[0] : "");
         for (int i = 1; i < args.length; i++) sb.append(" ").append(args[i]);
-        for (CommandHandler handler : handlers) {
+        for (CommandRemote handler : handlers) {
             // Looking for an effective handler. (detect paths)
             if (handler.getPath().size() == 0 || handler.getPath().stream().anyMatch(s -> {
                 Matcher m = Pattern.compile(s).matcher(sb.toString());
@@ -61,7 +59,7 @@ public class CommandProcessor {
         return false;
     }
 
-    private boolean executeCommand(CommandSender sender, Command command, String label, String[] args, CommandHandler handler, String fullArgs, List<Method> actions, List<Method> alternates) {
+    private boolean executeCommand(CommandSender sender, Command command, String label, String[] args, CommandRemote handler, String fullArgs, List<Method> actions, List<Method> alternates) {
         // Path matches -> An effective handler.
         // Looking for an effective action. (detect actions)
         // Get all actions of the handler and sort them by their priority.
@@ -131,7 +129,7 @@ public class CommandProcessor {
         return arguments;
     }
 
-    private boolean runAction(Map<String, String> map, Method action, CommandHandler handler, CommandSender sender, Command command, String label, String[] args) {
+    private boolean runAction(Map<String, String> map, Method action, CommandRemote handler, CommandSender sender, Command command, String label, String[] args) {
         List<Object> arguments = getArguments(map, action, sender, command, label, args);
         try {
             if (action.getReturnType() == boolean.class)
@@ -147,9 +145,9 @@ public class CommandProcessor {
     }
 
     @SuppressWarnings("unchecked")
-    protected List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args, List<CommandHandler> handlers) throws InvocationTargetException, IllegalAccessException {
+    protected List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args, List<CommandRemote> handlers) throws InvocationTargetException, IllegalAccessException {
         StringBuilder sb = new StringBuilder(args.length > 0 ? args[0] : "");
-        for (CommandHandler handler : handlers) {
+        for (CommandRemote handler : handlers) {
             if (handler.getPath().size() == 0 || handler.getPath().stream().anyMatch(s -> {
                 Matcher m = Pattern.compile(s).matcher(sb.toString());
                 if (m.find() && m.start() == 0) {

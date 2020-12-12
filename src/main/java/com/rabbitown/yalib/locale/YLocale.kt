@@ -1,8 +1,7 @@
 package com.rabbitown.yalib.locale
 
-import com.mojang.bridge.game.Language
 import com.rabbitown.yalib.YaLib
-import com.rabbitown.yalib.YaLibCenter
+import com.rabbitown.yalib.YaLibCentral
 import com.rabbitown.yalib.util.FileUtil
 import com.rabbitown.yalib.util.StackTraceUtil
 import org.bukkit.OfflinePlayer
@@ -19,7 +18,7 @@ class YLocale {
 
     companion object {
 
-        private fun getInvoker() = YaLibCenter.getPlugin(StackTraceUtil.getInvoker(arrayOf("com.rabbitown.yalib.i18n")))
+        private fun getInvoker() = YaLibCentral.getPlugin(StackTraceUtil.getInvoker(arrayOf("com.rabbitown.yalib.i18n")))
 
         private fun checkInvoker() =
             getInvoker().apply { if (this !is I18NPlugin) error("A non-I18N plugin tried to use YLocale.") }!! as I18NPlugin

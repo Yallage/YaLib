@@ -3,7 +3,7 @@ package com.rabbitown.yalib.util
 /**
  * @author Yoooooory
  */
-class StackTraceUtil {
+class StackTraceUtil private constructor() {
     companion object {
 
         fun getInvoker(exclude: Array<String> = emptyArray()): String {

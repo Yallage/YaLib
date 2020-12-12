@@ -1,12 +1,12 @@
 package com.rabbitown.yalib.command
 
-import com.rabbitown.yalib.annotation.command.Action
+import com.rabbitown.yalib.command.annotation.Action
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
 /**
- * Represents a command running result.
+ * Enum of a command running result.
  *
  * @author Yoooooory
  */
@@ -15,43 +15,37 @@ enum class CommandResult {
     /** Succeed to run the command. */
     SUCCESS,
 
-    /** Failed to use the command because the sender type mismatch (the command required). */
-    FAILED_COMMAND_SENDER,
+    /** Failed to use the command because the sender type mismatch. */
+    FAILED_SENDER_MISMATCH,
 
-    /** Failed to use the command because the sender hasn't permission (the command required). */
-    FAILED_COMMAND_PERMISSION,
-
-    /** Failed to use the command because the sender type mismatch (the action required). */
-    FAILED_ACTION_SENDER,
-
-    /** Failed to use the command because the sender hasn't permission (the action required). */
-    FAILED_ACTION_PERMISSION;
+    /** Failed to use the command because the sender hasn't permission. */
+    FAILED_PERMISSION_REQUIRED;
 
     companion object {
 
         /**
          * Get a command running result.
          *
-         * @param handler The handler in the handling.
+         * @param remote The handler in the handling.
          * @param action The action in the handling.
          * @param sender The sender of the command.
          * @param sendMessage Whether send command failed message to the sender or not.
          */
         @JvmStatic
-        fun getCommandResult(handler: CommandHandler, action: Action, sender: CommandSender, sendMessage: Boolean) =
+        fun getCommandResult(remote: CommandRemote, action: Action, sender: CommandSender, sendMessage: Boolean) =
             when {
                 // Check permission.
-                !checkSenderPerm(sender, handler.command.permission) -> {
-                    if (sendMessage) sendPermFailed(sender, handler.command.permission, handler.getPermissionMessage())
+                !checkSenderPerm(sender, remote.command.permission) -> {
+                    if (sendMessage) sendPermFailed(sender, remote.command.permission, remote.defaultPermissionDeniedHandler())
                     FAILED_COMMAND_PERMISSION
                 }
                 !checkSenderPerm(sender, action.permission) -> {
-                    if (sendMessage) sendPermFailed(sender, handler.command.permission, handler.getPermissionMessage())
+                    if (sendMessage) sendPermFailed(sender, remote.command.permission, remote.defaultPermissionDeniedHandler())
                     FAILED_ACTION_PERMISSION
                 }
                 // Check sender
-                !checkSenderType(sender, handler.sender) -> {
-                    if (sendMessage) sendSenderFailed(sender, handler.sender, handler.getSenderMessage())
+                !checkSenderType(sender, remote.sender) -> {
+                    if (sendMessage) sendSenderFailed(sender, remote.sender, remote.defaultSenderDeniedHandler())
                     FAILED_COMMAND_SENDER
                 }
                 !checkSenderType(sender, action.sender) -> {

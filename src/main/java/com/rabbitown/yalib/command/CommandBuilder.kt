@@ -1,13 +1,10 @@
 package com.rabbitown.yalib.command
 
 import com.rabbitown.yalib.YaLib
-import org.bukkit.Bukkit
 import org.bukkit.command.CommandExecutor
-import org.bukkit.command.CommandMap
 import org.bukkit.command.PluginCommand
 import org.bukkit.command.TabCompleter
 import org.bukkit.plugin.Plugin
-import org.bukkit.plugin.SimplePluginManager
 
 /**
  * Gives an easier way to build a command.
@@ -17,27 +14,19 @@ import org.bukkit.plugin.SimplePluginManager
 class CommandBuilder(val command: PluginCommand) {
 
     constructor(name: String) : this(name, YaLib.instance)
-    constructor(name: String, owner: Plugin)
-            : this(with(PluginCommand::class.java.getDeclaredConstructor(String::class.java, Plugin::class.java)) {
-        isAccessible = true
-        newInstance(name, owner)
-    })
+    constructor(name: String, owner: Plugin) : this(Commands.newCommand(name, owner))
 
     /* information filling functions */
-    fun name(name: String) = run { command.name = name; this }
-    fun description(description: String) = run { command.description = description; this }
-    fun aliases(aliases: List<String>) = run { command.aliases = aliases; this }
+    fun name(name: String) = this.apply { command.name = name }
+    fun description(description: String) = this.apply { command.description = description }
+    fun aliases(aliases: List<String>) = this.apply { command.aliases = aliases }
     fun aliases(vararg aliases: String) = aliases(aliases.toList())
-    fun usage(usage: String) = run { command.usage = usage; this }
-    fun permission(permission: String) = run { command.permission = permission; this }
-    fun permissionMessage(message: String) = run { command.permissionMessage = message; this }
-    fun executor(executor: CommandExecutor) = run { command.setExecutor(executor); this }
-    fun tab(completer: TabCompleter) = run { command.tabCompleter = completer; this }
+    fun usage(usage: String) = this.apply { command.usage = usage; this }
+    fun permission(permission: String) = this.apply { command.permission = permission }
+    fun permissionMessage(message: String) = this.apply { command.permissionMessage = message }
+    fun executor(executor: CommandExecutor) = this.apply { command.setExecutor(executor) }
+    fun tab(completer: TabCompleter) = this.apply { command.tabCompleter = completer }
 
-    fun register() = with(SimplePluginManager::class.java.getDeclaredField("commandMap")) {
-        isAccessible = true
-        (get(Bukkit.getPluginManager()) as CommandMap).register(command.name, command)
-        command
-    }
+    fun register() = if (Commands.registerCommand(command)) command else null
 
 }

@@ -1,58 +1,37 @@
 package com.rabbitown.yalib.command
 
-import com.rabbitown.yalib.annotation.command.ExtendHandler
-import org.bukkit.command.Command
-import org.bukkit.command.CommandSender
 import org.bukkit.command.PluginCommand
-import org.bukkit.command.TabExecutor
-import org.bukkit.plugin.java.JavaPlugin
 
 /**
+ * YaLib central command manager.
+ *
  * @author Yoooooory
  */
 object CommandManager {
 
-    val commands = mutableMapOf<PluginCommand, List<CommandHandler>>()
+    private val handlerMap = mutableMapOf<PluginCommand, List<CommandRemote>>()
 
-    fun register(plugin: JavaPlugin, vararg handlers: CommandHandler): List<CommandHandler> =
-        register(plugin, handlers.toList())
+    fun register(vararg remotes: CommandRemote): List<CommandRemote> = register(remotes.toList())
 
-    fun register(plugin: JavaPlugin, handlers: List<CommandHandler>): List<CommandHandler> {
-        val success = mutableListOf<CommandHandler>()
-        for (handler in handlers) {
-            getCommands(plugin, handler).forEach {
-                if (commands.containsKey(it)) {
-                    // Add the handler to a command if it is exist.
-                    commands.replace(it, commands[it]!! + handlers)
-                } else {
-                    it.setExecutor(object : TabExecutor {
-                        val processor = CommandProcessor(it)
-                        override fun onTabComplete(
-                            s: CommandSender, c: Command, l: String, a: Array<String>
-                        ): MutableList<String> = processor.onTabComplete(s, c, l, a, commands[it])
-
-                        override fun onCommand(s: CommandSender, c: Command, l: String, a: Array<String>): Boolean =
-                            processor.onCommand(s, c, l, a, commands[it])
-                    })
-//                    it.setExecutor { s, c, l, a -> CommandProcessor(it).onCommand(s, c, l, a, commands[it]) }
-                    try {
-                        CommandBuilder(it).register()
-                    } catch (e: Exception) {
-                        return@forEach
-                    }
-                    commands[it] = handlers.toList()
+    fun register(remotes: List<CommandRemote>): List<CommandRemote> {
+        val success = mutableListOf<CommandRemote>()
+        for (handler in remotes) {
+            val command = handler.command
+            if (handlerMap.containsKey(command)) {
+                // Add the handler to a command if it is exist.
+                handlerMap[command] = handlerMap[command]!! + handler
+            } else {
+                command.setExecutor(CommandProcessor(command))
+                try {
+                    CommandBuilder(command).register()
+                } catch (e: Exception) {
+                    continue
                 }
+                handlerMap[command] = listOf(handler)
+            }
             success += handler
         }
+        return success
     }
-    return success
-}
-
-private fun getCommands(owner: JavaPlugin, handler: CommandHandler) = mutableListOf(handler.command).apply {
-    handler::class.java.getAnnotationsByType(ExtendHandler::class.java).forEach {
-        CommandBuilder(it.name, owner).description(it.description).aliases(it.aliases.toList()).usage(it.usage)
-            .permission(it.permission).permissionMessage(it.permissionMessage).command
-    }
-}
 
 }

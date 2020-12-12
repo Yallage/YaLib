@@ -5,7 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin
 /**
  * @author Yoooooory
  */
-object YaLibCenter {
+object YaLibCentral {
 
     private val pluginMap = mutableMapOf<String, JavaPlugin>()
 

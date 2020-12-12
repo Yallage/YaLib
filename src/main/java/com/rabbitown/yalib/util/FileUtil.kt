@@ -8,8 +8,7 @@ import java.util.jar.JarFile
 /**
  * @author Yoooooory
  */
-class FileUtil {
-
+class FileUtil private constructor() {
     companion object {
 
         fun getAllResource(plugin: JavaPlugin, dir: String): List<String> {
@@ -28,5 +27,4 @@ class FileUtil {
         }
 
     }
-
 }
