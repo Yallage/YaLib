@@ -1,10 +1,7 @@
 package com.rabbitown.yalib.command
 
 import com.rabbitown.yalib.YaLib
-import com.rabbitown.yalib.command.annotation.Action
-import com.rabbitown.yalib.command.annotation.Handlers
-import com.rabbitown.yalib.command.annotation.Priority
-import com.rabbitown.yalib.command.annotation.SenderDeniedHandler
+import com.rabbitown.yalib.command.annotation.*
 import org.bukkit.command.PluginCommand
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -14,6 +11,10 @@ import org.bukkit.plugin.java.JavaPlugin
  * @author Yoooooory
  */
 open class CommandRemote(val command: PluginCommand) {
+
+    val path = Path.get(this.javaClass)
+    val access = Access.get(this.javaClass)
+    val priority = Priority.get(this.javaClass)
 
     constructor(
         name: String, plugin: JavaPlugin = YaLib.instance,
@@ -46,6 +47,11 @@ open class CommandRemote(val command: PluginCommand) {
     @Priority(Int.MIN_VALUE)
     open fun defaultPermissionDeniedHandler() = command.permissionMessage ?: "Permission required: {perm}"
 
-    fun register(): Nothing = TODO()
+    /**
+     * Register the remote to [CommandManager].
+     *
+     * @return Whether the remote was registered successfully.
+     */
+    fun register() = CommandManager.register(this).isNotEmpty()
 
 }

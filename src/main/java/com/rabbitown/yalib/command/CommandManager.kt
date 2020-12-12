@@ -15,21 +15,21 @@ object CommandManager {
 
     fun register(remotes: List<CommandRemote>): List<CommandRemote> {
         val success = mutableListOf<CommandRemote>()
-        for (handler in remotes) {
-            val command = handler.command
+        for (remote in remotes) {
+            val command = remote.command
             if (handlerMap.containsKey(command)) {
-                // Add the handler to a command if it is exist.
-                handlerMap[command] = handlerMap[command]!! + handler
+                // Add the remote to a command if it is exist.
+                handlerMap[command] = handlerMap[command]!! + remote
             } else {
-                command.setExecutor(CommandProcessor(command))
+                command.setExecutor(CommandProcessor(remote))
                 try {
                     CommandBuilder(command).register()
                 } catch (e: Exception) {
                     continue
                 }
-                handlerMap[command] = listOf(handler)
+                handlerMap[command] = listOf(remote)
             }
-            success += handler
+            success += remote
         }
         return success
     }

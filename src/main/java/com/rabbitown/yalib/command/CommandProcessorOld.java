@@ -144,7 +144,6 @@ public class CommandProcessorOld {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     protected List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args, List<CommandRemote> handlers) throws InvocationTargetException, IllegalAccessException {
         StringBuilder sb = new StringBuilder(args.length > 0 ? args[0] : "");
         for (CommandRemote handler : handlers) {
