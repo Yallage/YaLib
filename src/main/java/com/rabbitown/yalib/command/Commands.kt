@@ -17,9 +17,9 @@ import kotlin.UnsupportedOperationException
 class Commands {
     companion object {
 
-        fun newCommand(name: String, owner: Plugin) = with(PluginCommand::class.java.getDeclaredConstructor(String::class.java, Plugin::class.java)) {
+        fun newPluginCommand(name: String, owner: Plugin) = with(PluginCommand::class.java.getDeclaredConstructor(String::class.java, Plugin::class.java)) {
             isAccessible = true
-            newInstance(name, owner)
+            newInstance(name, owner) as PluginCommand
         }
 
         fun getCommand(command: PluginCommand) = checkPlugin(command.plugin).getCommand(command.name)

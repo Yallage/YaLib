@@ -22,9 +22,9 @@ class Handlers private constructor() {
             PermissionDeniedHandler::class.java
         )
 
-        fun Completer.isDefault() = this.id == Handlers.DEFAULT
-        fun SenderDeniedHandler.isDefault() = this.id == Handlers.DEFAULT
-        fun PermissionDeniedHandler.isDefault() = this.id == Handlers.DEFAULT
+        fun Completer.isDefault() = this.id == DEFAULT
+        fun SenderDeniedHandler.isDefault() = this.id == DEFAULT
+        fun PermissionDeniedHandler.isDefault() = this.id == DEFAULT
 
     }
 }

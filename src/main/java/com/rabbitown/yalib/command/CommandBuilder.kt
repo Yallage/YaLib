@@ -7,14 +7,14 @@ import org.bukkit.command.TabCompleter
 import org.bukkit.plugin.Plugin
 
 /**
- * Gives an easier way to build a command.
+ * Represent a [PluginCommand] builder.
  *
  * @author Yoooooory
  */
 class CommandBuilder(val command: PluginCommand) {
 
     constructor(name: String) : this(name, YaLib.instance)
-    constructor(name: String, owner: Plugin) : this(Commands.newCommand(name, owner))
+    constructor(name: String, owner: Plugin) : this(Commands.newPluginCommand(name, owner))
 
     /* information filling functions */
     fun name(name: String) = this.apply { command.name = name }

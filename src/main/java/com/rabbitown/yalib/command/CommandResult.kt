@@ -1,10 +1,8 @@
 package com.rabbitown.yalib.command
 
 import com.rabbitown.yalib.command.annotation.Access
-import com.rabbitown.yalib.command.annotation.Action
+import com.rabbitown.yalib.command.entity.ActionHandler
 import org.bukkit.command.CommandSender
-import org.bukkit.command.ConsoleCommandSender
-import org.bukkit.entity.Player
 
 /**
  * Enum of a command running result.
@@ -31,7 +29,7 @@ enum class CommandResult {
          * @param action The action in the handling.
          * @param sender The sender of the command.
          */
-        fun getCommandResult(remote: CommandRemote, action: CommandHandler.ActionHandler, sender: CommandSender) =
+        fun getCommandResult(remote: CommandRemote, action: ActionHandler, sender: CommandSender) =
             when {
                 !checkSenderType(sender, Access.get(remote::class.java).sender) ||
                         !checkSenderType(sender, action.access.sender) -> FAILED_SENDER_MISMATCH
