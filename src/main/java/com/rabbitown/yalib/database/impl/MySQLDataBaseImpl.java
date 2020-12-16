@@ -1,6 +1,6 @@
 package com.rabbitown.yalib.database.impl;
 
-import com.rabbitown.yalib.database.DataBase;
+import com.rabbitown.yalib.database.Database;
 import org.bukkit.Bukkit;
 
 import java.sql.Connection;
@@ -8,24 +8,24 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class MySQLDataBaseImpl implements DataBase {
+public class MySQLDatabaseImpl implements Database {
     @Override
-    public Connection loadDataBase(String dataBaseName) {
+    public Connection loadDatabase(String databaseName) {
         return null;
     }
 
     @Override
-    public Connection loadDateBase(String dataBaseURL, String username, String password) {
+    public Connection loadDatabase(String databaseURL, String username, String password) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection(dataBaseURL, username, password);
+            Connection connection = DriverManager.getConnection(databaseURL, username, password);
             Bukkit.getServer().getLogger().info("[MYSQL][INFO] 数据库加载成功");
             return connection;
         } catch (ClassNotFoundException e) {
             Bukkit.getServer().getLogger().warning("[MYSQL][ERROR] 安装的MySQL版本号高于8.0 正在尝试加载8.0以上兼容的JDBC");
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection connection = DriverManager.getConnection(dataBaseURL, username, password);
+                Connection connection = DriverManager.getConnection(databaseURL, username, password);
                 Bukkit.getServer().getLogger().info("[MYSQL][INFO] 数据库加载成功");
                 return connection;
             } catch (ClassNotFoundException | SQLException classNotFoundException) {

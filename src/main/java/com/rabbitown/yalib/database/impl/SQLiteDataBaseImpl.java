@@ -1,6 +1,6 @@
 package com.rabbitown.yalib.database.impl;
 
-import com.rabbitown.yalib.database.DataBase;
+import com.rabbitown.yalib.database.Database;
 import org.bukkit.Bukkit;
 
 import java.sql.Connection;
@@ -8,13 +8,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLiteDataBaseImpl implements DataBase {
+public class SQLiteDatabaseImpl implements Database {
     @Override
-    public Connection loadDataBase(String dataBaseName) {
+    public Connection loadDatabase(String databaseName) {
         Connection connection;
         try {
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            connection = DriverManager.getConnection("jdbc:sqlite:" + databaseName);
             Bukkit.getServer().getLogger().info("[SQLITE][INFO] 数据库加载成功");
             return connection;
         } catch (ClassNotFoundException | SQLException e) {
@@ -25,7 +25,7 @@ public class SQLiteDataBaseImpl implements DataBase {
     }
 
     @Override
-    public Connection loadDateBase(String dataBaseURL, String username, String password) {
+    public Connection loadDatabase(String databaseURL, String username, String password) {
         return null;
     }
 
