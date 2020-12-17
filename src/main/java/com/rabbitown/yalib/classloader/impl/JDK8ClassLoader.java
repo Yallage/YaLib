@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.util;
+package com.rabbitown.yalib.classloader.impl;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -6,12 +6,14 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Objects;
 
-public class ClassLoaderUtil {
+public class JDK8ClassLoader {
     /**
      * JDK8能用的ClassLoader
      * 加载整一个Jar的
+     * JDK9+不能使用这个方法
      * @author Hanbings
      */
+    @Deprecated
     public static void loadJar(String jarPath) {
         File jarFile = new File(jarPath);
         System.out.println("Loading " + jarPath);
