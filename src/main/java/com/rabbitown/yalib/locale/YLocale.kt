@@ -20,7 +20,8 @@ class YLocale {
 
     companion object {
 
-        private fun getInvoker() = YaLibCentral.getPlugin(StackTraceUtil.getInvoker(arrayOf("com.rabbitown.yalib.i18n")))
+        private fun getInvoker() =
+            YaLibCentral.getPlugin(StackTraceUtil.getInvoker(arrayOf("com.rabbitown.yalib.i18n")))
 
         private fun checkInvoker() =
             getInvoker().apply { if (this !is I18NPlugin) error("A non-I18N plugin tried to use YLocale.") }!! as I18NPlugin
@@ -44,6 +45,8 @@ class YLocale {
             return if (plugin is I18NPlugin && default !in plugin.locale.langMap) plugin.locale.defaultLanguage else default
         }
 
+        // SENDING //
+
         @JvmStatic
         fun send(target: CommandSender, key: String, vararg args: String) =
             checkInvoker().locale.send(target, key, *args)
@@ -54,23 +57,33 @@ class YLocale {
         @JvmStatic
         fun broadcast(key: String, vararg args: String) = checkInvoker().locale.broadcast(key, *args)
 
-        @JvmStatic
-        fun getMessage(language: String, key: String) = checkInvoker().locale.getMessage(language, key)
+        // GET MESSAGE //
 
         @JvmStatic
-        fun getMessage(target: ServerOperator, key: String) = checkInvoker().locale.getMessage(getLanguage(target), key)
+        fun getMessage(language: String, key: String, vararg args: String) =
+            checkInvoker().locale.getMessage(language, key, *args)
 
         @JvmStatic
-        fun getConsoleMessage(key: String) = checkInvoker().locale.getMessage(getConsoleLanguage(), key)
+        fun getMessage(target: ServerOperator, key: String, vararg args: String) =
+            checkInvoker().locale.getMessage(getLanguage(target), key, *args)
 
         @JvmStatic
-        fun getDefaultMessage(key: String) = checkInvoker().locale.getMessage(getDefaultLanguage(), key)
+        fun getConsoleMessage(key: String, vararg args: String) =
+            checkInvoker().locale.getMessage(getConsoleLanguage(), key, *args)
+
+        @JvmStatic
+        fun getDefaultMessage(key: String, vararg args: String) =
+            checkInvoker().locale.getMessage(getDefaultLanguage(), key, *args)
+
+        // GET LANGUAGE MAP
 
         @JvmStatic
         fun getLanguageMap(sender: ServerOperator) = checkInvoker().locale.getLanguageMap(sender)
 
         @JvmStatic
         fun getLanguageMap(language: String) = checkInvoker().locale.getLanguageMap(language)
+
+        // GET LANGUAGE SETTING
 
         @JvmStatic
         fun getDefaultLanguage() = YaLib.instance.config["language.default"] as String

@@ -60,20 +60,20 @@ class Locale(
         FileUtil.getAllResource(owner, insideLanguageFolder).forEach { FileUtil.saveResource(owner, it) }
     }
 
-    fun getMessage(language: String, key: String) = getLanguageMap(language)?.get(key)
-
     fun send(target: CommandSender, key: String, vararg args: String) =
-        target.sendMessage(getMessage(target.getLocaleLanguage(), key)!!.arg(*args))
+        target.sendMessage(getMessage(target.getLocaleLanguage(), key, *args)!!)
 
     fun sendToConsole(key: String, vararg args: String) = send(Bukkit.getConsoleSender(), key, *args)
-
-    fun getLanguageMap(language: String) = if (language in langMap) LanguageMap(langMap[language]!!) else null
-    fun getLanguageMap(target: ServerOperator) = getLanguageMap(target.getLocaleLanguage())
 
     fun broadcast(key: String, vararg args: String) {
         sendToConsole(key, *args)
         Bukkit.getOnlinePlayers().forEach { send(it, key, *args) }
     }
+
+    fun getMessage(language: String, key: String, vararg args: String) = getLanguageMap(language)?.get(key)?.arg(*args)
+
+    fun getLanguageMap(language: String) = if (language in langMap) LanguageMap(langMap[language]!!) else null
+    fun getLanguageMap(target: ServerOperator) = getLanguageMap(target.getLocaleLanguage())
 
     class LanguageMap(private val yaml: YamlConfiguration) {
         operator fun get(key: String) = yaml[key]?.toString()
