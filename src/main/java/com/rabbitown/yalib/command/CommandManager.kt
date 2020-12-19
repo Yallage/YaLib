@@ -17,7 +17,7 @@ object CommandManager {
         val success = mutableListOf<CommandRemote>()
         for (remote in remotes) {
             val command = remote.command
-            if (handlerMap.containsKey(command)) {
+            if (command in handlerMap) {
                 // Add the remote to a command if it is exist.
                 val executor = command.executor
                 if (executor is CommandProcessor) executor.addRemote(remote) else continue

@@ -1,6 +1,8 @@
 package com.rabbitown.yalib.command.entity
 
 import com.rabbitown.yalib.command.CommandRemote
+import com.rabbitown.yalib.command.CommandResult
+import com.rabbitown.yalib.command.Limitable
 import com.rabbitown.yalib.command.annotation.*
 import com.rabbitown.yalib.command.annotation.Handlers.Companion.isDefault
 import java.lang.reflect.Method
@@ -8,12 +10,16 @@ import java.lang.reflect.Method
 /**
  * @author Yoooooory
  */
-data class RemoteEntity(val remote: CommandRemote) {
+data class RemoteEntity(val remote: CommandRemote) : Limitable {
+
+    override val access = remote.access
+    override val path = remote.path
+    override val priority = remote.priority
 
     val actions: List<ActionHandler>
     val defaultCompleters: List<DependentHandler>
-    val defaultSenderDeniedHandler: List<DependentHandler>
-    val defaultPermissionDeniedHandler: List<DependentHandler>
+    val defaultSenderDeniedHandlers: List<DependentHandler>
+    val defaultPermissionDeniedHandlers: List<DependentHandler>
 
     init {
         val actions = mutableListOf<Method>()
@@ -34,13 +40,31 @@ data class RemoteEntity(val remote: CommandRemote) {
         this.actions = actions.map { ActionHandler(it, tabMap[it.name], sdhMap[it.name], pdhMap[it.name]) }
             .sortedWith(CommandHandler.sortByPriority())
         this.defaultCompleters =
-            tabMap.values.asSequence().flatten().map { Pair(it, Completer.get(it)) }.filter { it.second.isDefault() }
+            tabMap.values.asSequence().flatten().map { Pair(it, Completer.get(it)) }
+                .filter { it.second.isDefault() }
                 .map { DependentHandler(it.second.id, it.first) }.sortedWith(CommandHandler.sortByPriority()).toList()
-        this.defaultSenderDeniedHandler =
-            sdhMap.values.asSequence().flatten().map { Pair(it, Completer.get(it)) }.filter { it.second.isDefault() }
+        this.defaultSenderDeniedHandlers =
+            sdhMap.values.asSequence().flatten().map { Pair(it, SenderDeniedHandler.get(it)) }
+                .filter { it.second.isDefault() }
                 .map { DependentHandler(it.second.id, it.first) }.sortedWith(CommandHandler.sortByPriority()).toList()
-        this.defaultPermissionDeniedHandler =
-            pdhMap.values.asSequence().flatten().map { Pair(it, Completer.get(it)) }.filter { it.second.isDefault() }
+        this.defaultPermissionDeniedHandlers =
+            pdhMap.values.asSequence().flatten().map { Pair(it, PermissionDeniedHandler.get(it)) }
+                .filter { it.second.isDefault() }
                 .map { DependentHandler(it.second.id, it.first) }.sortedWith(CommandHandler.sortByPriority()).toList()
     }
+
+    fun runSenderDeniedHandler(id: String, running: CommandRunning) {
+        // TODO
+        defaultSenderDeniedHandlers
+            .first { it.id == id && CommandResult.getCommandResult(it, running.sender) == CommandResult.SUCCESS }
+            .handler
+    }
+
+    fun runPermissionDeniedHandler(id: String, running: CommandRunning) {
+        // TODO
+        defaultPermissionDeniedHandlers
+            .first { it.id == id && CommandResult.getCommandResult(it, running.sender) == CommandResult.SUCCESS }
+            .handler
+    }
+
 }

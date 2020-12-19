@@ -5,14 +5,6 @@ import com.rabbitown.yalib.command.CommandSenderType
 import java.lang.reflect.Method
 
 /**
- * Util class for limiters of command handlers.
- * Limiters including [Access], [Path], [Priority].
- *
- * @author Yoooooory
- */
-class Limiters private constructor()
-
-/**
  * Mark the ability to access the command.
  * Not work if no parameters were provided.
  *
@@ -21,11 +13,11 @@ class Limiters private constructor()
  * @author Yoooooory
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
-annotation class Access(val sender: Array<CommandSenderType> = [], val permission: Array<String> = []) {
+annotation class Access(val permission: Array<String> = [], val sender: Array<CommandSenderType> = []) {
     companion object {
         fun get(remote: Class<out CommandRemote>) = getOrDefault(remote.getDeclaredAnnotation(Access::class.java))
         fun get(handler: Method) = getOrDefault(handler.getDeclaredAnnotation(Access::class.java))
-        fun getOrDefault(access: Access?) = access ?: Accessor::class.java.getAnnotation(Access::class.java)!!
+        fun getOrDefault(access: Access?) = access ?: Accessor::class.java.getDeclaredAnnotation(Access::class.java)!!
     }
 
     @Access

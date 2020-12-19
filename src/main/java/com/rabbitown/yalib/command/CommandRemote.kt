@@ -10,16 +10,16 @@ import org.bukkit.plugin.java.JavaPlugin
  *
  * @author Yoooooory
  */
-open class CommandRemote(val command: PluginCommand) {
+open class CommandRemote(val command: PluginCommand): Limitable {
 
-    val path = Path.get(this.javaClass)
-    val access = Access.get(this.javaClass)
-    val priority = Priority.get(this.javaClass)
+    override val path = Path.get(this::class.java)
+    override val access = Access.get(this::class.java)
+    override val priority = Priority.get(this::class.java)
 
     constructor(
         name: String, plugin: JavaPlugin = YaLib.instance,
         aliases: List<String> = emptyList(), description: String = "Auto generated, no description provided.",
-        usage: String = "Auto generated, no usage provided.", vararg path: String
+        usage: String = "Auto generated, no usage provided."
     ) : this(
         Commands.getCommandOrThis(
             CommandBuilder(name, plugin).aliases(aliases).description(description).usage(usage).command

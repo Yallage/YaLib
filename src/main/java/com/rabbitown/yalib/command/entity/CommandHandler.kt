@@ -1,5 +1,6 @@
 package com.rabbitown.yalib.command.entity
 
+import com.rabbitown.yalib.command.Limitable
 import com.rabbitown.yalib.command.annotation.*
 import java.lang.reflect.Method
 import java.util.Comparator
@@ -9,16 +10,14 @@ import java.util.Comparator
  *
  * @author Yoooooory
  */
-abstract class CommandHandler(val handler: Method) {
+abstract class CommandHandler(val handler: Method): Limitable {
 
-    val access = handler.getDeclaredAnnotation(Access::class.java)
-    val path = handler.getDeclaredAnnotation(Path::class.java)
-    val priority = handler.getDeclaredAnnotation(Priority::class.java)
-
-    fun getPriority() = Priority.get(handler)
+    override val access = Access.get(handler)
+    override val path = Path.get(handler)
+    override val priority = Priority.get(handler)
 
     companion object {
-        fun sortByPriority() = Comparator.comparingInt(CommandHandler::getPriority)
+        fun sortByPriority(): Comparator<CommandHandler> = Comparator.comparingInt(CommandHandler::priority)
     }
 
 }
@@ -29,7 +28,8 @@ class ActionHandler(
     permissionDeniedHandlers: List<Method>? = emptyList()
 ) : CommandHandler(method) {
 
-    val action = method.getDeclaredAnnotation(Action::class.java)
+    val id = method.name
+    val action = Action.get(method)
 
     val completers = (completers ?: emptyList())
         .sortedWith(Comparator.comparingInt(Priority.Companion::get)).map {

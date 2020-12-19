@@ -4,8 +4,10 @@ import com.rabbitown.yalib.locale.YLocale.Companion.getLocaleLanguage
 import com.rabbitown.yalib.util.ExtendFunction.Companion.arg
 import com.rabbitown.yalib.util.FileUtil
 import org.bukkit.Bukkit
+import org.bukkit.OfflinePlayer
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.permissions.ServerOperator
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
@@ -28,6 +30,8 @@ class Locale(
     val insideLanguageFolder: String = "language/"
 ) {
 
+    val langMap = mutableMapOf<String, YamlConfiguration>()
+
     init {
         save()
         load()
@@ -40,8 +44,6 @@ class Locale(
         defaultLanguage,
         File(owner.dataFolder, "/language")
     )
-
-    val langMap = mutableMapOf<String, YamlConfiguration>()
 
     fun load() {
         langMap.clear()
@@ -58,16 +60,24 @@ class Locale(
         FileUtil.getAllResource(owner, insideLanguageFolder).forEach { FileUtil.saveResource(owner, it) }
     }
 
-    fun getMessage(language: String, key: String) = langMap[language]!![key] as String
+    fun getMessage(language: String, key: String) = getLanguageMap(language)?.get(key)
 
     fun send(target: CommandSender, key: String, vararg args: String) =
-        target.sendMessage(getMessage(target.getLocaleLanguage(), key).arg(*args))
+        target.sendMessage(getMessage(target.getLocaleLanguage(), key)!!.arg(*args))
 
     fun sendToConsole(key: String, vararg args: String) = send(Bukkit.getConsoleSender(), key, *args)
+
+    fun getLanguageMap(language: String) = if (language in langMap) LanguageMap(langMap[language]!!) else null
+    fun getLanguageMap(target: ServerOperator) = getLanguageMap(target.getLocaleLanguage())
 
     fun broadcast(key: String, vararg args: String) {
         sendToConsole(key, *args)
         Bukkit.getOnlinePlayers().forEach { send(it, key, *args) }
+    }
+
+    class LanguageMap(private val yaml: YamlConfiguration) {
+        operator fun get(key: String) = yaml[key]?.toString()
+        fun getList(key: String) = yaml.getList(key)?.map { it.toString() }
     }
 
 }

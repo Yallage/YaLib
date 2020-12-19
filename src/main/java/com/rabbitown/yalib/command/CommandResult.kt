@@ -25,16 +25,13 @@ enum class CommandResult {
         /**
          * Get a command running result.
          *
-         * @param remote The handler in the handling.
-         * @param action The action in the handling.
+         * @param target The limitable handler.
          * @param sender The sender of the command.
          */
-        fun getCommandResult(remote: CommandRemote, action: ActionHandler, sender: CommandSender) =
+        fun getCommandResult(target: Limitable, sender: CommandSender) =
             when {
-                !checkSenderType(sender, Access.get(remote::class.java).sender) ||
-                        !checkSenderType(sender, action.access.sender) -> FAILED_SENDER_MISMATCH
-                !checkSenderPerm(sender, Access.get(remote::class.java).permission) ||
-                        !checkSenderPerm(sender, action.access.permission) -> FAILED_PERMISSION_REQUIRED
+                !checkSenderType(sender, target.access.sender) -> FAILED_SENDER_MISMATCH
+                !checkSenderPerm(sender, target.access.permission) -> FAILED_PERMISSION_REQUIRED
                 else -> SUCCESS
             }
 
