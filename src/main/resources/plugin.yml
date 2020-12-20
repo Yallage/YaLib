@@ -5,7 +5,3 @@ api-version: 1.13
 authors: [Hanbings, Yoooooory]
 description: YaLib
 website: github.com/yallage
-
-commands:
-  ydebug:
-    usage: 'h'

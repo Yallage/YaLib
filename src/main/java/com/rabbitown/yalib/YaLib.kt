@@ -1,17 +1,13 @@
 package com.rabbitown.yalib
 
 import com.rabbitown.yalib.command.CommandManager
-import com.rabbitown.yalib.common.command.CommandGUI
 import com.rabbitown.yalib.common.command.CommandMain
-import com.rabbitown.yalib.gui.GUIListener
 import org.bukkit.plugin.java.JavaPlugin
 import com.rabbitown.yalib.nms.NMSBase
 import com.rabbitown.yalib.locale.I18NPlugin
 import com.rabbitown.yalib.locale.Locale
 import com.rabbitown.yalib.util.FileUtil
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.command.defaults.BukkitCommand
 import java.lang.Exception
 
 /**
@@ -40,8 +36,6 @@ class YaLib : JavaPlugin(), I18NPlugin {
             pluginLoader.disablePlugin(this)
             return
         }
-        GUIListener(this);
-        CommandGUI(this)
         logger.info(ChatColor.BLUE.toString() + "[YaLib] YaLib依赖已加载 感谢使用YaLib")
     }
 
