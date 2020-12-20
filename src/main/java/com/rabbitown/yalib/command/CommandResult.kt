@@ -1,7 +1,5 @@
 package com.rabbitown.yalib.command
 
-import com.rabbitown.yalib.command.annotation.Access
-import com.rabbitown.yalib.command.entity.ActionHandler
 import org.bukkit.command.CommandSender
 
 /**
@@ -28,7 +26,7 @@ enum class CommandResult {
          * @param target The limitable handler.
          * @param sender The sender of the command.
          */
-        fun getCommandResult(target: Limitable, sender: CommandSender) =
+        fun getCommandResult(target: HandlerEntity, sender: CommandSender) =
             when {
                 !checkSenderType(sender, target.access.sender) -> FAILED_SENDER_MISMATCH
                 !checkSenderPerm(sender, target.access.permission) -> FAILED_PERMISSION_REQUIRED

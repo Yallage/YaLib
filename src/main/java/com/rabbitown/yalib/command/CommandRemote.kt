@@ -4,17 +4,25 @@ import com.rabbitown.yalib.YaLib
 import com.rabbitown.yalib.command.annotation.*
 import org.bukkit.command.PluginCommand
 import org.bukkit.plugin.java.JavaPlugin
+import java.util.*
 
 /**
  * Represent a command remote.
  *
  * @author Yoooooory
  */
-open class CommandRemote(val command: PluginCommand) : Limitable {
+open class CommandRemote(val command: PluginCommand) : MainHandler {
 
-    override val path = Path.get(this::class.java)
-    override val access = Access.get(this::class.java)
-    override val priority = Priority.get(this::class.java)
+    final override val path: String
+    final override val ignoreCase: Boolean
+    final override val access = Access.get(this::class.java)
+    final override val priority = Priority.get(this::class.java)
+
+    init {
+        val annotation = Path.get(this::class.java)
+        path = annotation.path
+        ignoreCase = annotation.ignoreCase
+    }
 
     constructor(
         name: String, plugin: JavaPlugin = YaLib.instance,
@@ -38,14 +46,16 @@ open class CommandRemote(val command: PluginCommand) : Limitable {
      *  with annotation `@SenderDeniedHandler(Handlers.DEFAULT)`. */
     @SenderDeniedHandler(Handlers.DEFAULT)
     @Priority(Int.MIN_VALUE)
-    open fun defaultSenderDeniedHandler(sender: CommandSenderType) = "§cOnly $sender can use the command."
+    open fun defaultSenderDeniedHandler(senderType: Array<CommandSenderType>) =
+        "§cOnly ${senderType.contentToString()} can use the command."
 
     /** The default permission denied handler of command handler, which has the lowest priority.
      *  You can override it by define a new function `defaultPDH(params..)`
      *  with annotation `@PermissionDeniedHandler(Handlers.DEFAULT)`. */
     @SenderDeniedHandler(Handlers.DEFAULT)
     @Priority(Int.MIN_VALUE)
-    open fun defaultPermissionDeniedHandler(perm: String) = command.permissionMessage ?: "Permission required: $perm"
+    open fun defaultPermissionDeniedHandler(perm: Array<String>) =
+        command.permissionMessage ?: "Permission required: ${perm.contentToString()}"
 
     /**
      * Register the remote to [CommandManager].

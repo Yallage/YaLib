@@ -17,11 +17,12 @@ annotation class Access(val permission: Array<String> = [], val sender: Array<Co
     companion object {
         fun get(remote: Class<out CommandRemote>) = getOrDefault(remote.getDeclaredAnnotation(Access::class.java))
         fun get(handler: Method) = getOrDefault(handler.getDeclaredAnnotation(Access::class.java))
-        fun getOrDefault(access: Access?) = access ?: Accessor::class.java.getDeclaredAnnotation(Access::class.java)!!
+        fun getOrDefault(access: Access?) =
+            access ?: DefaultAccess::class.java.getDeclaredAnnotation(Access::class.java)!!
     }
 
     @Access
-    class Accessor private constructor()
+    class DefaultAccess private constructor()
 }
 
 /**
@@ -31,12 +32,16 @@ annotation class Access(val permission: Array<String> = [], val sender: Array<Co
  * @author Yoooooory
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
-annotation class Path(val path: String) {
+annotation class Path(val path: String, val ignoreCase: Boolean = true) {
     companion object {
         fun get(remote: Class<out CommandRemote>) = getOrDefault(remote.getDeclaredAnnotation(Path::class.java))
         fun get(handler: Method) = getOrDefault(handler.getDeclaredAnnotation(Path::class.java))
-        fun getOrDefault(path: Path?) = path?.path ?: ""
+        fun getOrDefault(path: Path?) =
+            path ?: DefaultPath::class.java.getDeclaredAnnotation(Path::class.java)!!
     }
+
+    @Path("")
+    class DefaultPath private constructor()
 }
 
 /**

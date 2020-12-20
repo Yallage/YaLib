@@ -1,7 +1,8 @@
 package com.rabbitown.yalib.command.entity
 
 import com.rabbitown.yalib.command.CommandRemote
-import com.rabbitown.yalib.command.Limitable
+import com.rabbitown.yalib.command.HandlerEntity
+import com.rabbitown.yalib.command.MainHandler
 import com.rabbitown.yalib.command.annotation.*
 import com.rabbitown.yalib.command.annotation.Handlers.Companion.isDefault
 import java.lang.reflect.Method
@@ -9,23 +10,32 @@ import java.lang.reflect.Method
 /**
  * @author Yoooooory
  */
-data class RemoteEntity(val remote: CommandRemote) : Limitable {
+data class RemoteEntity(val remote: CommandRemote) : MainHandler {
 
+    override val path: String
+    override val ignoreCase: Boolean
     override val access = remote.access
-    override val path = remote.path
     override val priority = remote.priority
+
+    init {
+        val annotation = Path.get(remote::class.java)
+        path = annotation.path
+        ignoreCase = annotation.ignoreCase
+    }
 
     val actions: List<ActionHandler>
     val defaultCompleters: List<CompleterHandler>
     val defaultSenderDeniedHandlers: List<AccessHandler>
     val defaultPermissionDeniedHandlers: List<AccessHandler>
 
+    private val argRegex = Regex("\\{(\\w+)(: ?(.+))?}")
+
     init {
         val actions = mutableListOf<Method>()
         val tabMap = mutableMapOf<String, MutableList<Method>>() // aka completerMap
         val sdhMap = mutableMapOf<String, MutableList<Method>>() // aka senderDeniedHandlerMap
         val pdhMap = mutableMapOf<String, MutableList<Method>>() // aka permissionDeniedHandlerMap
-        remote::class.java.declaredMethods.forEach { method ->
+        remote::class.java.methods.forEach { method ->
             method.declaredAnnotations.forEach {
                 when (it) {
                     is Action -> actions += method
@@ -58,8 +68,14 @@ data class RemoteEntity(val remote: CommandRemote) : Limitable {
     fun runDefaultPermissionDeniedHandler(running: CommandRunning) =
         AccessHandler.getAccessibleOrNull(defaultPermissionDeniedHandlers, running.sender)?.invoke(remote, running)
 
-    fun runDefaultCompleter(index: Int, path: String, running: CommandRunning) =
-        CompleterHandler.getAccessibleOrNull(defaultCompleters, running.sender)?.invoke(index, path, remote, running)
-            ?: emptyList()
+    fun runDefaultCompleter(index: Int, path: String, running: CommandRunning): List<String> {
+        val split = path.replace(argRegex) { it.groups[1]?.value ?: error("") }.split(" ")
+        return if (split.size > index) CompleterHandler.getAccessibleOrNull(defaultCompleters, running.sender)
+            ?.invoke(split[index], remote, running) ?: emptyList()
+        else CompleterHandler.getAccessibleOrNull(defaultCompleters, running.sender)
+            ?.invoke("", remote, running) ?: emptyList()
+
+    }
+
 
 }

@@ -24,14 +24,15 @@ internal class CommandProcessor() : TabExecutor {
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        val running = CommandRunning(sender, command, label, args)
+        val running = CommandRunning(sender, command, label, args).apply { pathArgMap["start"] = System.nanoTime() }
         val sb = StringBuilder(if (args.isEmpty()) "" else args[0])
         for (i in 1 until args.size) sb.append(" ${args[i]}")
         // Looking for an effective remote. (detect paths)
         val remote = remotes.firstOrNull { remote ->
             val path = remote.remote.path
             if (path.isEmpty()) return@firstOrNull true
-            val matcher = Pattern.compile(path.replace(argRegex) { it.groups[3]?.value ?: ".+" }).matcher(sb.toString())
+            val matcher = handlerPattern(remote, path.replace(argRegex) { it.groups[3]?.value ?: ".+" })
+                .matcher(sb.toString())
             if (matcher.find() && matcher.start() == 0) {
                 // For an effective remote, check whether the sender is accessible to it.
                 when (CommandResult.getCommandResult(remote.remote, sender)) {
@@ -54,7 +55,9 @@ internal class CommandProcessor() : TabExecutor {
             (handler.action as Array<*>).firstOrNull { action ->
                 val path = "${if (handler.path.isEmpty()) "" else "${handler.path} "}$action"
                 if (path.isEmpty()) return@firstOrNull true
-                if (sb.toString().matches(Regex(path.replace(argRegex) { it.groups[3]?.value ?: ".+" }))) {
+                if (sb.toString().trim()
+                        .matches(handlerRegex(handler, path.replace(argRegex) { it.groups[3]?.value ?: ".+" }))
+                ) {
                     // For an effective action, check whether the sender is accessible to it.
                     when (CommandResult.getCommandResult(handler, sender)) {
                         CommandResult.SUCCESS -> {
@@ -62,10 +65,10 @@ internal class CommandProcessor() : TabExecutor {
                             return@firstOrNull true
                         }
                         CommandResult.FAILED_SENDER_MISMATCH -> AccessHandler.getAccessibleOrNull(
-                            handler.senderDeniedHandlers, sender
+                            handler.senderDeniedHandlers + remote.defaultSenderDeniedHandlers, sender
                         )?.invoke(remote.remote, running)
                         CommandResult.FAILED_PERMISSION_REQUIRED -> AccessHandler.getAccessibleOrNull(
-                            handler.permissionDeniedHandlers, sender
+                            handler.permissionDeniedHandlers + remote.defaultPermissionDeniedHandlers, sender
                         )?.invoke(remote.remote, running)
                     }
                     return true
@@ -80,27 +83,27 @@ internal class CommandProcessor() : TabExecutor {
     override fun onTabComplete(
         sender: CommandSender, command: Command, alias: String, args: Array<out String>
     ): List<String> {
-        val running = CommandRunning(sender, command, alias, args)
+        val running = CommandRunning(sender, command, alias, args).apply { pathArgMap["start"] = System.nanoTime() }
         val sb = StringBuilder(if (args.isEmpty()) "" else args[0])
         for (i in 1 until args.size) sb.append(" ${args[i]}")
-        var remotePath: String = ""
-        val split = sb.replace(Regex("\".*\" "), "R ").trim().split(" ")
+        var remotePath = ""
+        val split = sb.replace(Regex("\".*\" "), ". ").trim().split(" ")
         if (split.size < 0) return emptyList()
         var index = 0
         // Looking for an effective remote. (detect paths)
         val remote = remotes.firstOrNull { remote ->
-            remotePath = remote.remote.path
+            remotePath = remote.remote.path + " "
             val iter = split.listIterator()
             if (remotePath.isEmpty()) return@firstOrNull true
             remotePath.replace(argRegex) { it.groups[3]?.value ?: ".+" }.split(" ").forEach {
                 if (iter.hasNext()) {
                     index++
-                    if (!iter.next().matches(Regex(it))) {
+                    if (!iter.next().matches(handlerRegex(remote, it))) {
                         index = 0
                         return@firstOrNull false
                     }
                 }
-                return remote.runDefaultCompleter(index, remotePath, running)
+                return remote.runDefaultCompleter(index, remotePath.trim(), running)
             }
             return@firstOrNull true
         } ?: return emptyList()
@@ -108,27 +111,31 @@ internal class CommandProcessor() : TabExecutor {
         remote.actions.firstOrNull out@{ handler ->
             // Magic code, DO NOT edit it!!
             (handler.action as Array<*>).firstOrNull { action ->
-                val path = "${if (handler.path.isEmpty()) "" else "${handler.path} "}$action"
+                action as String
                 val iter = split.listIterator(index)
                 val oriIndex = index
-                if (path.isEmpty()) return@firstOrNull true
-                path.replace(argRegex) { it.groups[3]?.value ?: ".+" }.split(" ").forEach {
+                if (action.isEmpty()) return@firstOrNull true
+                action.replace(argRegex) { it.groups[3]?.value ?: ".+" }.split(" ").forEach {
                     if (iter.hasNext()) {
                         index++
-                        if (!iter.next().matches(Regex(it))) {
+                        if (!iter.next().matches(handlerRegex(handler, it))) {
                             index = oriIndex
                             return@firstOrNull false
                         }
                     }
                     return CompleterHandler.getAccessibleOrNull(handler.completers, sender)
-                        ?.invoke(
-                            index, remotePath + "${if (remotePath.isEmpty()) "" else " "}$path", remote.remote, running
-                        ) ?: emptyList()
+                        ?.invoke(index, "$remotePath$action", remote.remote, running) ?: emptyList()
                 }
                 return@firstOrNull false
             } != null // means @action found a matched action, then the handler is what we need.
         }
-        return remote.runDefaultCompleter(index, remotePath, running)
+        return remote.runDefaultCompleter(index, remotePath.trim(), running)
     }
+
+    private fun handlerRegex(handler: MainHandler, regex: String) =
+        if (handler.ignoreCase) Regex(regex, RegexOption.IGNORE_CASE) else Regex(regex)
+
+    private fun handlerPattern(handler: MainHandler, regex: String) =
+        if (handler.ignoreCase) Pattern.compile(regex, Pattern.CASE_INSENSITIVE) else Pattern.compile(regex)
 
 }

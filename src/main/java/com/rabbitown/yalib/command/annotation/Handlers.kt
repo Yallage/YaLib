@@ -1,8 +1,6 @@
 package com.rabbitown.yalib.command.annotation
 
-import java.lang.NullPointerException
 import java.lang.reflect.Method
-import java.util.*
 
 /**
  * Util class for command handlers,
@@ -37,9 +35,9 @@ class Handlers private constructor() {
  * @author Yoooooory
  */
 @Target(AnnotationTarget.FUNCTION)
-annotation class Action(vararg val action: String) {
+annotation class Action(vararg val action: String, val ignoreCase: Boolean = true) {
     companion object {
-        fun get(method: Method) = method.getAnnotation(Action::class.java)!!.action
+        fun get(method: Method) = method.getDeclaredAnnotation(Action::class.java)!!
     }
 }
 
@@ -52,7 +50,7 @@ annotation class Action(vararg val action: String) {
 @Target(AnnotationTarget.FUNCTION)
 annotation class Completer(val id: String) {
     companion object {
-        fun get(method: Method) = method.getAnnotation(Completer::class.java)!!
+        fun get(method: Method) = method.getDeclaredAnnotation(Completer::class.java)!!
     }
 }
 
@@ -65,7 +63,7 @@ annotation class Completer(val id: String) {
 @Target(AnnotationTarget.FUNCTION)
 annotation class SenderDeniedHandler(val id: String) {
     companion object {
-        fun get(method: Method) = method.getAnnotation(SenderDeniedHandler::class.java)!!
+        fun get(method: Method) = method.getDeclaredAnnotation(SenderDeniedHandler::class.java)!!
     }
 }
 
@@ -78,6 +76,6 @@ annotation class SenderDeniedHandler(val id: String) {
 @Target(AnnotationTarget.FUNCTION)
 annotation class PermissionDeniedHandler(val id: String) {
     companion object {
-        fun get(method: Method) = method.getAnnotation(PermissionDeniedHandler::class.java)!!
+        fun get(method: Method) = method.getDeclaredAnnotation(PermissionDeniedHandler::class.java)!!
     }
 }
