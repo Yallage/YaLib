@@ -8,7 +8,7 @@ import java.util.regex.Pattern
  * @author Yoooooory
  */
 data class CommandRunning(
-    val sender: CommandSender, val command: Command, val label: String, val args: Array<out String>
+    val sender: CommandSender, val command: Command, val alias: String, val args: Array<out String>
 ) {
 
     private val argRegex = Regex("\\{(\\w+)(: ?(.+))?}")
@@ -20,7 +20,7 @@ data class CommandRunning(
         "running" -> this
         "sender" -> sender
         "command" -> command
-        "label" -> label
+        "label", "alias" -> alias
         "args" -> args
         else -> null
     }

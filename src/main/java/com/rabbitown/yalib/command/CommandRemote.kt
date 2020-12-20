@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin
  *
  * @author Yoooooory
  */
-open class CommandRemote(val command: PluginCommand): Limitable {
+open class CommandRemote(val command: PluginCommand) : Limitable {
 
     override val path = Path.get(this::class.java)
     override val access = Access.get(this::class.java)
@@ -18,8 +18,8 @@ open class CommandRemote(val command: PluginCommand): Limitable {
 
     constructor(
         name: String, plugin: JavaPlugin = YaLib.instance,
-        aliases: List<String> = emptyList(), description: String = "Auto generated, no description provided.",
-        usage: String = "Auto generated, no usage provided."
+        aliases: List<String> = emptyList(), description: String = "No default action or description provided.",
+        usage: String = "No default action or usage provided."
     ) : this(
         Commands.getCommandOrThis(
             CommandBuilder(name, plugin).aliases(aliases).description(description).usage(usage).command
@@ -38,14 +38,14 @@ open class CommandRemote(val command: PluginCommand): Limitable {
      *  with annotation `@SenderDeniedHandler(Handlers.DEFAULT)`. */
     @SenderDeniedHandler(Handlers.DEFAULT)
     @Priority(Int.MIN_VALUE)
-    open fun defaultSenderDeniedHandler() = "§cOnly {sender} can use the command."
+    open fun defaultSenderDeniedHandler(sender: CommandSenderType) = "§cOnly $sender can use the command."
 
     /** The default permission denied handler of command handler, which has the lowest priority.
      *  You can override it by define a new function `defaultPDH(params..)`
      *  with annotation `@PermissionDeniedHandler(Handlers.DEFAULT)`. */
     @SenderDeniedHandler(Handlers.DEFAULT)
     @Priority(Int.MIN_VALUE)
-    open fun defaultPermissionDeniedHandler() = command.permissionMessage ?: "Permission required: {perm}"
+    open fun defaultPermissionDeniedHandler(perm: String) = command.permissionMessage ?: "Permission required: $perm"
 
     /**
      * Register the remote to [CommandManager].
