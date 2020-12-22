@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.classloader.impl;
+package com.rabbitown.yalib.classloader;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -6,7 +6,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Objects;
 
-public class JDK8ClassLoader {
+public class JDK8ClassLoader{
     /**
      * JDK8能用的ClassLoader
      * 加载整一个Jar的
