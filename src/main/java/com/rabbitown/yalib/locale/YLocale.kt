@@ -35,7 +35,7 @@ class YLocale {
                         FileUtil.getResource(YaLib.instance, "data/languageData.yml")
                     )
                     val name = (sender as CommandSender).name
-                    return if (data[name] != null) data[name] as String else getDefaultLanguage()
+                    if (data[name] != null) data[name] as String else getDefaultLanguage()
                 }
                 is ConsoleCommandSender -> getConsoleLanguage()
                 else -> getDefaultLanguage()
