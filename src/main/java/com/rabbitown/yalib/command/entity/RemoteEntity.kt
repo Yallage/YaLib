@@ -63,10 +63,10 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
     }
 
     fun runDefaultSenderDeniedHandler(running: CommandRunning) =
-        AccessHandler.getAccessibleOrNull(defaultSenderDeniedHandlers, running.sender)?.invoke(remote, running)
+        AccessHandler.getAccessibleOrNull(defaultSenderDeniedHandlers, running.sender)?.invoke(remote, remote, running)
 
     fun runDefaultPermissionDeniedHandler(running: CommandRunning) =
-        AccessHandler.getAccessibleOrNull(defaultPermissionDeniedHandlers, running.sender)?.invoke(remote, running)
+        AccessHandler.getAccessibleOrNull(defaultPermissionDeniedHandlers, running.sender)?.invoke(remote, remote, running)
 
     fun runDefaultCompleter(index: Int, path: String, running: CommandRunning): List<String> {
         val split = path.replace(argRegex) { it.groups[1]?.value ?: error("") }.split(" ")

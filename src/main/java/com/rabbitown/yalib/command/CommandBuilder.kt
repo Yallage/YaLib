@@ -1,6 +1,7 @@
 package com.rabbitown.yalib.command
 
 import com.rabbitown.yalib.YaLib
+import com.rabbitown.yalib.util.Commands
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.PluginCommand
 import org.bukkit.command.TabCompleter

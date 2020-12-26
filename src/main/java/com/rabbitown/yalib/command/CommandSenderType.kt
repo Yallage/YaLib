@@ -14,6 +14,7 @@ enum class CommandSenderType {
     PLAYER, CONSOLE, OTHER;
 
     companion object {
+
         @JvmStatic
         val ALL: Array<String> = emptyArray()
 
@@ -22,6 +23,7 @@ enum class CommandSenderType {
             is ConsoleCommandSender -> required == CONSOLE
             else -> required == OTHER
         }
+
     }
 
 }

@@ -68,10 +68,10 @@ class ActionHandler(
 
 class AccessHandler(val id: String, method: Method) : CommandHandler(method) {
 
-    fun invoke(remote: CommandRemote, running: CommandRunning) {
-        running.pathArgMap["access"] = remote.access
-        running.pathArgMap["senderType"] = remote.access.sender
-        running.pathArgMap["perm"] = remote.access.permission
+    fun invoke(remote: CommandRemote, handler: HandlerEntity, running: CommandRunning) {
+        running.pathArgMap["access"] = handler.access
+        running.pathArgMap["senderType"] = handler.access.sender
+        running.pathArgMap["perm"] = handler.access.permission
         val result = getInvokeResult(remote, running)
         if (result != null) running.sender.sendMessage(result.toString())
     }

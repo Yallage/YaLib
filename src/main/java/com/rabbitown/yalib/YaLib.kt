@@ -28,8 +28,7 @@ class YaLib : JavaPlugin(), I18NPlugin {
     }
 
     override fun onEnable() {
-        "test".replace("\\", "\\\\").replace("(", "\\(")
-        CommandManager.register(CommandTest())
+        CommandTest().register()
         saveDefaultConfig()
         FileUtil.saveResource(this, "data/languageData.yml")
         if (!loadNMS()) {

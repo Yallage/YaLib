@@ -66,10 +66,10 @@ internal class CommandProcessor() : TabExecutor {
                         }
                         CommandResult.FAILED_SENDER_MISMATCH -> AccessHandler.getAccessibleOrNull(
                             handler.senderDeniedHandlers + remote.defaultSenderDeniedHandlers, sender
-                        )?.invoke(remote.remote, running)
+                        )?.invoke(remote.remote, handler, running)
                         CommandResult.FAILED_PERMISSION_REQUIRED -> AccessHandler.getAccessibleOrNull(
                             handler.permissionDeniedHandlers + remote.defaultPermissionDeniedHandlers, sender
-                        )?.invoke(remote.remote, running)
+                        )?.invoke(remote.remote, handler, running)
                     }
                     return true
                 } else false
