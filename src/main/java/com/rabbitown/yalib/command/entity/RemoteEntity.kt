@@ -1,11 +1,13 @@
 package com.rabbitown.yalib.command.entity
 
 import com.rabbitown.yalib.command.CommandRemote
-import com.rabbitown.yalib.command.HandlerEntity
 import com.rabbitown.yalib.command.MainHandler
 import com.rabbitown.yalib.command.annotation.*
 import com.rabbitown.yalib.command.annotation.Handlers.Companion.isDefault
+import com.rabbitown.yalib.command.annotation.Handlers.Companion.isOwnedByRemote
 import java.lang.reflect.Method
+
+// TODO: should be organized.
 
 /**
  * @author Yoooooory
@@ -24,6 +26,7 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
     }
 
     val actions: List<ActionHandler>
+    val completers: List<CompleterHandler>
     val defaultCompleters: List<CompleterHandler>
     val defaultSenderDeniedHandlers: List<AccessHandler>
     val defaultPermissionDeniedHandlers: List<AccessHandler>
@@ -48,6 +51,10 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
         }
         this.actions = actions.map { ActionHandler(it, tabMap[it.name], sdhMap[it.name], pdhMap[it.name]) }
             .sortedWith(CommandHandler.sortByPriority())
+        this.completers =
+            tabMap.values.asSequence().flatten().map { Pair(it, Completer.get(it)) }
+                .filter { it.second.isOwnedByRemote() }
+                .map { CompleterHandler(it.second.id, it.first) }.sortedWith(CommandHandler.sortByPriority()).toList()
         this.defaultCompleters =
             tabMap.values.asSequence().flatten().map { Pair(it, Completer.get(it)) }
                 .filter { it.second.isDefault() }
@@ -66,7 +73,8 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
         AccessHandler.getAccessibleOrNull(defaultSenderDeniedHandlers, running.sender)?.invoke(remote, remote, running)
 
     fun runDefaultPermissionDeniedHandler(running: CommandRunning) =
-        AccessHandler.getAccessibleOrNull(defaultPermissionDeniedHandlers, running.sender)?.invoke(remote, remote, running)
+        AccessHandler.getAccessibleOrNull(defaultPermissionDeniedHandlers, running.sender)
+            ?.invoke(remote, remote, running)
 
     fun runDefaultCompleter(index: Int, path: String, running: CommandRunning): List<String> {
         val split = path.replace(argRegex) { it.groups[1]?.value ?: error("") }.split(" ")
@@ -74,8 +82,18 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
             ?.invoke(split[index], remote, running) ?: emptyList()
         else CompleterHandler.getAccessibleOrNull(defaultCompleters, running.sender)
             ?.invoke("", remote, running) ?: emptyList()
-
     }
 
+    fun runCompleter(index: Int, path: String, running: CommandRunning): List<String> {
+        val split = path.replace(argRegex) { it.groups[1]?.value ?: error("") }.split(" ")
+        return if (split.size > index) CompleterHandler.getAccessibleOrNull(completers, running.sender)
+            ?.invoke(split[index], remote, running) ?: emptyList()
+        else CompleterHandler.getAccessibleOrNull(completers, running.sender)
+            ?.invoke("", remote, running) ?: emptyList()
+    }
+
+    fun runCompleter(running: CommandRunning): List<String> =
+        CompleterHandler.getAccessibleOrNull(completers, running.sender)
+            ?.invoke("first", remote, running) ?: emptyList()
 
 }

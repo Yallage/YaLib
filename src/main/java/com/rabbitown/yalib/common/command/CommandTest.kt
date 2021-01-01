@@ -12,7 +12,6 @@ import org.bukkit.command.CommandSender
 @Path("test")
 class CommandTest : SimpleCommandRemote("yalib", YaLib.instance) {
 
-    //FIXME!!!!!!!
     @Action("playerOnly")
     @Access(sender = [CommandSenderType.PLAYER])
     fun playerOnly() = "You are a player!"
@@ -34,7 +33,7 @@ class CommandTest : SimpleCommandRemote("yalib", YaLib.instance) {
         return "succeed"
     }
 
-    @Completer(Handlers.DEFAULT)
+    @Completer(Handlers.REMOTE)
     fun defaultTab() = arrayOf("playerOnly", "consoleOnly", "speedTest")
 
 }

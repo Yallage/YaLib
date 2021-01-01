@@ -92,7 +92,7 @@ internal class CommandProcessor() : TabExecutor {
         var index = 0
         // Looking for an effective remote. (detect paths)
         val remote = remotes.firstOrNull { remote ->
-            remotePath = remote.remote.path + " "
+            remotePath = remote.remote.path
             val iter = split.listIterator()
             if (remotePath.isEmpty()) return@firstOrNull true
             remotePath.replace(argRegex) { it.groups[3]?.value ?: ".+" }.split(" ").forEach {
@@ -103,10 +103,11 @@ internal class CommandProcessor() : TabExecutor {
                         return@firstOrNull false
                     }
                 }
-                return remote.runDefaultCompleter(index, remotePath.trim(), running)
+                else return remote.runCompleter(index, remotePath.trim(), running)
             }
             return@firstOrNull true
         } ?: return emptyList()
+        if (index + 1 > split.size) return remote.runCompleter(running)
         // Looking for an effective action. (detect paths)
         remote.actions.firstOrNull out@{ handler ->
             // Magic code, DO NOT edit it!!
@@ -123,8 +124,8 @@ internal class CommandProcessor() : TabExecutor {
                             return@firstOrNull false
                         }
                     }
-                    return CompleterHandler.getAccessibleOrNull(handler.completers, sender)
-                        ?.invoke(index, "$remotePath$action", remote.remote, running) ?: emptyList()
+                    else return CompleterHandler.getAccessibleOrNull(handler.completers, sender)
+                        ?.invoke(index, "$remotePath $action", remote.remote, running) ?: emptyList()
                 }
                 return@firstOrNull false
             } != null // means @action found a matched action, then the handler is what we need.

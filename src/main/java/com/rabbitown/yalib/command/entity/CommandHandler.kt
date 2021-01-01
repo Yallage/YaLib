@@ -24,7 +24,7 @@ abstract class CommandHandler(val handler: Method) : HandlerEntity {
         handler.invoke(remote, *handler.parameters.map { running.getArgument(it.name) }.toTypedArray())
 
     companion object {
-        fun sortByPriority(): Comparator<CommandHandler> = Comparator.comparingInt(CommandHandler::priority)
+        fun sortByPriority(): Comparator<CommandHandler> = Comparator.comparingInt(CommandHandler::priority).reversed()
     }
 
 }
@@ -94,6 +94,7 @@ class CompleterHandler(val id: String, method: Method) : CommandHandler(method) 
     fun invoke(key: String, remote: CommandRemote, running: CommandRunning): List<String> {
         running.pathArgMap["key"] = key
         return when (val result = getInvokeResult(remote, running)) {
+            is String -> listOf(result)
             is Map<*, *> -> when (val value = result[key]) {
                 is Array<*> -> value.map { it.toString() }.filter { it.startsWith(running.args.last(), true) }
                 is Iterable<*> -> value.map { it.toString() }.filter { it.startsWith(running.args.last(), true) }

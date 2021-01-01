@@ -14,6 +14,9 @@ class Handlers private constructor() {
         /** Used to mark the default handler. */
         const val DEFAULT = "f52de14f729f1567" // MD5 of "YaLib", probably won't repeat.
 
+        /** Used to mark the default handler. */
+        const val REMOTE = "683a3db1e645ad85" // MD5 of "remote", probably won't repeat.
+
         val handlers = arrayOf(
             Action::class.java,
             Completer::class.java,
@@ -21,6 +24,7 @@ class Handlers private constructor() {
             PermissionDeniedHandler::class.java
         )
 
+        fun Completer.isOwnedByRemote() = this.id == REMOTE
         fun Completer.isDefault() = this.id == DEFAULT
         fun SenderDeniedHandler.isDefault() = this.id == DEFAULT
         fun PermissionDeniedHandler.isDefault() = this.id == DEFAULT
@@ -44,7 +48,7 @@ annotation class Action(vararg val action: String, val ignoreCase: Boolean = tru
 /**
  * Define a completer of an action.
  *
- * @param id The action id (method name), also support [Handlers.DEFAULT].
+ * @param id The action id (method name), also support [Handlers.DEFAULT] and [Handlers.REMOTE].
  * @author Yoooooory
  */
 @Target(AnnotationTarget.FUNCTION)
