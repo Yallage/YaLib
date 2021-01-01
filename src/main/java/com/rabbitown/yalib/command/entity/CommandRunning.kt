@@ -8,7 +8,7 @@ import java.util.regex.Pattern
  * @author Yoooooory
  */
 data class CommandRunning(
-    val sender: CommandSender, val command: Command, val label: String, val args: Array<out String>
+    val sender: CommandSender, val command: Command, val alias: String, val args: Array<out String>
 ) {
 
     private val argRegex = Regex("\\{(\\w+)(: ?(.+))?}")
@@ -20,7 +20,7 @@ data class CommandRunning(
         "running" -> this
         "sender" -> sender
         "command" -> command
-        "label" -> label
+        "label", "alias" -> alias
         "args" -> args
         else -> null
     }
@@ -37,5 +37,33 @@ data class CommandRunning(
     }
 
     private fun escape(string: String) = string.replace("\\", "\\\\").replace("(", "\\(")
+
+    /** Auto generated. */
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as CommandRunning
+
+        if (sender != other.sender) return false
+        if (command != other.command) return false
+        if (alias != other.alias) return false
+        if (!args.contentEquals(other.args)) return false
+        if (argRegex != other.argRegex) return false
+        if (pathArgMap != other.pathArgMap) return false
+
+        return true
+    }
+
+    /** Auto generated. */
+    override fun hashCode(): Int {
+        var result = sender.hashCode()
+        result = 31 * result + command.hashCode()
+        result = 31 * result + alias.hashCode()
+        result = 31 * result + args.contentHashCode()
+        result = 31 * result + argRegex.hashCode()
+        result = 31 * result + pathArgMap.hashCode()
+        return result
+    }
 
 }

@@ -1,8 +1,6 @@
 package com.rabbitown.yalib.command.annotation
 
-import java.lang.NullPointerException
 import java.lang.reflect.Method
-import java.util.*
 
 /**
  * Util class for command handlers,
@@ -16,6 +14,9 @@ class Handlers private constructor() {
         /** Used to mark the default handler. */
         const val DEFAULT = "f52de14f729f1567" // MD5 of "YaLib", probably won't repeat.
 
+        /** Used to mark the default handler. */
+        const val REMOTE = "683a3db1e645ad85" // MD5 of "remote", probably won't repeat.
+
         val handlers = arrayOf(
             Action::class.java,
             Completer::class.java,
@@ -23,6 +24,7 @@ class Handlers private constructor() {
             PermissionDeniedHandler::class.java
         )
 
+        fun Completer.isOwnedByRemote() = this.id == REMOTE
         fun Completer.isDefault() = this.id == DEFAULT
         fun SenderDeniedHandler.isDefault() = this.id == DEFAULT
         fun PermissionDeniedHandler.isDefault() = this.id == DEFAULT
@@ -37,22 +39,22 @@ class Handlers private constructor() {
  * @author Yoooooory
  */
 @Target(AnnotationTarget.FUNCTION)
-annotation class Action(vararg val action: String) {
+annotation class Action(vararg val action: String, val ignoreCase: Boolean = true) {
     companion object {
-        fun get(method: Method) = method.getAnnotation(Action::class.java)!!.action
+        fun get(method: Method) = method.getDeclaredAnnotation(Action::class.java)!!
     }
 }
 
 /**
  * Define a completer of an action.
  *
- * @param id The action id (method name), also support [Handlers.DEFAULT].
+ * @param id The action id (method name), also support [Handlers.DEFAULT] and [Handlers.REMOTE].
  * @author Yoooooory
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class Completer(val id: String) {
     companion object {
-        fun get(method: Method) = method.getAnnotation(Completer::class.java)!!
+        fun get(method: Method) = method.getDeclaredAnnotation(Completer::class.java)!!
     }
 }
 
@@ -65,7 +67,7 @@ annotation class Completer(val id: String) {
 @Target(AnnotationTarget.FUNCTION)
 annotation class SenderDeniedHandler(val id: String) {
     companion object {
-        fun get(method: Method) = method.getAnnotation(SenderDeniedHandler::class.java)!!
+        fun get(method: Method) = method.getDeclaredAnnotation(SenderDeniedHandler::class.java)!!
     }
 }
 
@@ -78,6 +80,6 @@ annotation class SenderDeniedHandler(val id: String) {
 @Target(AnnotationTarget.FUNCTION)
 annotation class PermissionDeniedHandler(val id: String) {
     companion object {
-        fun get(method: Method) = method.getAnnotation(PermissionDeniedHandler::class.java)!!
+        fun get(method: Method) = method.getDeclaredAnnotation(PermissionDeniedHandler::class.java)!!
     }
 }

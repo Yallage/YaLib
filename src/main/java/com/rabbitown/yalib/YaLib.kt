@@ -1,7 +1,7 @@
 package com.rabbitown.yalib
 
 import com.rabbitown.yalib.command.CommandManager
-import com.rabbitown.yalib.common.command.CommandMain
+import com.rabbitown.yalib.common.command.CommandTest
 import org.bukkit.plugin.java.JavaPlugin
 import com.rabbitown.yalib.nms.NMSBase
 import com.rabbitown.yalib.locale.I18NPlugin
@@ -28,7 +28,7 @@ class YaLib : JavaPlugin(), I18NPlugin {
     }
 
     override fun onEnable() {
-        CommandManager.register(CommandMain())
+        CommandTest().register()
         saveDefaultConfig()
         FileUtil.saveResource(this, "data/languageData.yml")
         if (!loadNMS()) {
