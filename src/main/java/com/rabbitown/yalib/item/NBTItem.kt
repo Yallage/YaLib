@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack
  *
  * @author Yoooooory
  */
+@Deprecated("Awaiting for refactor.")
 class NBTItem : ItemStack {
 
     constructor() : super()
