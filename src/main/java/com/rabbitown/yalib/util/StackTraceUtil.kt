@@ -6,11 +6,11 @@ package com.rabbitown.yalib.util
 class StackTraceUtil private constructor() {
     companion object {
 
-        fun getInvoker(exclude: Array<String> = emptyArray()): String {
+        fun getInvoker(exclude: Array<Regex> = emptyArray()): String {
             val elements = Thread.currentThread().stackTrace
-            for (i in 3 until elements.size) {
+            for (i in 2 until elements.size) {
                 val name = elements[i].className
-                if (exclude.all { name != it } && name != this::class.java.name) return name
+                if (exclude.none { name.matches(it) } && name != this::class.java.name) return name
             }
             error("I don't know why the error was thrown but it has been thrown.")
         }

@@ -10,6 +10,8 @@ import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.permissions.ServerOperator
+import org.bukkit.plugin.Plugin
+import org.bukkit.plugin.java.JavaPlugin
 
 /**
  * I18N forwarding hub.
@@ -20,11 +22,13 @@ class YLocale {
 
     companion object {
 
-        private fun getInvoker() =
-            YaLibCentral.getPlugin(StackTraceUtil.getInvoker(arrayOf("com.rabbitown.yalib.i18n")))
+        private fun getInvoker(): JavaPlugin {
+            val invoker = StackTraceUtil.getInvoker(arrayOf(Regex("com\\.rabbitown\\.yalib\\.locale.*")))
+            return YaLibCentral.getPlugin(invoker) ?: error("$invoker doesn't have registration in YaLibCentral.")
+        }
 
         private fun checkInvoker() =
-            getInvoker().apply { if (this !is I18NPlugin) error("A non-I18N plugin tried to use YLocale.") }!! as I18NPlugin
+            getInvoker().apply { if (this !is I18NPlugin) error("A non-I18N plugin tried to use YLocale.") } as I18NPlugin
 
         @JvmStatic
         fun getLanguage(sender: ServerOperator): String {
@@ -41,9 +45,11 @@ class YLocale {
                 else -> getDefaultLanguage()
             }
             // Check if the invoker plugin contains the default language.
-            val plugin = getInvoker()
-            return if (plugin is I18NPlugin && default !in plugin.locale.langMap) plugin.locale.defaultLanguage else default
+            return checkLanguage(getInvoker(), default)
         }
+
+        private fun checkLanguage(plugin: Plugin, lang: String) =
+            if (plugin is I18NPlugin && lang !in plugin.locale.langMap) plugin.locale.defaultLanguage else lang
 
         // SENDING //
 
@@ -68,12 +74,16 @@ class YLocale {
             checkInvoker().locale.getMessage(getLanguage(target), key, *args)
 
         @JvmStatic
-        fun getConsoleMessage(key: String, vararg args: String) =
-            checkInvoker().locale.getMessage(getConsoleLanguage(), key, *args)
+        fun getConsoleMessage(key: String, vararg args: String): String? {
+            val plugin = checkInvoker()
+            return plugin.locale.getMessage(checkLanguage(plugin, getConsoleLanguage()), key, *args)
+        }
 
         @JvmStatic
-        fun getDefaultMessage(key: String, vararg args: String) =
-            checkInvoker().locale.getMessage(getDefaultLanguage(), key, *args)
+        fun getDefaultMessage(key: String, vararg args: String): String? {
+            val plugin = checkInvoker()
+            return plugin.locale.getMessage(checkLanguage(plugin, getDefaultLanguage()), key, *args)
+        }
 
         // GET LANGUAGE MAP
 
