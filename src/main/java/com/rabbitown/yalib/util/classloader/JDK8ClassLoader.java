@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.classloader;
+package com.rabbitown.yalib.util.classloader;
 
 import java.io.File;
 import java.lang.reflect.Method;
