@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.util.database;
+package com.rabbitown.yalib.database;
 
 import java.sql.Connection;
 
