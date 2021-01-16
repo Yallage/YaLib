@@ -1,5 +1,6 @@
 package com.rabbitown.yalib.command.entity
 
+import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import java.util.regex.Pattern
@@ -13,16 +14,29 @@ data class CommandRunning(
 
     private val argRegex = Regex("\\{(\\w+)(: ?(.+))?}")
 
-    val pathArgMap = mutableMapOf<String, Any>()
+    val argMap = mutableMapOf<String, Any>()
 
-    fun getArgument(key: String) = when (key) {
-        in pathArgMap -> pathArgMap[key]
-        "running" -> this
-        "sender" -> sender
-        "command" -> command
-        "label", "alias" -> alias
-        "args" -> args
-        else -> null
+    fun getArgument(key: String, type: Class<*>): Any? {
+        val value = when (key) {
+            in argMap -> argMap[key]
+            "running" -> this
+            "sender" -> sender
+            "command" -> command
+            "label", "alias" -> alias
+            "args" -> args
+            else -> return null
+        }
+        return if (type.isInstance(value)) type.cast(value) else {
+            val str = value.toString()
+            when (type.name) {
+                "java.lang.String" -> str
+                "int" -> str.toInt()
+                "org.bukkit.entity.Player" -> Bukkit.getPlayer(str)
+                "org.bukkit.OfflinePlayer" -> Bukkit.getOfflinePlayer(str)
+                "char" -> UnsupportedOperationException("Why not String?")
+                else -> error("Argument type mismatch.")
+            }
+        }
     }
 
     internal fun putArguments(path: String, args: String) {
@@ -33,7 +47,7 @@ data class CommandRunning(
                 "(${this[3]?.value ?: ".+"})"
             }
         }).matcher(args)
-        if (m.find()) for (i in 1..m.groupCount()) pathArgMap[params[i - 1]] = m.group(i)
+        if (m.find()) for (i in 1..m.groupCount()) argMap[params[i - 1]] = m.group(i)
     }
 
     private fun escape(string: String) = string.replace("\\", "\\\\").replace("(", "\\(")
@@ -50,7 +64,7 @@ data class CommandRunning(
         if (alias != other.alias) return false
         if (!args.contentEquals(other.args)) return false
         if (argRegex != other.argRegex) return false
-        if (pathArgMap != other.pathArgMap) return false
+        if (argMap != other.argMap) return false
 
         return true
     }
@@ -62,7 +76,7 @@ data class CommandRunning(
         result = 31 * result + alias.hashCode()
         result = 31 * result + args.contentHashCode()
         result = 31 * result + argRegex.hashCode()
-        result = 31 * result + pathArgMap.hashCode()
+        result = 31 * result + argMap.hashCode()
         return result
     }
 

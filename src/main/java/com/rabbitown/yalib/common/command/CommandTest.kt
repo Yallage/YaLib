@@ -5,8 +5,10 @@ import com.rabbitown.yalib.command.CommandSenderType
 import com.rabbitown.yalib.command.SimpleCommandRemote
 import com.rabbitown.yalib.command.annotation.*
 import com.rabbitown.yalib.world.Biome.Companion.moreInfo
+import org.bukkit.OfflinePlayer
 import org.bukkit.block.Biome
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import java.lang.Exception
 
 /**
@@ -15,6 +17,11 @@ import java.lang.Exception
 @Path("test")
 @Access(["yalib.admin"])
 class CommandTest : SimpleCommandRemote("yalib", YaLib.instance) {
+
+    @Action("smartCast {player}")
+    fun test(player: Player) {
+        player.sendMessage("YEAH !!!!")
+    }
 
     @Action("playerOnly")
     @Access(sender = [CommandSenderType.PLAYER])

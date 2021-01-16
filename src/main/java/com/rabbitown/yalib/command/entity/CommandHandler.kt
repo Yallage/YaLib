@@ -8,7 +8,6 @@ import com.rabbitown.yalib.command.annotation.*
 import org.bukkit.command.CommandSender
 import java.lang.reflect.Method
 import java.util.Comparator
-import kotlin.UnsupportedOperationException
 
 /**
  * Represents a command handler.
@@ -21,7 +20,7 @@ abstract class CommandHandler(val handler: Method) : HandlerEntity {
     override val priority = Priority.get(handler)
 
     protected fun getInvokeResult(remote: CommandRemote, running: CommandRunning): Any? =
-        handler.invoke(remote, *handler.parameters.map { running.getArgument(it.name) }.toTypedArray())
+        handler.invoke(remote, *handler.parameters.map { running.getArgument(it.name, it.type) }.toTypedArray())
 
     companion object {
         fun sortByPriority(): Comparator<CommandHandler> = Comparator.comparingInt(CommandHandler::priority).reversed()
@@ -69,9 +68,9 @@ class ActionHandler(
 class AccessHandler(val id: String, method: Method) : CommandHandler(method) {
 
     fun invoke(remote: CommandRemote, handler: HandlerEntity, running: CommandRunning) {
-        running.pathArgMap["access"] = handler.access
-        running.pathArgMap["senderType"] = handler.access.sender
-        running.pathArgMap["perm"] = handler.access.permission
+        running.argMap["access"] = handler.access
+        running.argMap["senderType"] = handler.access.sender
+        running.argMap["perm"] = handler.access.permission
         val result = getInvokeResult(remote, running)
         if (result != null) running.sender.sendMessage(result.toString())
     }
@@ -92,7 +91,7 @@ class CompleterHandler(val id: String, method: Method) : CommandHandler(method) 
         invoke(path.replace(argRegex) { it.groups[1]?.value ?: error("") }.split(" ")[index], remote, running)
 
     fun invoke(key: String, remote: CommandRemote, running: CommandRunning): List<String> {
-        running.pathArgMap["key"] = key
+        running.argMap["key"] = key
         return when (val result = getInvokeResult(remote, running)) {
             is String -> listOf(result)
             is Map<*, *> -> when (val value = result[key]) {

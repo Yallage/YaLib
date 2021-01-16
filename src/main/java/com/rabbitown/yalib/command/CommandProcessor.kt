@@ -24,7 +24,7 @@ internal class CommandProcessor() : TabExecutor {
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        val running = CommandRunning(sender, command, label, args).apply { pathArgMap["start"] = System.nanoTime() }
+        val running = CommandRunning(sender, command, label, args).apply { argMap["start"] = System.nanoTime() }
         val sb = StringBuilder(if (args.isEmpty()) "" else args[0])
         for (i in 1 until args.size) sb.append(" ${args[i]}")
         // Looking for an effective remote. (detect paths)
@@ -42,9 +42,9 @@ internal class CommandProcessor() : TabExecutor {
                         return@firstOrNull true
                     }
                     CommandResult.FAILED_SENDER_MISMATCH ->
-                        remote.runDefaultSenderDeniedHandler(running)
+                        remote.runSenderDeniedHandler(running)
                     CommandResult.FAILED_PERMISSION_REQUIRED ->
-                        remote.runDefaultPermissionDeniedHandler(running)
+                        remote.runPermissionDeniedHandler(running)
                 }
                 return true
             } else false
@@ -83,7 +83,7 @@ internal class CommandProcessor() : TabExecutor {
     override fun onTabComplete(
             sender: CommandSender, command: Command, alias: String, args: Array<out String>
     ): List<String> {
-        val running = CommandRunning(sender, command, alias, args).apply { pathArgMap["start"] = System.nanoTime() }
+        val running = CommandRunning(sender, command, alias, args).apply { argMap["start"] = System.nanoTime() }
         val sb = StringBuilder(if (args.isEmpty()) "" else args[0])
         for (i in 1 until args.size) sb.append(" ${args[i]}")
         var remotePath = ""

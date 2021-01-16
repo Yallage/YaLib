@@ -24,10 +24,13 @@ class Handlers private constructor() {
             PermissionDeniedHandler::class.java
         )
 
-        fun Completer.isOwnedByRemote() = this.id == REMOTE
         fun Completer.isDefault() = this.id == DEFAULT
         fun SenderDeniedHandler.isDefault() = this.id == DEFAULT
         fun PermissionDeniedHandler.isDefault() = this.id == DEFAULT
+
+        fun Completer.isOwnedByRemote() = this.id == REMOTE
+        fun SenderDeniedHandler.isOwnedByRemote() = this.id == REMOTE
+        fun PermissionDeniedHandler.isOwnedByRemote() = this.id == REMOTE
 
     }
 }
@@ -38,6 +41,7 @@ class Handlers private constructor() {
  * @param action The action of the command.
  * @author Yoooooory
  */
+@Repeatable
 @Target(AnnotationTarget.FUNCTION)
 annotation class Action(vararg val action: String, val ignoreCase: Boolean = true) {
     companion object {

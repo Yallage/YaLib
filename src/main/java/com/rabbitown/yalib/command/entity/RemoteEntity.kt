@@ -27,6 +27,9 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
 
     val actions: List<ActionHandler>
     val completers: List<CompleterHandler>
+    val senderDeniedHandlers: List<AccessHandler>
+    val permissionDeniedHandlers: List<AccessHandler>
+
     val defaultCompleters: List<CompleterHandler>
     val defaultSenderDeniedHandlers: List<AccessHandler>
     val defaultPermissionDeniedHandlers: List<AccessHandler>
@@ -55,6 +58,14 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
             tabMap.values.asSequence().flatten().map { Pair(it, Completer.get(it)) }
                 .filter { it.second.isOwnedByRemote() }
                 .map { CompleterHandler(it.second.id, it.first) }.sortedWith(CommandHandler.sortByPriority()).toList()
+        this.senderDeniedHandlers =
+            sdhMap.values.asSequence().flatten().map { Pair(it, SenderDeniedHandler.get(it)) }
+                .filter { it.second.isOwnedByRemote() }
+                .map { AccessHandler(it.second.id, it.first) }.sortedWith(CommandHandler.sortByPriority()).toList()
+        this.permissionDeniedHandlers =
+            pdhMap.values.asSequence().flatten().map { Pair(it, PermissionDeniedHandler.get(it)) }
+                .filter { it.second.isOwnedByRemote() }
+                .map { AccessHandler(it.second.id, it.first) }.sortedWith(CommandHandler.sortByPriority()).toList()
         this.defaultCompleters =
             tabMap.values.asSequence().flatten().map { Pair(it, Completer.get(it)) }
                 .filter { it.second.isDefault() }
@@ -69,11 +80,11 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
                 .map { AccessHandler(it.second.id, it.first) }.sortedWith(CommandHandler.sortByPriority()).toList()
     }
 
-    fun runDefaultSenderDeniedHandler(running: CommandRunning) =
-        AccessHandler.getAccessibleOrNull(defaultSenderDeniedHandlers, running.sender)?.invoke(remote, remote, running)
+    fun runSenderDeniedHandler(running: CommandRunning) =
+        AccessHandler.getAccessibleOrNull(senderDeniedHandlers, running.sender)?.invoke(remote, remote, running)
 
-    fun runDefaultPermissionDeniedHandler(running: CommandRunning) =
-        AccessHandler.getAccessibleOrNull(defaultPermissionDeniedHandlers, running.sender)
+    fun runPermissionDeniedHandler(running: CommandRunning) =
+        AccessHandler.getAccessibleOrNull(permissionDeniedHandlers, running.sender)
             ?.invoke(remote, remote, running)
 
     fun runDefaultCompleter(index: Int, path: String, running: CommandRunning): List<String> {
