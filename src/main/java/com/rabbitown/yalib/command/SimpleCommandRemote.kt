@@ -13,6 +13,8 @@ import org.bukkit.plugin.java.JavaPlugin
  */
 open class SimpleCommandRemote(command: PluginCommand) : CommandRemote(command) {
 
+    constructor(name: String, plugin: JavaPlugin) : this(name, plugin, emptyList())
+
     constructor(
         name: String, plugin: JavaPlugin,
         aliases: List<String> = emptyList(), description: String = "No default action or description provided.",
