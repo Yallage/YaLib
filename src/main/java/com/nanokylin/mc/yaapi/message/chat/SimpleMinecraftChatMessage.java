@@ -1,7 +1,7 @@
 package com.nanokylin.mc.yaapi.message.chat;
 
-import com.nanokylin.mc.yaapi.YaAPI;
 import com.nanokylin.mc.yaapi.message.IMinecraftChatMessage;
+import com.rabbitown.yalib.YaLib;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -46,6 +46,6 @@ public class SimpleMinecraftChatMessage implements IMinecraftChatMessage {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(YaAPI.getInstance(), delay, time);
+        }.runTaskTimer(YaLib.getInstance(), delay, time);
     }
 }

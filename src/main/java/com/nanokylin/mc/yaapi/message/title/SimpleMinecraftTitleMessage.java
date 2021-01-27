@@ -1,7 +1,7 @@
 package com.nanokylin.mc.yaapi.message.title;
 
-import com.nanokylin.mc.yaapi.YaAPI;
 import com.nanokylin.mc.yaapi.message.IMinecraftTitleMessage;
+import com.rabbitown.yalib.YaLib;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -124,7 +124,7 @@ public class SimpleMinecraftTitleMessage implements IMinecraftTitleMessage {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(YaAPI.getInstance(), delay, time);
+        }.runTaskTimer(YaLib.getInstance(), delay, time);
     }
 
     @Override
@@ -145,6 +145,6 @@ public class SimpleMinecraftTitleMessage implements IMinecraftTitleMessage {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(YaAPI.getInstance(), delay, time);
+        }.runTaskTimer(YaLib.getInstance(), delay, time);
     }
 }

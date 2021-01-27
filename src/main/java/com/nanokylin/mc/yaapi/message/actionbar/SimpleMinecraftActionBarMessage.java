@@ -1,10 +1,10 @@
 package com.nanokylin.mc.yaapi.message.actionbar;
 
-import com.nanokylin.mc.yaapi.YaAPI;
 import com.nanokylin.mc.yaapi.message.IMinecraftActionBarMessage;
 
 import java.util.ArrayList;
 
+import com.rabbitown.yalib.YaLib;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -49,6 +49,6 @@ public class SimpleMinecraftActionBarMessage implements IMinecraftActionBarMessa
                     this.cancel();
                 }
             }
-        }.runTaskTimer(YaAPI.getInstance(), delay, time);
+        }.runTaskTimer(YaLib.getInstance(), delay, time);
     }
 }
