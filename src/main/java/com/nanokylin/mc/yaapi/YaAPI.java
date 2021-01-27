@@ -1,6 +1,5 @@
 package com.nanokylin.mc.yaapi;
 
-import com.nanokylin.mc.yaapi.config.ConfigExecute;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -8,18 +7,17 @@ public final class YaAPI extends JavaPlugin {
 
     static YaAPI yaAPIInstance;
 
-    public YaAPI(){
+    public YaAPI() {
         yaAPIInstance = getInstance();
     }
 
-    public static YaAPI getInstance(){
+    public static YaAPI getInstance() {
         return yaAPIInstance;
     }
 
     @Override
     public void onEnable() {
         Bukkit.getServer().getLogger().info("[YaAPI] Running");
-        ConfigExecute configExecute = new ConfigExecute(this);
     }
 
     @Override

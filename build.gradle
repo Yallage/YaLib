@@ -20,6 +20,9 @@ repositories {
 dependencies {
     implementation 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
     shadow 'io.github.bananapuncher714:nbteditor:7.16.1'
+    shadow 'javax.mail:javax.mail-api:1.6.2'
+    shadow 'com.sun.mail:javax.mail:1.6.2'
+    shadow 'org.nanohttpd:nanohttpd:2.3.0'
 
     implementation fileTree('libs')
 
