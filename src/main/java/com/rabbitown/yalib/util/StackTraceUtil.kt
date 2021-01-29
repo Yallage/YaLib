@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.util.utils
+package com.rabbitown.yalib.util
 
 /**
  * @author Yoooooory

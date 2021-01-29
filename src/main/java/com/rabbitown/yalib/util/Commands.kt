@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.util.tools
+package com.rabbitown.yalib.util
 
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandMap

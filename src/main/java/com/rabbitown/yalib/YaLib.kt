@@ -5,7 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import com.rabbitown.yalib.nms.NMSBase
 import com.rabbitown.yalib.module.locale.I18NPlugin
 import com.rabbitown.yalib.module.locale.Locale
-import com.rabbitown.yalib.util.utils.FileUtil
+import com.rabbitown.yalib.util.FileUtil
 import org.bukkit.ChatColor
 import java.lang.Exception
 

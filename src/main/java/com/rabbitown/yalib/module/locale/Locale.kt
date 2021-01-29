@@ -1,8 +1,8 @@
 package com.rabbitown.yalib.module.locale
 
 import com.rabbitown.yalib.module.locale.YLocale.Companion.getLocaleLanguage
-import com.rabbitown.yalib.util.tools.ExtendFunction.Companion.arg
-import com.rabbitown.yalib.util.utils.FileUtil
+import com.rabbitown.yalib.util.ExtendFunction.Companion.arg
+import com.rabbitown.yalib.util.FileUtil
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration

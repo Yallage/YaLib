@@ -1,6 +1,6 @@
-package com.rabbitown.yalib.database.impl;
+package com.rabbitown.yalib.module.database.connecter;
 
-import com.rabbitown.yalib.database.Database;
+import com.rabbitown.yalib.module.database.Database;
 import org.bukkit.Bukkit;
 
 import java.sql.Connection;

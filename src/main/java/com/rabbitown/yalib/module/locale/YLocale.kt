@@ -2,8 +2,8 @@ package com.rabbitown.yalib.module.locale
 
 import com.rabbitown.yalib.YaLib
 import com.rabbitown.yalib.YaLibCentral
-import com.rabbitown.yalib.util.utils.FileUtil
-import com.rabbitown.yalib.util.utils.StackTraceUtil
+import com.rabbitown.yalib.util.FileUtil
+import com.rabbitown.yalib.util.StackTraceUtil
 import org.bukkit.OfflinePlayer
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender

@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.util.utils
+package com.rabbitown.yalib.util
 
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File

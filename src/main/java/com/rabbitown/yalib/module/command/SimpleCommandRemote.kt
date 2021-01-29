@@ -1,7 +1,7 @@
 package com.rabbitown.yalib.module.command
 
 import com.rabbitown.yalib.module.command.annotation.*
-import com.rabbitown.yalib.util.tools.Commands
+import com.rabbitown.yalib.util.Commands
 import org.bukkit.command.PluginCommand
 import org.bukkit.plugin.java.JavaPlugin
 
