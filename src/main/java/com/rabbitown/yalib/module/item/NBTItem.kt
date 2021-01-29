@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.item
+package com.rabbitown.yalib.module.item
 
 import com.rabbitown.yalib.YaLib.Companion.NMS
 import org.bukkit.Material

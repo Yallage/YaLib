@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.world
+package com.rabbitown.yalib.module.world
 
 import org.bukkit.NamespacedKey
 import org.bukkit.NamespacedKey.minecraft

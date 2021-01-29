@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.message;
+package com.rabbitown.yalib.module.message;
 
 import org.bukkit.entity.Player;
 

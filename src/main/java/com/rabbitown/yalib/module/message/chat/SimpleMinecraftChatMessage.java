@@ -1,6 +1,6 @@
-package com.rabbitown.yalib.message.chat;
+package com.rabbitown.yalib.module.message.chat;
 
-import com.rabbitown.yalib.message.IMinecraftChatMessage;
+import com.rabbitown.yalib.module.message.IMinecraftChatMessage;
 import com.rabbitown.yalib.YaLib;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

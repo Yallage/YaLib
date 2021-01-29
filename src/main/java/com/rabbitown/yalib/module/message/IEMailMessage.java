@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.message;
+package com.rabbitown.yalib.module.message;
 
 import com.rabbitown.yalib.common.model.EMail;
 

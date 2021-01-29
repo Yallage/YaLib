@@ -4,7 +4,7 @@ import com.rabbitown.yalib.YaLib
 import com.rabbitown.yalib.module.command.CommandSenderType
 import com.rabbitown.yalib.module.command.SimpleCommandRemote
 import com.rabbitown.yalib.module.command.annotation.*
-import com.rabbitown.yalib.world.Biome.Companion.moreInfo
+import com.rabbitown.yalib.module.world.Biome.Companion.moreInfo
 import org.bukkit.block.Biome
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player

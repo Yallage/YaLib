@@ -1,17 +1,18 @@
-package com.rabbitown.yalib.message.email;
+package com.rabbitown.yalib.module.message.email;
 
 import com.rabbitown.yalib.common.model.EMail;
 import com.rabbitown.yalib.common.model.EMailServer;
-import com.rabbitown.yalib.message.IEMailMessage;
+import com.rabbitown.yalib.module.message.IEMailMessage;
 
 import javax.mail.*;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class HTMLSmtpEMailMessage implements IEMailMessage {
+public class SimpleSmtpEMailMessage implements IEMailMessage {
+
     static Session session;
 
-    public HTMLSmtpEMailMessage(EMailServer mailServer) {
+    public SimpleSmtpEMailMessage(EMailServer mailServer) {
         Properties props = new Properties();
         props.put("mail.smtp.host", mailServer.getServerAddress()); // SMTP主机名
         props.put("mail.smtp.port", mailServer.getServerPort()); // 主机端口号
@@ -30,7 +31,7 @@ public class HTMLSmtpEMailMessage implements IEMailMessage {
     }
 
     /**
-     * 发送一封HTML邮件
+     * 发送一封简单邮件
      */
     @Override
     public void sendMail(EMail mail) {
@@ -43,7 +44,7 @@ public class HTMLSmtpEMailMessage implements IEMailMessage {
             // 设置邮件主题:
             message.setSubject(mail.getSubject(), "UTF-8");
             // 设置邮件正文:
-            message.setText(mail.getContent(), "UTF-8", "html");
+            message.setText(mail.getContent(), "UTF-8");
             // 发送:
             Transport.send(message);
         } catch (MessagingException e) {

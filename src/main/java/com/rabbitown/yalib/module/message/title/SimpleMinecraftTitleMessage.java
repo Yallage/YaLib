@@ -1,6 +1,6 @@
-package com.rabbitown.yalib.message.title;
+package com.rabbitown.yalib.module.message.title;
 
-import com.rabbitown.yalib.message.IMinecraftTitleMessage;
+import com.rabbitown.yalib.module.message.IMinecraftTitleMessage;
 import com.rabbitown.yalib.YaLib;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

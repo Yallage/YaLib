@@ -1,6 +1,6 @@
-package com.rabbitown.yalib.message.actionbar;
+package com.rabbitown.yalib.module.message.actionbar;
 
-import com.rabbitown.yalib.message.IMinecraftActionBarMessage;
+import com.rabbitown.yalib.module.message.IMinecraftActionBarMessage;
 
 import java.util.ArrayList;
 

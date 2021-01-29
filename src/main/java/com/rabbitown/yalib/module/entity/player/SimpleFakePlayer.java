@@ -1,6 +1,6 @@
-package com.rabbitown.yalib.entity.player;
+package com.rabbitown.yalib.module.entity.player;
 
-import com.rabbitown.yalib.entity.IFakePlayer;
+import com.rabbitown.yalib.module.entity.IFakePlayer;
 import org.bukkit.Location;
 import org.bukkit.World;
 

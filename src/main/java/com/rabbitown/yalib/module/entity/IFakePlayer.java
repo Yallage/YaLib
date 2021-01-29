@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.entity;
+package com.rabbitown.yalib.module.entity;
 
 import org.bukkit.Location;
 import org.bukkit.World;
