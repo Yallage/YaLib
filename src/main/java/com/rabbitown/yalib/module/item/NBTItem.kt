@@ -1,6 +1,5 @@
 package com.rabbitown.yalib.module.item
 
-import com.rabbitown.yalib.YaLib.Companion.NMS
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -17,40 +16,22 @@ class NBTItem : ItemStack {
     constructor(type: Material) : super(type)
     constructor(type: Material, amount: Int) : super(type, amount)
 
-    /**
-     * Check whether the item has the NBT with the specify key.
-     */
-    fun hasNBTTag(key: String) = NMS.hasNBTTag(this, key)
+    /** Check whether the item has the NBT with the specify key. */
+    fun hasNBTTag(key: String): Boolean = TODO()
 
-    /**
-     * Get the NBT value of the key.
-     */
-    fun getNBTTag(key: String) = NMS.getNBTTag(this, key)
+    /** Get the NBT value of the key. */
+    fun getNBTTag(key: String): Any = TODO()
 
-    /**
-     * Set a NBT tag to the value.
-     */
-    fun setNBTTag(key: String, value: Any) {
-        val item = NMS.setNBTTag(this, key, value)
-        if (item.itemMeta != null) this.itemMeta = NMS.setNBTTag(this, key, value).itemMeta
-    }
+    /** Set a NBT tag to the value. */
+    fun setNBTTag(key: String, value: Any): Boolean = TODO()
 
-    /**
-     * Remove a NBT tag of the key.
-     */
-    fun removeNBTTag(key: String) {
-        val item = NMS.removeNBTTag(this, key)
-        if (item.itemMeta != null) this.itemMeta = NMS.removeNBTTag(this, key).itemMeta
-    }
+    /** Remove a NBT tag of the key. */
+    fun removeNBTTag(key: String): Boolean = TODO()
 
-    /**
-     * Get all the NBT tag of the item, formatted as a String.
-     */
-    fun getAllNBTTag() = NMS.getAllNBTTag(this)
+    /** Get all the NBT tag of the item, formatted as a String. */
+    fun getAllNBTTag(): String = TODO()
 
-    /**
-     * Get a map contains all the nbt tags.
-     */
-    fun getAllNBTTagMap() = NMS.getAllNBTTagMap(this)
+    /** Get a map contains all the nbt tags. */
+    fun getAllNBTTagMap(): Map<String, Any> = TODO()
 
 }
