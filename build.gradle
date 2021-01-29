@@ -39,20 +39,20 @@ idea {
 }
 
 compileJava {
-//    options.compilerArgs << '-parameters'
+    options.compilerArgs << '-parameters'
 }
 
 compileKotlin {
     kotlinOptions {
         jvmTarget = '1.8'
-//        javaParameters = true
+        javaParameters = true
     }
 }
 
 compileTestKotlin {
     kotlinOptions {
         jvmTarget = '1.8'
-//        javaParameters = true
+        javaParameters = true
     }
 }
 
