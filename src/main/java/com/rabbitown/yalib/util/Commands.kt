@@ -17,24 +17,31 @@ import kotlin.UnsupportedOperationException
 class Commands {
     companion object {
 
-        fun newPluginCommand(name: String, owner: Plugin) = with(PluginCommand::class.java.getDeclaredConstructor(String::class.java, Plugin::class.java)) {
-            isAccessible = true
-            newInstance(name, owner) as PluginCommand
-        }
+        @JvmStatic
+        fun newPluginCommand(name: String, owner: Plugin) =
+            with(PluginCommand::class.java.getDeclaredConstructor(String::class.java, Plugin::class.java)) {
+                isAccessible = true
+                newInstance(name, owner) as PluginCommand
+            }
 
+        @JvmStatic
         fun getCommand(command: PluginCommand) = checkPlugin(command.plugin).getCommand(command.name)
 
+        @JvmStatic
         fun getCommandOrThis(command: PluginCommand) = getCommand(command) ?: command
 
+        @JvmStatic
         fun checkPlugin(plugin: Plugin): JavaPlugin = if (plugin is JavaPlugin) plugin
         else throw UnsupportedOperationException("Unknown plugin type.")
 
+        @JvmStatic
         fun registerCommand(command: PluginCommand) =
             with(SimplePluginManager::class.java.getDeclaredField("commandMap")) {
                 isAccessible = true
                 (get(Bukkit.getPluginManager()) as CommandMap).register(getPluginName(command), command)
             }
 
+        @JvmStatic
         fun getPluginName(command: PluginCommand) = command.plugin.name.toLowerCase(Locale.ENGLISH)
 
     }

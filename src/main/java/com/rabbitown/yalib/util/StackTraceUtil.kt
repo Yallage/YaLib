@@ -6,6 +6,7 @@ package com.rabbitown.yalib.util
 class StackTraceUtil private constructor() {
     companion object {
 
+        @JvmStatic
         fun getInvoker(exclude: Array<Regex> = emptyArray()): String {
             val elements = Thread.currentThread().stackTrace
             for (i in 2 until elements.size) {

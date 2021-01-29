@@ -11,6 +11,7 @@ import java.util.jar.JarFile
 class FileUtil private constructor() {
     companion object {
 
+        @JvmStatic
         fun getAllResource(plugin: JavaPlugin, dir: String): List<String> {
             val list = mutableListOf<String>()
             val prefix = if (dir.endsWith("/")) dir else "$dir/"
@@ -20,8 +21,10 @@ class FileUtil private constructor() {
             return list
         }
 
+        @JvmStatic
         fun getResource(plugin: JavaPlugin, path: String) = InputStreamReader(plugin.getResource(path)!!)
 
+        @JvmStatic
         fun saveResource(plugin: JavaPlugin, path: String, replace: Boolean = false) {
             if (replace || !File(plugin.dataFolder, path).exists()) plugin.saveResource(path, replace)
         }

@@ -20,7 +20,13 @@ object CommandManager {
             if (command in handlerMap) {
                 // Add the remote to a command if it is exist.
                 val executor = command.executor
-                if (executor is CommandProcessor) executor.addRemote(remote) else continue
+                if (executor is CommandProcessor)
+                    try {
+                        executor.addRemote(remote)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        continue
+                    } else continue
                 handlerMap[command] = handlerMap[command]!! + remote
             } else {
                 command.setExecutor(CommandProcessor(remote))

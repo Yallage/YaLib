@@ -16,6 +16,7 @@ data class CommandRunning(
 
     val argMap = mutableMapOf<String, Any>()
 
+    @Suppress("DEPRECATION")
     fun getArgument(key: String, type: Class<*>): Any? {
         val value = when (key) {
             in argMap -> argMap[key]

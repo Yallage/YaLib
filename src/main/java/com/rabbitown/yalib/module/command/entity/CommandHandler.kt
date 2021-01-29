@@ -18,9 +18,17 @@ abstract class CommandHandler(val handler: Method) : HandlerEntity {
 
     override val access = Access.get(handler)
     override val priority = Priority.get(handler)
+    private val params = mutableMapOf<String, Class<*>>().apply {
+        val args = handler.parameters
+        if (handler.isAnnotationPresent(Parameter::class.java)) {
+            val annotation = Parameter.get(handler).params
+            check(args.size == annotation.size) { "The number of parameters seems not be correct." }
+            annotation.forEachIndexed { index, it -> put(it, args[index].type) }
+        } else args.forEach { put(it.name, it.type) }
+    }
 
     protected fun getInvokeResult(remote: CommandRemote, running: CommandRunning): Any? =
-        handler.invoke(remote, *handler.parameters.map { running.getArgument(it.name, it.type) }.toTypedArray())
+        handler.invoke(remote, *params.map { running.getArgument(it.key, it.value) }.toTypedArray())
 
     companion object {
         fun sortByPriority(): Comparator<CommandHandler> = Comparator.comparingInt(CommandHandler::priority).reversed()
