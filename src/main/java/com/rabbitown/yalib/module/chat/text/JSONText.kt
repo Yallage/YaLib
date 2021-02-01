@@ -1,8 +1,14 @@
 package com.rabbitown.yalib.module.chat.text
 
 import com.google.gson.JsonArray
+import com.google.gson.TypeAdapter
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonToken
+import com.google.gson.stream.JsonWriter
 import com.rabbitown.yalib.module.chat.text.event.HoverEvent
 import com.rabbitown.yalib.module.chat.text.event.hover.Content
+import com.rabbitown.yalib.module.chat.text.impl.PlainTextElement
+import com.rabbitown.yalib.module.nms.base.chat.ChatBaseComponent
 import net.md_5.bungee.api.chat.BaseComponent
 
 /**
@@ -10,17 +16,32 @@ import net.md_5.bungee.api.chat.BaseComponent
  *
  * @author Yoooooory
  */
-class JSONText(val elements: List<JSONTextElement>) : Content {
+class JSONText() : Content, ArrayList<JSONTextElement>() {
+
+    constructor(vararg elements: JSONTextElement) : this() {
+        addAll(elements)
+    }
 
     override fun requiredAction() = HoverEvent.Action.SHOW_TEXT
 
-    fun toJsonTree() = JsonArray().apply { elements.forEach { add(it.toJsonTree()) } }
+    fun toJsonTree(): JsonArray {
+        val array = JsonArray()
+        forEach { array.add(it.toJsonTree()) }
+        return array
+    }
 
-    override fun toString(): String = TODO()
+    override fun toString(): String {
+        if (size == 1) {
+            val value = get(0)
+            if (value is PlainTextElement) return value.text
+        }
+        return toJsonTree().toString()
+    }
 
-    fun toNMS(): Nothing = TODO()
+    fun toNMS() = ChatBaseComponent.newInstance(this)
 
-    fun toBaseComponent(): BaseComponent = TODO()
+    /** Convert to [BaseComponent]. */
+    fun toMd5BaseComponent(): BaseComponent = TODO()
 
     companion object {
         @JvmStatic fun serialize(origin: String): JSONText = TODO()

@@ -5,7 +5,7 @@ import com.rabbitown.yalib.module.chat.text.JSONTextElement
 /**
  * @author Yoooooory
  */
-class KeyBindElement(keybind: KeyBind) : JSONTextElement() {
+class KeyBindElement(val keybind: KeyBind) : JSONTextElement() {
     enum class KeyBind(val key: String) {
         JUMP("key.jump"),
         SNEAK("key.sneak"),

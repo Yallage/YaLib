@@ -20,8 +20,8 @@ abstract class PacketPlayOutChat(
 
     override val nms: Any = clazz.let {
         val constructor = it.constructors[1]
-        if (NMSVersion.CURRENT.isAfter(NMSVersion.V1_16_R1)) constructor.newInstance(component.nms, type.nms)
-        else constructor.newInstance(component.nms, type.nms, uuid)
+        if (NMSVersion.CURRENT.isAfter(NMSVersion.V1_16_R1)) constructor.newInstance(component.nms, type.nms, uuid)
+        else constructor.newInstance(component.nms, type.nms)
     }
 
     override fun read(data: PacketDataSerializer) {
@@ -44,7 +44,7 @@ abstract class PacketPlayOutChat(
     override fun a() = true
 
     companion object {
-        val clazz = NMSManager.getNMSClass("PacketPlayerOutChat")
+        val clazz = NMSManager.getNMSClass("PacketPlayOutChat")
 
         fun newInstance(component: ChatBaseComponent, type: ChatMessageType, uuid: UUID?) =
             object : PacketPlayOutChat(component, type, uuid ?: SystemUtil.nullUUID) {}

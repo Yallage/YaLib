@@ -1,5 +1,7 @@
 package com.rabbitown.yalib.module.nms.base.entity
 
+import com.rabbitown.yalib.module.chat.text.JSONText
+import com.rabbitown.yalib.module.chat.text.JSONTextElement
 import com.rabbitown.yalib.module.nms.NMSBase
 import com.rabbitown.yalib.module.nms.NMSManager
 import com.rabbitown.yalib.module.nms.base.chat.ChatBaseComponent
@@ -17,20 +19,23 @@ import java.util.*
  */
 abstract class EntityPlayer(entity: Player) : NMSBase {
 
-    override val nms: Any = clazz.cast(entity)
+    override val nms: Any = craftClazz.getMethod("getHandle").invoke(entity)
     val playerConnection: PlayerConnection = PlayerConnection.ofNMSPlayer(nms)
 
-    fun sendMessage(vararg components: ChatBaseComponent) = sendMessage(ChatMessageType.SYSTEM, *components)
+    fun sendMessage(vararg element: JSONTextElement) = sendMessage(JSONText(*element))
+    fun sendMessage(vararg text: JSONText) = sendMessage(ChatMessageType.SYSTEM, *text)
 
-    fun sendMessage(type: ChatMessageType, vararg components: ChatBaseComponent) =
-        components.forEach { sendMessage(type, SystemUtil.nullUUID, it) }
+    fun sendMessage(type: ChatMessageType, vararg text: JSONText) =
+        text.forEach { sendMessage(type, SystemUtil.nullUUID, it) }
 
-    fun sendMessage(type: ChatMessageType, uuid: UUID?, component: ChatBaseComponent) {
-        playerConnection.sendPacket(PacketPlayOutChat.newInstance(component, type, uuid))
+    fun sendMessage(type: ChatMessageType, uuid: UUID?, text: JSONText) {
+        playerConnection.sendPacket(PacketPlayOutChat.newInstance(text.toNMS(), type, uuid))
     }
 
     companion object {
         val clazz = NMSManager.getNMSClass("EntityPlayer")
-        fun newInstance(entity: Player) = object : EntityPlayer(entity) {}
+        val craftClazz = NMSManager.getCraftClass("entity.CraftPlayer")
+        @JvmStatic fun newInstance(entity: Player) = object : EntityPlayer(entity) {}
+        fun Player.asNMS() = newInstance(this)
     }
 }

@@ -1,5 +1,6 @@
 package com.rabbitown.yalib.module.chat.text.event
 
+import com.google.gson.annotations.SerializedName
 import com.rabbitown.yalib.module.chat.text.event.hover.Content
 
 /**
@@ -12,7 +13,14 @@ class HoverEvent(val action: Action, val contents: Content) : JSONTextEvent {
     }
 
     enum class Action {
-        SHOW_TEXT, SHOW_ITEM, SHOW_ENTITY
+        @SerializedName("show_text")
+        SHOW_TEXT,
+
+        @SerializedName("show_item")
+        SHOW_ITEM,
+
+        @SerializedName("show_entity")
+        SHOW_ENTITY
     }
 
 }

@@ -12,7 +12,7 @@ import com.rabbitown.yalib.util.ReflectUtil.Companion.getMethodByName
 abstract class PlayerConnection(override val nms: Any) : NMSBase {
 
     fun sendPacket(packet: Packet) {
-        nms::class.java.getMethodByName("sendPacket").invoke(packet.nms)
+        nms::class.java.getMethodByName("sendPacket").invoke(nms, packet.nms)
     }
 
     companion object {
