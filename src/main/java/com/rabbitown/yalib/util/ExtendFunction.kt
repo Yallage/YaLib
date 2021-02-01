@@ -12,5 +12,7 @@ class ExtendFunction {
             return src
         }
 
+        fun String.escape() = replace("\\", "\\\\").replace("\"", "\\\"")
+
     }
 }
