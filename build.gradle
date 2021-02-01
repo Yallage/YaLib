@@ -11,6 +11,8 @@ version '1.0.0-alpha.11-DEV'
 
 repositories {
     mavenCentral()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots' }
     maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi' }
     maven { url 'http://repo.onarandombox.com/content/groups/public' }
