@@ -22,7 +22,7 @@ class YLocale {
     companion object {
 
         private fun getInvoker(): JavaPlugin {
-            val invoker = StackTraceUtil.getInvoker(arrayOf(Regex("com\\.rabbitown\\.yalib\\.locale.*")))
+            val invoker = StackTraceUtil.getInvoker(arrayOf(Regex("com\\.rabbitown\\.yalib\\.module\\.locale.*")))
             return YaLibCentral.getPlugin(invoker) ?: error("$invoker doesn't have registration in YaLibCentral.")
         }
 
