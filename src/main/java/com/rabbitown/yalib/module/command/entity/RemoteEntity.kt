@@ -81,10 +81,10 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
     }
 
     fun runSenderDeniedHandler(running: CommandRunning) =
-        AccessHandler.getAccessibleOrNull(senderDeniedHandlers, running.sender)?.invoke(remote, remote, running)
+        AccessHandler.getAccessibleOrNull(senderDeniedHandlers + defaultSenderDeniedHandlers, running.sender)?.invoke(remote, remote, running)
 
     fun runPermissionDeniedHandler(running: CommandRunning) =
-        AccessHandler.getAccessibleOrNull(permissionDeniedHandlers, running.sender)
+        AccessHandler.getAccessibleOrNull(permissionDeniedHandlers + defaultPermissionDeniedHandlers, running.sender)
             ?.invoke(remote, remote, running)
 
     fun runDefaultCompleter(index: Int, path: String, running: CommandRunning): List<String> {
@@ -97,7 +97,7 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
 
     fun runCompleter(index: Int, path: String, running: CommandRunning): List<String> {
         val split = path.replace(argRegex) { it.groups[1]?.value ?: error("") }.split(" ")
-        return if (split.size > index) CompleterHandler.getAccessibleOrNull(completers, running.sender)
+        return if (split.size > index) CompleterHandler.getAccessibleOrNull(completers + defaultCompleters, running.sender)
             ?.invoke(split[index], remote, running) ?: emptyList()
         else CompleterHandler.getAccessibleOrNull(completers, running.sender)
             ?.invoke("", remote, running) ?: emptyList()

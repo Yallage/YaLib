@@ -50,6 +50,6 @@ open class SimpleCommandRemote(command: PluginCommand) : CommandRemote(command) 
     @PermissionDeniedHandler(Handlers.DEFAULT)
     @Priority(Int.MIN_VALUE)
     open fun defaultPermissionDeniedHandler(perm: Array<String>) =
-        command.permissionMessage ?: "Permission required: ${perm.contentToString()}"
+        command.permissionMessage ?: "§cPermission required: ${perm.contentToString()}"
 
 }
