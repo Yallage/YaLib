@@ -13,7 +13,7 @@ import java.io.File
 /**
  * @author Yoooooory
  */
-class Locale(
+open class Locale(
     val owner: JavaPlugin,
 
     /** The default language of the plugin.
@@ -36,7 +36,7 @@ class Locale(
         load()
     }
 
-    // Constructor for Java.
+    // Constructors for Java.
     constructor(owner: JavaPlugin) : this(owner, "en_US")
     constructor(owner: JavaPlugin, defaultLanguage: String) : this(
         owner,
@@ -44,7 +44,7 @@ class Locale(
         File(owner.dataFolder, "/language")
     )
 
-    fun load() {
+    open fun load() {
         langMap.clear()
         languageFolder.listFiles()?.filter { "yml" == it.extension }?.forEach {
             val yaml = YamlConfiguration.loadConfiguration(it)
@@ -55,11 +55,11 @@ class Locale(
         }
     }
 
-    fun save() {
+    open fun save() {
         FileUtil.getAllResource(owner, insideLanguageFolder).forEach { FileUtil.saveResource(owner, it) }
     }
 
-    fun send(target: CommandSender, key: String, vararg args: String) =
+    open fun send(target: CommandSender, key: String, vararg args: String) =
         target.sendMessage(getMessage(target.getLocaleLanguage(), key, *args)!!)
 
     fun sendToConsole(key: String, vararg args: String) = send(Bukkit.getConsoleSender(), key, *args)
