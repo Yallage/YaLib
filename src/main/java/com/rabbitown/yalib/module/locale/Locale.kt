@@ -6,7 +6,6 @@ import com.rabbitown.yalib.util.FileUtil
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.conversations.Conversable
 import org.bukkit.permissions.ServerOperator
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -63,24 +62,17 @@ open class Locale(
     open fun send(target: CommandSender, key: String, vararg args: String) =
         target.sendMessage(getMessage(target.getLocaleLanguage(), key, *args)!!)
 
-    fun sendToConsole(key: String, vararg args: String) = send(Bukkit.getConsoleSender() as CommandSender, key, *args)
+    fun sendToConsole(key: String, vararg args: String) = send(Bukkit.getConsoleSender(), key, *args)
 
     fun broadcast(key: String, vararg args: String) {
         sendToConsole(key, *args)
-        Bukkit.getOnlinePlayers().forEach { send(it as CommandSender, key, *args) }
+        Bukkit.getOnlinePlayers().forEach { send(it, key, *args) }
     }
 
     fun getMessage(language: String, key: String, vararg args: String) = getLanguageMap(language)?.get(key)?.arg(*args)
 
     fun getLanguageMap(language: String) = if (language in langMap) LanguageMap(langMap[language]!!) else null
     fun getLanguageMap(target: ServerOperator) = getLanguageMap(target.getLocaleLanguage())
-
-    // Supports for Conversable.
-
-    fun send(target: Conversable, key: String, vararg args: String) =
-        send(target as CommandSender, key, *args)
-
-    fun getLanguageMap(target: Conversable) = getLanguageMap(target as ServerOperator)
 
     class LanguageMap(private val yaml: YamlConfiguration) {
         operator fun get(key: String) = yaml[key]?.toString()

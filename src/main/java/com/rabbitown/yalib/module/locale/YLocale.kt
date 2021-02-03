@@ -2,14 +2,12 @@ package com.rabbitown.yalib.module.locale
 
 import com.rabbitown.yalib.YaLib
 import com.rabbitown.yalib.YaLibCentral
-import com.rabbitown.yalib.module.locale.YLocale.Companion.getLocaleMessage
 import com.rabbitown.yalib.util.FileUtil
 import com.rabbitown.yalib.util.StackTraceUtil
 import org.bukkit.OfflinePlayer
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.conversations.Conversable
 import org.bukkit.permissions.ServerOperator
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
@@ -106,13 +104,6 @@ class YLocale {
         fun ServerOperator.getLocaleMessage(key: String) = getMessage(this, key)
         fun ServerOperator.getLocaleLanguage() = getLanguage(this)
         fun ServerOperator.getLocaleLanguageMap() = getLanguageMap(this)
-
-        // Supports for Conversable
-
-        fun Conversable.sendLocale(key: String, vararg args: String) = (this as CommandSender).sendLocale(key, *args)
-        fun Conversable.getLocaleMessage(key: String) = (this as ServerOperator).getLocaleMessage(key)
-        fun Conversable.getLocaleLanguage() = (this as ServerOperator).getLocaleLanguage()
-        fun Conversable.getLocaleLanguageMap() = (this as ServerOperator).getLocaleLanguageMap()
 
     }
 
