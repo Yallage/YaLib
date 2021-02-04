@@ -24,8 +24,6 @@ class JSONText() : ArrayList<IJSONTextElement>(), Content, IJSONTextElement {
         addAll(elements)
     }
 
-    override fun requiredAction() = HoverEvent.Action.SHOW_TEXT
-
     override fun toJsonTree(): JsonArray {
         val array = JsonArray()
         forEach { array.add(it.toJsonTree()) }
