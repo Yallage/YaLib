@@ -1,7 +1,6 @@
-package com.rabbitown.yalib.module.view.button;
+package com.rabbitown.yalib.module.view;
 
 import com.rabbitown.yalib.common.model.action.IButtonAction;
-import com.rabbitown.yalib.module.view.IButtonBuilder;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -11,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CatButtonBuilder implements IButtonBuilder {
+public class ButtonBuilder {
     private ItemStack itemStack = new ItemStack(Material.AIR);
     private Map<ClickType, List<IButtonAction>> action = new HashMap<>();
 
@@ -23,7 +22,7 @@ public class CatButtonBuilder implements IButtonBuilder {
         this.itemStack = itemStack;
     }
 
-    public CatButtonBuilder addAction(ClickType clickType,IButtonAction buttonAction){
+    public ButtonBuilder addAction(ClickType clickType, IButtonAction buttonAction){
         if(this.action.get(clickType).isEmpty()){
             List<IButtonAction> targetList = new ArrayList<>();
             targetList.add(buttonAction);
@@ -43,10 +42,5 @@ public class CatButtonBuilder implements IButtonBuilder {
     public Map<ClickType, List<IButtonAction>> getAction() {
         return action;
 
-    }
-
-    @Override
-    public ItemStack getButton() {
-        return this.itemStack;
     }
 }
