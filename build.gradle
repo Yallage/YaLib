@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'com.rabbitown'
-version '1.0.0-alpha.18'
+version '1.0.0-alpha.19'
 
 repositories {
     mavenCentral()
@@ -70,7 +70,7 @@ shadowJar {
 }
 
 task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
+    from sourceSets.main.allSource
 }
 
 publishing {
@@ -80,7 +80,6 @@ publishing {
             artifact sourceJar {
                 classifier "sources"
             }
-
         }
     }
     repositories {
