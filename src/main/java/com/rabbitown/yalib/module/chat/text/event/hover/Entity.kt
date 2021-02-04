@@ -2,11 +2,9 @@ package com.rabbitown.yalib.module.chat.text.event.hover
 
 import com.rabbitown.yalib.module.chat.text.JSONText
 import com.rabbitown.yalib.module.chat.text.event.HoverEvent
-import com.rabbitown.yalib.module.item.NBTItem
 import com.rabbitown.yalib.util.ExtendFunction.Companion.escape
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
-import org.bukkit.inventory.ItemStack
 import java.util.*
 
 /**

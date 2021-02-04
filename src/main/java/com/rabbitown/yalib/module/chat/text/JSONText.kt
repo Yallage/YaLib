@@ -18,7 +18,7 @@ import net.md_5.bungee.chat.ComponentSerializer
  *
  * @author Yoooooory
  */
-class JSONText() : Content, ArrayList<JSONTextElement>() {
+class JSONText() : ArrayList<JSONTextElement>(), Content, IJSONTextElement {
 
     constructor(vararg elements: JSONTextElement) : this() {
         addAll(elements)
@@ -26,7 +26,7 @@ class JSONText() : Content, ArrayList<JSONTextElement>() {
 
     override fun requiredAction() = HoverEvent.Action.SHOW_TEXT
 
-    fun toJsonTree(): JsonArray {
+    override fun toJsonTree(): JsonArray {
         val array = JsonArray()
         forEach { array.add(it.toJsonTree()) }
         return array
@@ -40,7 +40,7 @@ class JSONText() : Content, ArrayList<JSONTextElement>() {
         return toJsonTree().toString()
     }
 
-    fun toNMS() = ChatBaseComponent.newInstance(this)
+    override fun toNMS() = ChatBaseComponent.newInstance(this)
 
     /** Convert to an array of [BaseComponent]. */
     fun toMd5BaseComponent(): Array<BaseComponent> = ComponentSerializer.parse(toString())
