@@ -18,7 +18,7 @@ import net.md_5.bungee.chat.ComponentSerializer
  *
  * @author Yoooooory
  */
-class JSONText() : ArrayList<JSONTextElement>(), Content, IJSONTextElement {
+class JSONText() : ArrayList<IJSONTextElement>(), Content, IJSONTextElement {
 
     constructor(vararg elements: JSONTextElement) : this() {
         addAll(elements)
