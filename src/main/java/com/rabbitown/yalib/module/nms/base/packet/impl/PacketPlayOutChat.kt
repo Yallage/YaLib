@@ -19,7 +19,7 @@ abstract class PacketPlayOutChat(
 ) : Packet {
 
     override val nms: Any = clazz.let {
-        val constructor = it.constructors[1]
+        val constructor = it.constructors.first { con -> con.parameterCount > 0 }
         if (NMSVersion.CURRENT.isAfter(NMSVersion.V1_16_R1)) constructor.newInstance(component.nms, type.nms, uuid)
         else constructor.newInstance(component.nms, type.nms)
     }
