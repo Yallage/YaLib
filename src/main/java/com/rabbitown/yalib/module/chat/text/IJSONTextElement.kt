@@ -7,6 +7,6 @@ import com.rabbitown.yalib.module.nms.base.chat.ChatBaseComponent
  * @author Yoooooory
  */
 interface IJSONTextElement {
-    fun toNMS(): ChatBaseComponent
+    fun toNMS(): ChatBaseComponent = ChatBaseComponent.newInstance(JSONText(this))
     fun toJsonTree(): JsonElement
 }

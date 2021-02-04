@@ -20,7 +20,6 @@ abstract class JSONTextElement : IJSONTextElement {
     var insertion: InsertEvent? = null
 
     override fun toJsonTree(): JsonObject = SystemUtil.gson.toJsonTree(this).asJsonObject.apply { addAll(format.toJsonObject()) }
-    override fun toNMS() = ChatBaseComponent.newInstance(JSONText(this))
 
     private fun JsonObject.addAll(value: JsonObject) = value.entrySet().forEach { this.add(it.key, it.value) }
 
