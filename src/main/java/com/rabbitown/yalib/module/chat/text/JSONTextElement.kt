@@ -19,6 +19,8 @@ abstract class JSONTextElement : IJSONTextElement {
 
     override fun toJsonTree(): JsonObject = SystemUtil.gson.toJsonTree(this).asJsonObject.apply { addAll(format.toJsonObject()) }
 
+    override fun toString() = toJsonTree().toString()
+
     private fun JsonObject.addAll(value: JsonObject) = value.entrySet().forEach { this.add(it.key, it.value) }
 
 }
