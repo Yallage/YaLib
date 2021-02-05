@@ -1,16 +1,10 @@
 package com.rabbitown.yalib.module.chat.text
 
 import com.google.gson.JsonArray
-import com.google.gson.TypeAdapter
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonToken
-import com.google.gson.stream.JsonWriter
-import com.rabbitown.yalib.module.chat.text.event.HoverEvent
 import com.rabbitown.yalib.module.chat.text.event.hover.Content
 import com.rabbitown.yalib.module.chat.text.impl.PlainTextElement
 import com.rabbitown.yalib.module.nms.base.chat.ChatBaseComponent
 import net.md_5.bungee.api.chat.BaseComponent
-import net.md_5.bungee.api.chat.ComponentBuilder
 import net.md_5.bungee.chat.ComponentSerializer
 
 /**
@@ -44,7 +38,13 @@ class JSONText() : ArrayList<IJSONTextElement>(), Content, IJSONTextElement {
     fun toMd5BaseComponent(): Array<BaseComponent> = ComponentSerializer.parse(toString())
 
     companion object {
+
         @JvmStatic fun serialize(origin: String): JSONText = TODO()
+
+        fun Iterable<IJSONTextElement>.toJSONText() = JSONText().apply {
+            addAll(this@toJSONText)
+        }
+
     }
 
 }
