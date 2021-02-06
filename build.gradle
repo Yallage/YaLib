@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'maven-publish'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.30'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
@@ -29,7 +29,7 @@ dependencies {
 
     implementation fileTree('libs')
 
-    shadow "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    shadow 'org.jetbrains.kotlin:kotlin-stdlib'
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation 'com.google.code.findbugs:annotations:3.0.1'
 }
