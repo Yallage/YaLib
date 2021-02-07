@@ -8,7 +8,9 @@ class ReflectUtil private constructor() {
 
         @JvmStatic
         fun Class<*>.getMethodByName(name: String) =
-            this.methods.firstOrNull { it.name == name } ?: throw NoSuchFieldException()
+            this.methods.firstOrNull { it.name == name }?.apply {
+                isAccessible = true
+            } ?: throw NoSuchFieldException()
 
     }
 }
