@@ -31,8 +31,8 @@ internal class CommandProcessor() : TabExecutor {
         val remote = remotes.firstOrNull { remote ->
             val path = remote.remote.path
             if (path.isEmpty()) return@firstOrNull true
-            val matcher = handlerPattern(remote, path.replace(argRegex) { it.groups[3]?.value ?: ".+" })
-                    .matcher(sb.toString())
+            val matcher = handlerPattern(remote, path.replace(argRegex) { it.groups[3]?.value ?: ".+" } + " ")
+                .matcher(sb.toString())
             if (matcher.find() && matcher.start() == 0) {
                 // For an effective remote, check whether the sender is accessible to it.
                 when (CommandResult.getCommandResult(remote.remote, sender)) {
@@ -56,7 +56,7 @@ internal class CommandProcessor() : TabExecutor {
                 val path = "${if (handler.path.isEmpty()) "" else "${handler.path} "}$action"
                 if (path.isEmpty()) return@firstOrNull true
                 if (sb.toString().trim()
-                                .matches(handlerRegex(handler, path.replace(argRegex) { it.groups[3]?.value ?: ".+" }))
+                        .matches(handlerRegex(handler, path.replace(argRegex) { it.groups[3]?.value ?: ".+" } + " "))
                 ) {
                     // For an effective action, check whether the sender is accessible to it.
                     when (CommandResult.getCommandResult(handler, sender)) {
@@ -65,10 +65,10 @@ internal class CommandProcessor() : TabExecutor {
                             return@firstOrNull true
                         }
                         CommandResult.FAILED_SENDER_MISMATCH -> AccessHandler.getAccessibleOrNull(
-                                handler.senderDeniedHandlers + remote.defaultSenderDeniedHandlers, sender
+                            handler.senderDeniedHandlers + remote.defaultSenderDeniedHandlers, sender
                         )?.invoke(remote.remote, handler, running)
                         CommandResult.FAILED_PERMISSION_REQUIRED -> AccessHandler.getAccessibleOrNull(
-                                handler.permissionDeniedHandlers + remote.defaultPermissionDeniedHandlers, sender
+                            handler.permissionDeniedHandlers + remote.defaultPermissionDeniedHandlers, sender
                         )?.invoke(remote.remote, handler, running)
                     }
                     return true
@@ -81,7 +81,7 @@ internal class CommandProcessor() : TabExecutor {
     }
 
     override fun onTabComplete(
-            sender: CommandSender, command: Command, alias: String, args: Array<out String>
+        sender: CommandSender, command: Command, alias: String, args: Array<out String>
     ): List<String> {
         val running = CommandRunning(sender, command, alias, args).apply { argMap["start"] = System.nanoTime() }
         val sb = StringBuilder(if (args.isEmpty()) "" else args[0])
@@ -121,12 +121,12 @@ internal class CommandProcessor() : TabExecutor {
                         index++
                         if (!iter.next().matches(handlerRegex(handler, it)) && iter.hasNext()) {
                             if (!iter.hasNext()) return CompleterHandler.getAccessibleOrNull(handler.completers, sender)
-                                    ?.invoke(index, "$remotePath $action", remote.remote, running) ?: emptyList()
+                                ?.invoke(index, "$remotePath $action", remote.remote, running) ?: emptyList()
                             index = oriIndex
                             return@firstOrNull false
                         }
                     } else return CompleterHandler.getAccessibleOrNull(handler.completers, sender)
-                            ?.invoke(index, "$remotePath $action", remote.remote, running) ?: emptyList()
+                        ?.invoke(index, "$remotePath $action", remote.remote, running) ?: emptyList()
                 }
                 return@firstOrNull false
             } != null // means @action found a matched action, then the handler is what we need.
@@ -135,9 +135,9 @@ internal class CommandProcessor() : TabExecutor {
     }
 
     private fun handlerRegex(handler: MainHandler, regex: String) =
-            if (handler.ignoreCase) Regex(regex, RegexOption.IGNORE_CASE) else Regex(regex)
+        if (handler.ignoreCase) Regex(regex, RegexOption.IGNORE_CASE) else Regex(regex)
 
     private fun handlerPattern(handler: MainHandler, regex: String) =
-            if (handler.ignoreCase) Pattern.compile(regex, Pattern.CASE_INSENSITIVE) else Pattern.compile(regex)
+        if (handler.ignoreCase) Pattern.compile(regex, Pattern.CASE_INSENSITIVE) else Pattern.compile(regex)
 
 }
