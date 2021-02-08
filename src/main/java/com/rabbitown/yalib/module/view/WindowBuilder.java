@@ -49,7 +49,7 @@ public class WindowBuilder implements InventoryHolder {
      */
     public void updateButton(){
          for (int count = 0;count<this.view.getSize();count++){
-             this.view.setItem(count+1,this.buttons.get(count+1).getItemStack());
+             this.view.setItem(count,this.buttons.get(count).getItemStack());
          }
     }
 
