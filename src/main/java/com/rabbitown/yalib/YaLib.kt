@@ -1,8 +1,5 @@
 package com.rabbitown.yalib
 
-import com.rabbitown.yalib.common.command.CommandNMSTest
-import com.rabbitown.yalib.common.command.CommandTest
-import com.rabbitown.yalib.common.command.CommandTestJ
 import com.rabbitown.yalib.module.locale.I18NPlugin
 import com.rabbitown.yalib.module.locale.Locale
 import com.rabbitown.yalib.util.FileUtil
@@ -27,9 +24,6 @@ class YaLib : JavaPlugin(), I18NPlugin {
     }
 
     override fun onEnable() {
-        CommandTest().register()
-        CommandTestJ().register()
-        CommandNMSTest().register()
         saveDefaultConfig()
         FileUtil.saveResource(this, "data/languageData.yml")
         logger.info(ChatColor.BLUE.toString() + "[YaLib] YaLib依赖已加载 感谢使用YaLib")

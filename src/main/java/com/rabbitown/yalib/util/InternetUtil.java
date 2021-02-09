@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class NetFileDownloadUtil {
+public class InternetUtil {
     /**
      * 从网络Url中下载文件
      * @param urlStr URL
