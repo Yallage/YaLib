@@ -11,7 +11,7 @@ object NMSManager {
 
     val nmsPackage = "net.minecraft.server.${NMSVersion.CURRENT}"
     val craftPackage = Bukkit.getServer()::class.java.`package`.name
-    private val implPackage = "com.rabbitown.yalib.nms.impl"
+    private const val implPackage = "com.rabbitown.yalib.nms.impl"
 
     fun getNMSClass(path: String): Class<*> = Class.forName("$nmsPackage.$path")
     fun getCraftClass(path: String): Class<*> = Class.forName("$craftPackage.$path")

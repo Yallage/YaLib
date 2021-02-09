@@ -5,7 +5,8 @@ import com.rabbitown.yalib.module.nms.NMSVersion
 import com.rabbitown.yalib.module.nms.base.chat.ChatBaseComponent
 import com.rabbitown.yalib.module.nms.base.chat.ChatMessageType
 import com.rabbitown.yalib.module.nms.base.packet.Packet
-import com.rabbitown.yalib.module.nms.base.packet.PacketDataSerializer
+import com.rabbitown.yalib.util.ReflectUtil.Companion.access
+import com.rabbitown.yalib.util.ReflectUtil.Companion.getConstructorHasParams
 import com.rabbitown.yalib.util.SystemUtil
 import java.util.*
 
@@ -24,7 +25,7 @@ abstract class PacketPlayOutChat(
     }
 
     fun getMessageType() = ChatMessageType.of(
-        clazz.getMethod(if (NMSVersion.CURRENT.isAfter(NMSVersion.V1_13_R1)) "d" else "c").invoke(nms)
+        clazz.getMethod(if (NMSVersion.CURRENT.isAfter(NMSVersion.V1_13_R1)) "d" else "c").access().invoke(nms)
     )
 
     fun isFromSystem(): Boolean {
@@ -34,7 +35,7 @@ abstract class PacketPlayOutChat(
 
     companion object {
         val clazz = NMSManager.getNMSClass("PacketPlayOutChat")
-        private val constructor = clazz.constructors.first { it.parameterCount > 0 }
+        private val constructor = clazz.getConstructorHasParams().access()
 
         fun newInstance(component: ChatBaseComponent, type: ChatMessageType, uuid: UUID?) =
             object : PacketPlayOutChat(component, type, uuid ?: SystemUtil.nullUUID) {}

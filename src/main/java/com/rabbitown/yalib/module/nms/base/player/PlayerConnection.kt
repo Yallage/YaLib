@@ -4,6 +4,7 @@ import com.rabbitown.yalib.module.nms.NMSBase
 import com.rabbitown.yalib.module.nms.NMSManager
 import com.rabbitown.yalib.module.nms.base.entity.EntityPlayer
 import com.rabbitown.yalib.module.nms.base.packet.Packet
+import com.rabbitown.yalib.util.ReflectUtil.Companion.access
 import com.rabbitown.yalib.util.ReflectUtil.Companion.getMethodByName
 
 /**
@@ -12,7 +13,7 @@ import com.rabbitown.yalib.util.ReflectUtil.Companion.getMethodByName
 abstract class PlayerConnection(override val nms: Any) : NMSBase {
 
     fun sendPacket(packet: Packet) {
-        nms::class.java.getMethodByName("sendPacket").invoke(nms, packet.nms)
+        nms::class.java.getMethodByName("sendPacket").access().invoke(nms, packet.nms)
     }
 
     companion object {
