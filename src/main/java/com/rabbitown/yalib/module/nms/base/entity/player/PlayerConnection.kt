@@ -1,4 +1,4 @@
-package com.rabbitown.yalib.module.nms.base.player
+package com.rabbitown.yalib.module.nms.base.entity.player
 
 import com.rabbitown.yalib.module.nms.NMSBase
 import com.rabbitown.yalib.module.nms.NMSManager

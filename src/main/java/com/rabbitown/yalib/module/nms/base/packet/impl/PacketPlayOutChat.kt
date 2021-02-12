@@ -13,14 +13,16 @@ import java.util.*
 /**
  * @author Yoooooory
  */
-abstract class PacketPlayOutChat(
+class PacketPlayOutChat(
     component: ChatBaseComponent,
     val type: ChatMessageType,
-    uuid: UUID = SystemUtil.nullUUID
+    uuid: UUID? = SystemUtil.nullUUID
 ) : Packet {
 
+    constructor(component: ChatBaseComponent, type: ChatMessageType) : this(component, type, SystemUtil.nullUUID)
+
     override val nms: Any = clazz.let {
-        if (NMSVersion.CURRENT.isAfter(NMSVersion.V1_16_R1)) constructor.newInstance(component.nms, type.nms, uuid)
+        if (NMSVersion.CURRENT.isAfter(NMSVersion.V1_16_R1)) constructor.newInstance(component.nms, type.nms, uuid ?: SystemUtil.nullUUID)
         else constructor.newInstance(component.nms, type.nms)
     }
 
@@ -29,11 +31,5 @@ abstract class PacketPlayOutChat(
     companion object {
         val clazz = NMSManager.getNMSClass("PacketPlayOutChat")
         private val constructor = clazz.getConstructorHasParams().access()
-
-        fun newInstance(component: ChatBaseComponent, type: ChatMessageType, uuid: UUID?) =
-            object : PacketPlayOutChat(component, type, uuid ?: SystemUtil.nullUUID) {}
-
-        fun newInstance(component: ChatBaseComponent, type: ChatMessageType) =
-            newInstance(component, type, SystemUtil.nullUUID)
     }
 }

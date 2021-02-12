@@ -56,7 +56,7 @@ internal class CommandProcessor() : TabExecutor {
                 val path = "${if (handler.path.isEmpty()) "" else "${handler.path} "}$action"
                 if (path.isEmpty()) return@firstOrNull true
                 if (sb.toString().trim()
-                        .matches(handlerRegex(handler, path.replace(argRegex) { it.groups[3]?.value ?: ".+" } + " "))
+                        .matches(handlerRegex(handler, path.replace(argRegex) { it.groups[3]?.value ?: ".+" }))
                 ) {
                     // For an effective action, check whether the sender is accessible to it.
                     when (CommandResult.getCommandResult(handler, sender)) {

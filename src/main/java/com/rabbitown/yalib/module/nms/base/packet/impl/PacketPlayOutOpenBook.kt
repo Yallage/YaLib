@@ -9,7 +9,7 @@ import com.rabbitown.yalib.util.ReflectUtil.Companion.getConstructorHasParams
 /**
  * @author Yoooooory
  */
-abstract class PacketPlayOutOpenBook(
+class PacketPlayOutOpenBook(
     hand: EnumHand
 ) : Packet {
 
@@ -18,8 +18,5 @@ abstract class PacketPlayOutOpenBook(
     companion object {
         val clazz = NMSManager.getNMSClass("PacketPlayOutOpenBook")
         private val constructor = clazz.getConstructorHasParams().access()
-
-        fun newInstance(hand: EnumHand) =
-            object : PacketPlayOutOpenBook(hand) {}
     }
 }

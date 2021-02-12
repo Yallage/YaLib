@@ -1,12 +1,11 @@
 package com.rabbitown.yalib
 
 import com.rabbitown.yalib.common.Logger
+import com.rabbitown.yalib.common.command.TestCommand
 import com.rabbitown.yalib.module.locale.I18NPlugin
-import com.rabbitown.yalib.module.locale.ILocale
 import com.rabbitown.yalib.module.locale.LocaleManager
 import com.rabbitown.yalib.module.locale.impl.PrefixedLocale
 import com.rabbitown.yalib.util.FileUtil
-import org.bukkit.ChatColor
 import org.bukkit.plugin.java.JavaPlugin
 
 /**
@@ -22,6 +21,7 @@ class YaLib : JavaPlugin(), I18NPlugin {
 
     override fun onLoad() {
         LocaleManager.load()
+        TestCommand().register()
         YaLibCentral.registerPlugin(this)
     }
 

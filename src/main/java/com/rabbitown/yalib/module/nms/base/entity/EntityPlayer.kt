@@ -1,17 +1,15 @@
 package com.rabbitown.yalib.module.nms.base.entity
 
 import com.rabbitown.yalib.module.chat.text.IJSONTextElement
-import com.rabbitown.yalib.module.chat.text.JSONText
-import com.rabbitown.yalib.module.chat.text.JSONTextElement
 import com.rabbitown.yalib.module.nms.NMSBase
 import com.rabbitown.yalib.module.nms.NMSManager
 import com.rabbitown.yalib.module.nms.base.chat.ChatMessageType
+import com.rabbitown.yalib.module.nms.base.entity.player.PlayerConnection
 import com.rabbitown.yalib.module.nms.base.enum.EnumHand
 import com.rabbitown.yalib.module.nms.base.packet.impl.PacketPlayOutChat
 import com.rabbitown.yalib.module.nms.base.packet.impl.PacketPlayOutOpenBook
-import com.rabbitown.yalib.module.nms.base.player.PlayerConnection
+import com.rabbitown.yalib.util.ReflectUtil.Companion.access
 import com.rabbitown.yalib.util.SystemUtil
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BookMeta
@@ -22,9 +20,9 @@ import java.util.*
  *
  * @author Yoooooory
  */
-abstract class EntityPlayer(private val entity: Player) : NMSBase {
+abstract class EntityPlayer(val entity: Player) : NMSBase {
 
-    final override val nms: Any = craftClazz.getMethod("getHandle").invoke(entity)
+    override val nms: Any = craftClazz.getMethod("getHandle").access().invoke(entity)
     val playerConnection: PlayerConnection = PlayerConnection.ofNMSPlayer(nms)
 
     fun respawn() {
@@ -37,7 +35,7 @@ abstract class EntityPlayer(private val entity: Player) : NMSBase {
         text.forEach { sendMessage(type, SystemUtil.nullUUID, it) }
 
     fun sendMessage(type: ChatMessageType, uuid: UUID?, text: IJSONTextElement) {
-        playerConnection.sendPacket(PacketPlayOutChat.newInstance(text.toNMS(), type, uuid))
+        playerConnection.sendPacket(PacketPlayOutChat(text.toNMS(), type, uuid))
     }
 
     fun sendActionbar(vararg text: IJSONTextElement) =
@@ -55,13 +53,13 @@ abstract class EntityPlayer(private val entity: Player) : NMSBase {
     }
 
     fun openBook(hand: EnumHand) {
-        playerConnection.sendPacket(PacketPlayOutOpenBook.newInstance(hand))
+        playerConnection.sendPacket(PacketPlayOutOpenBook(hand))
     }
 
     companion object {
         val clazz = NMSManager.getNMSClass("EntityPlayer")
         val craftClazz = NMSManager.getCraftClass("entity.CraftPlayer")
-        @JvmStatic fun newInstance(entity: Player) = object : EntityPlayer(entity) {}
-        fun Player.asNMS() = newInstance(this)
+        @JvmStatic fun get(entity: Player) = object : EntityPlayer(entity) {}
+        fun Player.asNMS() = get(this)
     }
 }

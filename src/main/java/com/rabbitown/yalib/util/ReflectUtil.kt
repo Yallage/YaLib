@@ -1,6 +1,7 @@
 package com.rabbitown.yalib.util
 
 import java.lang.reflect.Constructor
+import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 /**
@@ -15,6 +16,7 @@ class ReflectUtil private constructor() {
         @JvmStatic
         fun Class<*>.getConstructorHasParams() = this.constructors.first { it.parameterCount > 0 }!!
 
+        fun Field.access() = apply { isAccessible = true }
         fun Method.access() = apply { isAccessible = true }
         fun Constructor<*>.access() = apply { isAccessible = true }
 
