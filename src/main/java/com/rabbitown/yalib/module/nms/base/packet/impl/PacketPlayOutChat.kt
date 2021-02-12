@@ -15,7 +15,7 @@ import java.util.*
  */
 abstract class PacketPlayOutChat(
     component: ChatBaseComponent,
-    type: ChatMessageType,
+    val type: ChatMessageType,
     uuid: UUID = SystemUtil.nullUUID
 ) : Packet {
 
@@ -24,14 +24,7 @@ abstract class PacketPlayOutChat(
         else constructor.newInstance(component.nms, type.nms)
     }
 
-    fun getMessageType() = ChatMessageType.of(
-        clazz.getMethod(if (NMSVersion.CURRENT.isAfter(NMSVersion.V1_13_R1)) "d" else "c").access().invoke(nms)
-    )
-
-    fun isFromSystem(): Boolean {
-        val type = getMessageType()
-        return type == ChatMessageType.SYSTEM || type == ChatMessageType.GAME_INFO
-    }
+    fun isFromSystem() = type == ChatMessageType.SYSTEM || type == ChatMessageType.GAME_INFO
 
     companion object {
         val clazz = NMSManager.getNMSClass("PacketPlayOutChat")

@@ -1,9 +1,10 @@
 package com.rabbitown.yalib.module.locale;
 
+import com.rabbitown.yalib.module.locale.impl.SimpleLocale;
 import org.bukkit.permissions.ServerOperator;
 
 /**
- * 使用{@link Locale Locale}的可翻译文本
+ * 使用{@link SimpleLocale Locale}的可翻译文本
  */
 public class LocaleString {
     public String text;

@@ -1,5 +1,6 @@
 package com.rabbitown.yalib.util
 
+import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.io.InputStreamReader
@@ -13,7 +14,7 @@ class FileUtil private constructor() {
     companion object {
 
         @JvmStatic
-        fun getAllResource(plugin: JavaPlugin, dir: String): List<String> {
+        fun getAllResource(plugin: Plugin, dir: String): List<String> {
             val list = mutableListOf<String>()
             val prefix = if (dir.endsWith("/")) dir else "$dir/"
             JarFile(File(plugin.javaClass.protectionDomain.codeSource.location.toURI())).entries().iterator().forEach {
@@ -23,10 +24,10 @@ class FileUtil private constructor() {
         }
 
         @JvmStatic
-        fun getResource(plugin: JavaPlugin, path: String) = InputStreamReader(plugin.getResource(path)!!, StandardCharsets.UTF_8)
+        fun getResource(plugin: Plugin, path: String) = InputStreamReader(plugin.getResource(path)!!, StandardCharsets.UTF_8)
 
         @JvmStatic
-        fun saveResource(plugin: JavaPlugin, path: String, replace: Boolean = false) {
+        fun saveResource(plugin: Plugin, path: String, replace: Boolean = false) {
             if (replace || !File(plugin.dataFolder, path).exists()) plugin.saveResource(path, replace)
         }
 

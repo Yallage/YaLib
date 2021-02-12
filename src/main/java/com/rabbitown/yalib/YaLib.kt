@@ -1,7 +1,10 @@
 package com.rabbitown.yalib
 
+import com.rabbitown.yalib.common.Logger
 import com.rabbitown.yalib.module.locale.I18NPlugin
-import com.rabbitown.yalib.module.locale.Locale
+import com.rabbitown.yalib.module.locale.ILocale
+import com.rabbitown.yalib.module.locale.LocaleManager
+import com.rabbitown.yalib.module.locale.impl.PrefixedLocale
 import com.rabbitown.yalib.util.FileUtil
 import org.bukkit.ChatColor
 import org.bukkit.plugin.java.JavaPlugin
@@ -17,21 +20,22 @@ class YaLib : JavaPlugin(), I18NPlugin {
         instance = this
     }
 
-    override val locale = Locale(this, "zh_CN")
-
     override fun onLoad() {
+        LocaleManager.load()
         YaLibCentral.registerPlugin(this)
     }
 
     override fun onEnable() {
         saveDefaultConfig()
         FileUtil.saveResource(this, "data/languageData.yml")
-        logger.info(ChatColor.BLUE.toString() + "[YaLib] YaLib依赖已加载 感谢使用YaLib")
+        Logger.info("I'm in!")
     }
 
     override fun onDisable() {
-        logger.info(ChatColor.BLUE.toString() + "[YaLib] YaLib依赖已卸载")
+        Logger.info("I'm out!")
     }
+
+    override fun getNewLocale() = PrefixedLocale.newDefault(this)
 
     companion object {
 

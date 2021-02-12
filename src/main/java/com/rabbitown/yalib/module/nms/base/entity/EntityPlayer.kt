@@ -11,6 +11,7 @@ import com.rabbitown.yalib.module.nms.base.packet.impl.PacketPlayOutChat
 import com.rabbitown.yalib.module.nms.base.packet.impl.PacketPlayOutOpenBook
 import com.rabbitown.yalib.module.nms.base.player.PlayerConnection
 import com.rabbitown.yalib.util.SystemUtil
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BookMeta
@@ -26,7 +27,9 @@ abstract class EntityPlayer(private val entity: Player) : NMSBase {
     final override val nms: Any = craftClazz.getMethod("getHandle").invoke(entity)
     val playerConnection: PlayerConnection = PlayerConnection.ofNMSPlayer(nms)
 
-    fun respawn(): Unit = TODO()
+    fun respawn() {
+        TODO()
+    }
 
     fun sendMessage(vararg text: IJSONTextElement) = sendMessage(ChatMessageType.SYSTEM, *text)
 

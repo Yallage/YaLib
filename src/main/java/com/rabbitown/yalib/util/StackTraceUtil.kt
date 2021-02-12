@@ -13,7 +13,7 @@ class StackTraceUtil private constructor() {
                 val name = elements[i].className
                 if (exclude.none { name.matches(it) } && name != this::class.java.name) return name
             }
-            error("I don't know why the error was thrown but it has been thrown.")
+            throw NoSuchElementException()
         }
 
     }
