@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'com.rabbitown'
-version '1.0.0-alpha.24'
+version '1.0.0-alpha.24a'
 
 repositories {
     mavenCentral()

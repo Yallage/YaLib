@@ -2,12 +2,8 @@ package com.rabbitown.yalib.module.locale
 
 import com.rabbitown.yalib.YaLib
 import com.rabbitown.yalib.YaLibCentral
-import com.rabbitown.yalib.util.FileUtil
 import com.rabbitown.yalib.util.StackTraceUtil
-import org.bukkit.OfflinePlayer
 import org.bukkit.command.CommandSender
-import org.bukkit.command.ConsoleCommandSender
-import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.permissions.ServerOperator
 import org.bukkit.plugin.Plugin
 
@@ -18,6 +14,7 @@ import org.bukkit.plugin.Plugin
  */
 class YLocale {
 
+    @Suppress("unused")
     companion object {
 
         private val excludeRegex = Regex("${this::class.java.`package`.name}.*")
@@ -33,23 +30,22 @@ class YLocale {
         @JvmStatic
         fun getLanguage(sender: ServerOperator) = LocaleManager.getLanguage(sender)
 
-        // SENDING //
-
+        // region Sending functions
         @JvmStatic
         fun send(target: CommandSender, key: String, vararg args: String) =
-            checkInvoker().getLocale().send(target, key, *args)
+            checkInvoker().locale.send(target, key, *args)
 
         @JvmStatic
-        fun sendToConsole(key: String, vararg args: String) = checkInvoker().getLocale().sendToConsole(key, *args)
+        fun sendToConsole(key: String, vararg args: String) = checkInvoker().locale.sendToConsole(key, *args)
 
         @JvmStatic
-        fun broadcast(key: String, vararg args: String) = checkInvoker().getLocale().broadcast(key, *args)
+        fun broadcast(key: String, vararg args: String) = checkInvoker().locale.broadcast(key, *args)
+        // endregion
 
-        // GET MESSAGE //
-
+        // region Message getting functions
         @JvmStatic
         fun getMessage(language: String, key: String, vararg args: String): String? {
-            return checkInvoker().getLocale().getMessage(language, key, *args)
+            return checkInvoker().locale.getMessage(language, key, *args)
         }
 
         @JvmStatic
@@ -66,27 +62,30 @@ class YLocale {
         fun getDefaultMessage(key: String, vararg args: String): String? {
             return getMessage(getDefaultLanguage(), key, *args)
         }
+        // endregion
 
-        // GET LANGUAGE MAP
+        // region Language map getting functions
+        @JvmStatic
+        fun getLanguageMap(language: String) = checkInvoker().locale.getLanguageMap(language)
 
         @JvmStatic
-        fun getLanguageMap(language: String) = checkInvoker().getLocale().getLanguageMap(language)
+        fun getLanguageMap(sender: ServerOperator) = checkInvoker().locale.getLanguageMap(sender)
+        // endregion
 
-        @JvmStatic
-        fun getLanguageMap(sender: ServerOperator) = checkInvoker().getLocale().getLanguageMap(sender)
-
-        // GET LANGUAGE SETTING
-
+        // region Language settings getting functions
         @JvmStatic
         fun getDefaultLanguage() = YaLib.instance.config["language.default"] as String
 
         @JvmStatic
         fun getConsoleLanguage() = YaLib.instance.config["language.console"] as String
+        // endregion
 
+        // region Extend functions
         fun CommandSender.sendLocale(key: String, vararg args: String) = send(this, key, *args)
         fun ServerOperator.getLocaleMessage(key: String) = getMessage(this, key)
         fun ServerOperator.getLocaleLanguage() = getLanguage(this)
         fun ServerOperator.getLocaleLanguageMap() = getLanguageMap(this)
+        // endregion
 
     }
 

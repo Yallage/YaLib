@@ -5,7 +5,6 @@ import com.rabbitown.yalib.common.command.TestCommand
 import com.rabbitown.yalib.module.locale.I18NPlugin
 import com.rabbitown.yalib.module.locale.LocaleManager
 import com.rabbitown.yalib.module.locale.impl.PrefixedLocale
-import com.rabbitown.yalib.util.FileUtil
 import org.bukkit.plugin.java.JavaPlugin
 
 /**
