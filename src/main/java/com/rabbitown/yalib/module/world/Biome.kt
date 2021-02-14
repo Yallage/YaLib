@@ -15,6 +15,7 @@ class Biome(val key: NamespacedKey, val type: Type, val temperature: Double) {
     @Suppress("unused")
     companion object {
 
+        //region Vanilla biomes defines
         @JvmField val SNOWY_TUNDRA = Biome(minecraft("snowy_tundra"), Type.SNOWY, 0.0)
         @JvmField val ICE_SPIKES = Biome(minecraft("ice_spikes"), Type.SNOWY, 0.0)
         @JvmField val SNOWY_TAIGA = Biome(minecraft("snowy_taiga"), Type.SNOWY, -0.5)
@@ -103,6 +104,7 @@ class Biome(val key: NamespacedKey, val type: Type, val temperature: Double) {
 
         @JvmField val MOUNTAIN_EDGE = Biome(minecraft("mountain_edge"), Type.UNUSED, 0.2)
         @JvmField val DEEP_WARM_OCEAN = Biome(minecraft("deep_warm_ocean"), Type.UNUSED, 0.5)
+        //endregion
 
         @JvmStatic
         fun fromEnum(enum: org.bukkit.block.Biome) = Biome::class.java.getField(enum.name).get(null) as Biome

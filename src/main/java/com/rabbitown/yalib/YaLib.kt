@@ -27,7 +27,6 @@ class YaLib : JavaPlugin(), I18NPlugin {
 
     override fun onEnable() {
         saveDefaultConfig()
-        FileUtil.saveResource(this, "data/languageData.yml")
         Logger.info("I'm in!")
     }
 
