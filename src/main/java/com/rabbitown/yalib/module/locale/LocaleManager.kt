@@ -20,6 +20,7 @@ object LocaleManager {
     fun getLocale(plugin: I18NPlugin) = pluginToLocale[plugin]
 
     fun load() {
+        dataFile.mkdirs()
         dataFile.createNewFile()
     }
 
