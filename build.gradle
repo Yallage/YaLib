@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'com.rabbitown'
-version '1.0.0-alpha.24a'
+version '1.0.0-alpha.24b'
 
 repositories {
     mavenCentral()
@@ -42,7 +42,7 @@ compileJava {
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '1.8'
         javaParameters = true
     }
 }
