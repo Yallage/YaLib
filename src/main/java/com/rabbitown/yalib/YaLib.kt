@@ -1,7 +1,6 @@
 package com.rabbitown.yalib
 
 import com.rabbitown.yalib.common.Logger
-import com.rabbitown.yalib.common.command.TestCommand
 import com.rabbitown.yalib.module.locale.I18NPlugin
 import com.rabbitown.yalib.module.locale.LocaleManager
 import com.rabbitown.yalib.module.locale.impl.PrefixedLocale
@@ -16,12 +15,11 @@ class YaLib : JavaPlugin(), I18NPlugin {
 
     init {
         instance = this
+        YaLibCentral.registerPlugin(this)
     }
 
     override fun onLoad() {
         LocaleManager.load()
-        TestCommand().register()
-        YaLibCentral.registerPlugin(this)
     }
 
     override fun onEnable() {
@@ -36,11 +34,7 @@ class YaLib : JavaPlugin(), I18NPlugin {
     override fun getNewLocale() = PrefixedLocale.newDefault(this)
 
     companion object {
-
-        @JvmStatic
-        lateinit var instance: YaLib
-            private set
-
+        @JvmStatic lateinit var instance: YaLib private set
     }
 
 }
