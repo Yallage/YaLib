@@ -25,7 +25,7 @@ object LocaleManager {
     }
 
     internal fun register(plugin: I18NPlugin) {
-        pluginToLocale[plugin] = plugin.getNewLocale()
+        pluginToLocale[plugin] = plugin.newLocale
     }
 
     fun getLanguage(sender: ServerOperator): String {

@@ -13,7 +13,7 @@ import java.util.Objects;
 public interface I18NPlugin extends Plugin {
 
     /** When registering plugin to {@link YaLibCentral},
-     * this method will be invoked and create a new [ILocale] to be stored. */
+     * this method will be invoked and create a new {@link ILocale} to be stored. */
     @NotNull
     default ILocale getNewLocale() {
         return new SimpleLocale.Builder(this).build();
