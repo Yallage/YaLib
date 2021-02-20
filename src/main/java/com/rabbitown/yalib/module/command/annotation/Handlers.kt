@@ -24,10 +24,12 @@ class Handlers private constructor() {
             PermissionDeniedHandler::class.java
         )
 
+        fun Action.isDefault() = this.action.contains(DEFAULT)
         fun Completer.isDefault() = this.id == DEFAULT
         fun SenderDeniedHandler.isDefault() = this.id == DEFAULT
         fun PermissionDeniedHandler.isDefault() = this.id == DEFAULT
 
+        fun Action.isOwnedByRemote() = this.action.contains(DEFAULT)
         fun Completer.isOwnedByRemote() = this.id == REMOTE
         fun SenderDeniedHandler.isOwnedByRemote() = this.id == REMOTE
         fun PermissionDeniedHandler.isOwnedByRemote() = this.id == REMOTE

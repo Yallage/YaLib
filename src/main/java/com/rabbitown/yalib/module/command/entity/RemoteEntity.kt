@@ -30,6 +30,7 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
     val senderDeniedHandlers: List<AccessHandler>
     val permissionDeniedHandlers: List<AccessHandler>
 
+    val defaultActions: List<ActionHandler>
     val defaultCompleters: List<CompleterHandler>
     val defaultSenderDeniedHandlers: List<AccessHandler>
     val defaultPermissionDeniedHandlers: List<AccessHandler>
@@ -66,6 +67,9 @@ data class RemoteEntity(val remote: CommandRemote) : MainHandler {
             pdhMap.values.asSequence().flatten().map { Pair(it, PermissionDeniedHandler.get(it)) }
                 .filter { it.second.isOwnedByRemote() }
                 .map { AccessHandler(it.second.id, it.first) }.sortedWith(CommandHandler.sortByPriority()).toList()
+        this.defaultActions = actions.filter { Action.get(it).isDefault() }
+            .map { ActionHandler(it, tabMap[it.name], sdhMap[it.name], pdhMap[it.name]) }
+            .sortedWith(CommandHandler.sortByPriority())
         this.defaultCompleters =
             tabMap.values.asSequence().flatten().map { Pair(it, Completer.get(it)) }
                 .filter { it.second.isDefault() }

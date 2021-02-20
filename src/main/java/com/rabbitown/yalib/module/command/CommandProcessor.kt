@@ -54,7 +54,6 @@ internal class CommandProcessor() : TabExecutor {
             // Magic code, DO NOT edit it!!
             (handler.action as Array<*>).firstOrNull { action ->
                 val path = "${if (handler.path.isEmpty()) "" else "${handler.path} "}$action"
-                if (path.isEmpty()) return@firstOrNull true
                 if (sb.toString().trim()
                         .matches(handlerRegex(handler, path.replace(argRegex) { it.groups[3]?.value ?: ".+" }))
                 ) {
@@ -74,9 +73,12 @@ internal class CommandProcessor() : TabExecutor {
                     return true
                 } else false
             } != null // means @action found a matched action, then the handler is what we need.
-        } ?: return false
+        }
+        if (action == null) remote.defaultActions
+            .firstOrNull { CommandResult.getCommandResult(it, sender) == CommandResult.SUCCESS }
+            ?.invoke(remote.remote, running)
         // Running command.
-        action.invoke(remote.remote, running)
+        action?.invoke(remote.remote, running)
         return true
     }
 
