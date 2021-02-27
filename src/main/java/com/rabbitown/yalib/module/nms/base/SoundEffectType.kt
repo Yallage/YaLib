@@ -38,9 +38,9 @@ class SoundEffectType internal constructor(
         } else versionDiff("r", "t", "B", "C", "aa")
     }
 
-    private fun versionDiff(obf: String, real: String): Sound {
+    private fun versionDiff(obfuscated: String, real: String): Sound {
         // Your mother 1.16.4's x() to 1.16.5's getXXXXSound() don't change NMS version? Both 1_16_R3? NMSL.
-        val method = if (ServerVersion.CURRENT >= ServerVersion.V1_16_5) real else obf
+        val method = if (ServerVersion.CURRENT >= ServerVersion.V1_16_5) real else obfuscated
         return getSound(clazz.getMethod(method).access().invoke(nms))
     }
 
