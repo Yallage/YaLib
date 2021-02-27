@@ -18,9 +18,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
     implementation 'io.netty:netty-all:4.1.58.Final'
-    shadow 'io.github.bananapuncher714:nbteditor:7.16.1'
+    shadow 'io.github.bananapuncher714:nbteditor:7.16.1' // TODO: scheduled to be removed.
+    shadow 'org.ow2.asm:asm:9.1'
 
     implementation fileTree('libs')
 
@@ -31,7 +32,6 @@ dependencies {
 
 idea {
     module {
-        downloadJavadoc = true
         downloadSources = true
     }
 }
