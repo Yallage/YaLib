@@ -5,7 +5,9 @@ import com.rabbitown.yalib.module.locale.LocaleManager
 import org.bukkit.plugin.Plugin
 
 /**
- * @author Yoooooory
+ * Central class to manage plugins depending YaLib.
+ *
+ * @author Milkory
  */
 object YaLibCentral {
 

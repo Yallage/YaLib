@@ -7,7 +7,7 @@ import com.rabbitown.yalib.module.nms.NMSManager
 import com.rabbitown.yalib.util.ReflectUtil.Companion.access
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 abstract class ChatBaseComponent(val text: JSONText) : NMSBase {
     override val nms: Any = serializerClazz.getMethod("a", JsonElement::class.java).access().invoke(null, text.toJsonTree())

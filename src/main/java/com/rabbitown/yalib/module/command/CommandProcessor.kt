@@ -7,7 +7,9 @@ import org.bukkit.command.TabExecutor
 import java.util.regex.Pattern
 
 /**
- * @author Yoooooory
+ * Internal command processor.
+ *
+ * @author Milkory
  */
 internal class CommandProcessor() : TabExecutor {
 

@@ -6,7 +6,7 @@ import com.rabbitown.yalib.module.chat.text.event.hover.Content
 import com.rabbitown.yalib.module.nms.base.chat.ChatBaseComponent
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 interface IJSONTextElement : Content {
     override fun requiredAction() = HoverEvent.Action.SHOW_TEXT

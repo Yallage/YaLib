@@ -8,9 +8,9 @@ import org.bukkit.command.TabCompleter
 import org.bukkit.plugin.Plugin
 
 /**
- * Represent a [PluginCommand] builder.
+ * An builder for [PluginCommand].
  *
- * @author Yoooooory
+ * @author Milkory
  */
 class CommandBuilder(val command: PluginCommand) {
 

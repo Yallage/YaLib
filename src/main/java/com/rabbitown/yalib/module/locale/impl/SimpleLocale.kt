@@ -11,9 +11,9 @@ import org.bukkit.permissions.ServerOperator
 import java.io.File
 
 /**
- * An implement of [ILocale].
+ * An simple implement class of [ILocale].
  *
- * @author Yoooooory
+ * @author Milkory
  */
 open class SimpleLocale(
     val owner: I18NPlugin,

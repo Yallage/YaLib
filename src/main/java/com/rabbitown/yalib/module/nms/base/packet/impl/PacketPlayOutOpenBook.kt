@@ -7,7 +7,7 @@ import com.rabbitown.yalib.util.ReflectUtil.Companion.access
 import com.rabbitown.yalib.util.ReflectUtil.Companion.getConstructorHasParams
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 class PacketPlayOutOpenBook(
     hand: EnumHand

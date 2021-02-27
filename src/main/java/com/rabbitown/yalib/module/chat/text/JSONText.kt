@@ -10,7 +10,7 @@ import net.md_5.bungee.chat.ComponentSerializer
 /**
  * Represents a [Raw JSON Text](https://minecraft.gamepedia.com/Raw_JSON_text_format).
  *
- * @author Yoooooory
+ * @author Milkory
  */
 class JSONText() : ArrayList<IJSONTextElement>(), Content, IJSONTextElement {
 

@@ -6,7 +6,9 @@ import org.bukkit.command.CommandSender
 import java.util.regex.Pattern
 
 /**
- * @author Yoooooory
+ * Represents a command running.
+ *
+ * @author Milkory
  */
 data class CommandRunning(
     val sender: CommandSender, val command: Command, val alias: String, val args: Array<out String>

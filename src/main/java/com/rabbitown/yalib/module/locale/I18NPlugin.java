@@ -8,7 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 /**
- * @author Yoooooory
+ * Represents an I18NPlugin.
+ *
+ * @author Milkory
  */
 public interface I18NPlugin extends Plugin {
 

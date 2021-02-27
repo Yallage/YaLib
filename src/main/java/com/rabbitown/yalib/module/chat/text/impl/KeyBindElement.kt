@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.rabbitown.yalib.module.chat.text.JSONTextElement
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 class KeyBindElement(val keybind: KeyBind) : JSONTextElement() {
     enum class KeyBind {

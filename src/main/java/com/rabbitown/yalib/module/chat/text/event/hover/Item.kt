@@ -5,7 +5,7 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 class Item(
         val id: String,

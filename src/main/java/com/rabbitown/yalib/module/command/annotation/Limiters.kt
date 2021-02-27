@@ -10,7 +10,7 @@ import java.lang.reflect.Method
  *
  * @param sender The sender should be a type of them.
  * @param permission The sender should have all the following permissions.
- * @author Yoooooory
+ * @author Milkory
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 annotation class Access(val permission: Array<String> = [], val sender: Array<CommandSenderType> = []) {
@@ -29,7 +29,7 @@ annotation class Access(val permission: Array<String> = [], val sender: Array<Co
  * Mark the path of the command, which nearly equivalent to a string before an action.
  *
  * @param path The path of the action.
- * @author Yoooooory
+ * @author Milkory
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 annotation class Path(val path: String, val ignoreCase: Boolean = true) {
@@ -48,7 +48,7 @@ annotation class Path(val path: String, val ignoreCase: Boolean = true) {
  * Mark the priority of the command, which the higher, the more likely it to be selected.
  *
  * @param priority The priority of the action to be selected.
- * @author Yoooooory
+ * @author Milkory
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 annotation class Priority(val priority: Int) {

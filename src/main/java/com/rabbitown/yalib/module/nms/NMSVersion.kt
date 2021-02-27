@@ -3,6 +3,8 @@ package com.rabbitown.yalib.module.nms
 import org.bukkit.Bukkit
 
 /**
+ * Represents the NMS version.
+ *
  * @author Yoooooory
  */
 @Suppress("unused")
@@ -23,6 +25,7 @@ enum class NMSVersion {
     fun isAfter(ver: NMSVersion) = ordinal >= ver.ordinal
 
     companion object {
+        /** Current server NMS version. */
         val CURRENT = valueOf(Bukkit.getServer()::class.java.`package`.name.substring(23).toUpperCase())
     }
 }

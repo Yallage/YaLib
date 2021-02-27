@@ -8,15 +8,21 @@ import java.nio.charset.StandardCharsets
 import java.util.jar.JarFile
 
 /**
- * @author Yoooooory
+ * A util to operator files in a plugin.
+ *
+ * @author Milkory
  */
 class FileUtil private constructor() {
     companion object {
 
         @JvmStatic
+        fun getAllResource(plugin: Plugin) = getAllResource(plugin, "")
+
+        /** Get all resource path of a plugin. */
+        @JvmStatic
         fun getAllResource(plugin: Plugin, dir: String): List<String> {
             val list = mutableListOf<String>()
-            val prefix = if (dir.endsWith("/")) dir else "$dir/"
+            val prefix = if (dir.isEmpty() || dir.endsWith("/")) dir else "$dir/"
             JarFile(File(plugin.javaClass.protectionDomain.codeSource.location.toURI())).entries().iterator().forEach {
                 if (it.name.startsWith(prefix) && it.name != prefix) list += it.name
             }

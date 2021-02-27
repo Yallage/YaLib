@@ -8,7 +8,7 @@ import com.rabbitown.yalib.module.chat.text.format.JSONTextFormat
 import com.rabbitown.yalib.util.SystemUtil
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 abstract class JSONTextElement : IJSONTextElement {
 

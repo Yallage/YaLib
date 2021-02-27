@@ -11,7 +11,7 @@ import com.rabbitown.yalib.util.SystemUtil
 import java.util.*
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 class PacketPlayOutChat(
     component: ChatBaseComponent,
@@ -26,6 +26,7 @@ class PacketPlayOutChat(
         else constructor.newInstance(component.nms, type.nms)
     }
 
+    /** Get if the message is from system. */
     fun isFromSystem() = type == ChatMessageType.SYSTEM || type == ChatMessageType.GAME_INFO
 
     companion object {

@@ -3,9 +3,9 @@ package com.rabbitown.yalib.module.command
 import org.bukkit.command.PluginCommand
 
 /**
- * YaLib central command manager.
+ * The manager of command module.
  *
- * @author Yoooooory
+ * @author Milkory
  */
 object CommandManager {
 

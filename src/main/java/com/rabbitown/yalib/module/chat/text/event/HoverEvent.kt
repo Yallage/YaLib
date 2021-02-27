@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.rabbitown.yalib.module.chat.text.event.hover.Content
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 class HoverEvent(val action: Action, val contents: Content) : JSONTextEvent {
 

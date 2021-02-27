@@ -6,7 +6,9 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.permissions.ServerOperator
 
 /**
- * @author Yoooooory
+ * Represents a locale hub, which can manage the locale of its [I18NPlugin] owner.
+ *
+ * @author Milkory
  */
 interface ILocale {
 

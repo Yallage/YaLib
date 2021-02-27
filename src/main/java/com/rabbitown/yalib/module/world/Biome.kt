@@ -4,10 +4,14 @@ import org.bukkit.NamespacedKey
 import org.bukkit.NamespacedKey.minecraft
 
 /**
- * @author Yoooooory
+ * Represents a biome.
+ *
+ * @see [org.bukkit.block.Biome]
+ * @author Milkory
  */
 class Biome(val key: NamespacedKey, val type: Type, val temperature: Double) {
 
+    /** Represents the type of biomes. */
     enum class Type {
         SNOWY, COLD, TEMPERATE, DRY, OCEAN, NEUTRAL, UNUSED, THE_NETHER, THE_END
     }
@@ -106,9 +110,12 @@ class Biome(val key: NamespacedKey, val type: Type, val temperature: Double) {
         @JvmField val DEEP_WARM_OCEAN = Biome(minecraft("deep_warm_ocean"), Type.UNUSED, 0.5)
         //endregion
 
+        /** Get a vanilla [Biome] from [org.bukkit.block.Biome]. */
         @JvmStatic
         fun fromEnum(enum: org.bukkit.block.Biome) = Biome::class.java.getField(enum.name).get(null) as Biome
 
+        /** ### Designed for Kotlin.
+         *  @see fromEnum */
         fun org.bukkit.block.Biome.moreInfo() = fromEnum(this)
 
     }

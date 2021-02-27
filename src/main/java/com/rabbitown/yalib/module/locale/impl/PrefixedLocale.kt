@@ -5,6 +5,11 @@ import com.rabbitown.yalib.module.locale.YLocale.Companion.getLocaleLanguage
 import org.bukkit.command.CommandSender
 import java.io.File
 
+/**
+ * An modified [SimpleLocale] implement class, which will add a prefix to messages when sending them.
+ *
+ * @author Milkory
+ */
 class PrefixedLocale(
     owner: I18NPlugin,
     val prefixKey: String = "prefix",
@@ -18,7 +23,10 @@ class PrefixedLocale(
 
     class Builder(owner: I18NPlugin) : SimpleLocale.Builder(owner) {
         var prefixKey = "prefix"
+
+        /** Set the locale key of the prefix, default to `prefix`. */
         fun prefix(key: String) = apply { prefixKey = key }
+
         override fun build() = PrefixedLocale(owner, prefixKey, fallbackLanguage.toTypedArray(), languageFolder, insideFolder)
     }
 

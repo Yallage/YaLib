@@ -4,7 +4,7 @@ import com.rabbitown.yalib.module.nms.NMSBase
 import com.rabbitown.yalib.module.nms.NMSManager
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 enum class ChatMessageType : NMSBase {
     CHAT, SYSTEM, GAME_INFO;

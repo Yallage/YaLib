@@ -6,7 +6,7 @@ import java.lang.reflect.Method
  * Util class for command handlers,
  * which including [Action], [Completer], [SenderDeniedHandler], [PermissionDeniedHandler].
  *
- * @author Yoooooory
+ * @author Milkory
  */
 class Handlers private constructor() {
     companion object {
@@ -41,7 +41,7 @@ class Handlers private constructor() {
  * Define an action of a command.
  *
  * @param action The action of the command.
- * @author Yoooooory
+ * @author Milkory
  */
 @Repeatable
 @Target(AnnotationTarget.FUNCTION)
@@ -55,7 +55,7 @@ annotation class Action(vararg val action: String, val ignoreCase: Boolean = tru
  * Define a completer of an action.
  *
  * @param id The action id (method name), also support [Handlers.DEFAULT] and [Handlers.REMOTE].
- * @author Yoooooory
+ * @author Milkory
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class Completer(val id: String) {
@@ -68,7 +68,7 @@ annotation class Completer(val id: String) {
  * Define a handler to deal with sender denying.
  *
  * @param id The action id (method name), also support [Handlers.DEFAULT].
- * @author Yoooooory
+ * @author Milkory
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class SenderDeniedHandler(val id: String) {
@@ -81,7 +81,7 @@ annotation class SenderDeniedHandler(val id: String) {
  * Define a handler to deal with permission denying.
  *
  * @param id The action id (method name), also support [Handlers.DEFAULT].
- * @author Yoooooory
+ * @author Milkory
  */
 @Target(AnnotationTarget.FUNCTION)
 annotation class PermissionDeniedHandler(val id: String) {

@@ -3,6 +3,8 @@ package com.rabbitown.yalib.module.nms
 import org.bukkit.Bukkit
 
 /**
+ * The manager of NMS module.
+ *
  * @author Yoooooory
  */
 object NMSManager {

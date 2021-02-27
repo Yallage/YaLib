@@ -5,7 +5,9 @@ import com.rabbitown.yalib.module.chat.text.impl.PlainTextElement
 import org.bukkit.command.CommandSender
 
 /**
- * @author Yoooooory
+ * Represents a message which have long period and can be updated or unsent.
+ *
+ * @author Milkory
  */
 interface ILongPeriodMessage : IMessage {
 

@@ -12,7 +12,7 @@ import java.util.Comparator
 /**
  * Represents a command handler.
  *
- * @author Yoooooory
+ * @author Milkory
  */
 abstract class CommandHandler(val handler: Method) : HandlerEntity {
 

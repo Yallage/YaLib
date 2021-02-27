@@ -8,7 +8,7 @@ import com.rabbitown.yalib.util.ReflectUtil.Companion.access
 import org.bukkit.Sound
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 class SoundEffectType internal constructor(
     override val nms: Any
