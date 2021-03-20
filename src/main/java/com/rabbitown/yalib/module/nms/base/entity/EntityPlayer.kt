@@ -18,7 +18,7 @@ import java.util.*
 /**
  * Represents an EntityPlayer.
  *
- * @author Yoooooory
+ * @author Milkory
  */
 abstract class EntityPlayer(val entity: Player) : NMSBase {
 

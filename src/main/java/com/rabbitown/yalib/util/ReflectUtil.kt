@@ -5,7 +5,10 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 /**
- * @author Yoooooory
+ * ### Designed for Kotlin.
+ * A util class to make the reflection codes more concise.
+ *
+ * @author Milkory
  */
 class ReflectUtil private constructor() {
     companion object {

@@ -6,7 +6,9 @@ import org.bukkit.command.PluginCommand
 import org.bukkit.plugin.java.JavaPlugin
 
 /**
- * @author Yoooooory
+ * An simple implement class of [CommandRemote].
+ *
+ * @author Milkory
  */
 open class SimpleCommandRemote(command: PluginCommand) : CommandRemote(command) {
 

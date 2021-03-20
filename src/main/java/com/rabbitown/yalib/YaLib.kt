@@ -7,9 +7,9 @@ import com.rabbitown.yalib.module.locale.impl.PrefixedLocale
 import org.bukkit.plugin.java.JavaPlugin
 
 /**
- * The main class.
+ * The main class of YaLib.
  *
- * @author Hanbings, Yoooooory
+ * @author Hanbings, Milkory
  */
 class YaLib : JavaPlugin(), I18NPlugin {
 

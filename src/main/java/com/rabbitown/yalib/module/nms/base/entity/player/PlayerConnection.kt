@@ -8,10 +8,11 @@ import com.rabbitown.yalib.util.ReflectUtil.Companion.access
 import com.rabbitown.yalib.util.ReflectUtil.Companion.getMethodByName
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 abstract class PlayerConnection(override val nms: Any) : NMSBase {
 
+    /** Send a packet to the connection. */
     fun sendPacket(packet: Packet) {
         nms::class.java.getMethodByName("sendPacket").access().invoke(nms, packet.nms)
     }

@@ -5,7 +5,7 @@ import com.rabbitown.yalib.module.nms.NMSManager
 import com.rabbitown.yalib.module.nms.base.chat.ChatMessageType
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 enum class EnumHand : NMSBase {
     MAIN_HAND, OFF_HAND;

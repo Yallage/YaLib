@@ -8,7 +8,7 @@ import org.bukkit.command.PluginCommand
 /**
  * Represent a command remote.
  *
- * @author Yoooooory
+ * @author Milkory
  */
 abstract class CommandRemote(val command: PluginCommand) : MainHandler {
 

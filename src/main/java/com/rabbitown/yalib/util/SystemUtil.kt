@@ -6,7 +6,9 @@ import java.util.*
 import java.util.function.Consumer
 
 /**
- * @author Yoooooory
+ * Misc utils.
+ *
+ * @author Milkory
  */
 class SystemUtil private constructor() {
     companion object {

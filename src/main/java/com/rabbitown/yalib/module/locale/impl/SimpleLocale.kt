@@ -11,9 +11,9 @@ import org.bukkit.permissions.ServerOperator
 import java.io.File
 
 /**
- * An implement of [ILocale].
+ * An simple implement class of [ILocale].
  *
- * @author Yoooooory
+ * @author Milkory
  */
 open class SimpleLocale(
     val owner: I18NPlugin,
@@ -70,6 +70,11 @@ open class SimpleLocale(
         fun insideFolder(folder: String) = apply { insideFolder = folder }
 
         open fun build() = SimpleLocale(owner, fallbackLanguage.toTypedArray(), languageFolder, insideFolder)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newBuilder(owner: I18NPlugin) = Builder(owner)
     }
 
 }

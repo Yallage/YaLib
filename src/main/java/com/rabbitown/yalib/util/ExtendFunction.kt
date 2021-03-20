@@ -1,7 +1,7 @@
 package com.rabbitown.yalib.util
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 class ExtendFunction {
     companion object {

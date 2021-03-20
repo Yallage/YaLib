@@ -4,7 +4,9 @@ import com.rabbitown.yalib.module.chat.text.JSONText
 import org.bukkit.command.CommandSender
 
 /**
- * @author Yoooooory
+ * Represents a message.
+ *
+ * @author Milkory
  */
 interface IMessage {
 

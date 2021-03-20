@@ -5,9 +5,9 @@ import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 
 /**
- * Enum for the types of command senders.
+ * Enum of the types of command senders.
  *
- * @author Yoooooory
+ * @author Milkory
  */
 enum class CommandSenderType {
 

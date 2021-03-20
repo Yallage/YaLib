@@ -3,7 +3,7 @@ package com.rabbitown.yalib.module.chat.text.format
 import org.bukkit.Color
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 class JSONTextColor private constructor(private val code: JSONTextColors?, private val color: Color?) {
 

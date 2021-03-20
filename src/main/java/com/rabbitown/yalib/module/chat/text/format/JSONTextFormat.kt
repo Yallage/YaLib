@@ -7,7 +7,7 @@ import org.bukkit.NamespacedKey
 /**
  * Represents a format of Raw JSON Text elements.
  *
- * @author Yoooooory
+ * @author Milkory
  */
 class JSONTextFormat(
     var color: JSONTextColor? = null,

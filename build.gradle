@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'com.rabbitown'
-version '1.0.0-alpha.25'
+version '1.0.0-alpha.26'
 
 repositories {
     mavenCentral()
@@ -17,9 +17,11 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
     implementation 'io.netty:netty-all:4.1.58.Final'
     implementation 'com.google.code.findbugs:annotations:3.0.1'
+    shadow 'io.github.bananapuncher714:nbteditor:7.16.1' // TODO: scheduled to be removed.
+    shadow 'org.ow2.asm:asm:9.1'
 
     implementation fileTree('libs')
     testImplementation group: 'junit', name: 'junit', version: '4.12'
@@ -31,7 +33,6 @@ dependencies {
 
 idea {
     module {
-        downloadJavadoc = true
         downloadSources = true
     }
 }
@@ -42,7 +43,7 @@ compileJava {
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
         javaParameters = true
     }
 }

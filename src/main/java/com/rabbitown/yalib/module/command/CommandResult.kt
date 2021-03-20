@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender
 /**
  * Enum of a command running result.
  *
- * @author Yoooooory
+ * @author Milkory
  */
 enum class CommandResult {
 

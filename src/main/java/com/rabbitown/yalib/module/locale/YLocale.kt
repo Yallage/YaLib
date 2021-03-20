@@ -8,9 +8,9 @@ import org.bukkit.permissions.ServerOperator
 import org.bukkit.plugin.Plugin
 
 /**
- * I18N forwarding hub.
+ * Locale module forwarding hub.
  *
- * @author Yoooooory
+ * @author Milkory
  */
 class YLocale {
 

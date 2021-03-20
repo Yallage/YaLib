@@ -10,7 +10,9 @@ import java.lang.reflect.Method
 // TODO: should be organized.
 
 /**
- * @author Yoooooory
+ * Represents a remote entity.
+ *
+ * @author Milkory
  */
 data class RemoteEntity(val remote: CommandRemote) : MainHandler {
 

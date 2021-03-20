@@ -8,12 +8,13 @@ import com.rabbitown.yalib.util.ReflectUtil.Companion.getMethodByName
 import org.bukkit.block.Block
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
-abstract class NMSBlock(val block: Block) : NMSBase {
+abstract class NMSBlock(block: Block) : NMSBase {
 
     override val nms: Any = craftClazz.getDeclaredMethod("getNMSBlock").access().invoke(block)
 
+    /** Get sound effects of the block. */
     fun getSoundEffects() = SoundEffectType(
         clazz.getMethodByName("getStepSound").access().invoke(nms, clazz.getMethod("getBlockData").invoke(nms))
     )

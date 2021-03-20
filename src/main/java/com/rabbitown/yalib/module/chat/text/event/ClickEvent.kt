@@ -3,7 +3,7 @@ package com.rabbitown.yalib.module.chat.text.event
 import com.google.gson.annotations.SerializedName
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 class ClickEvent(val action: Action, val value: String) : JSONTextEvent {
     enum class Action {

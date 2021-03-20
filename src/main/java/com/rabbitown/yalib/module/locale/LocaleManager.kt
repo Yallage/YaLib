@@ -10,13 +10,16 @@ import org.bukkit.permissions.ServerOperator
 import java.io.File
 
 /**
- * @author Yoooooory
+ * The manager of locale module.
+ *
+ * @author Milkory
  */
 object LocaleManager {
 
     private val pluginToLocale = mutableMapOf<I18NPlugin, ILocale>()
     private val dataFile = YaLib.instance.dataFolder.resolve(File("data","languageData.yml"))
 
+    /** Get the [ILocale] instance of an [I18NPlugin]. */
     fun getLocale(plugin: I18NPlugin) = pluginToLocale[plugin]
 
     fun load() {
@@ -28,6 +31,7 @@ object LocaleManager {
         pluginToLocale[plugin] = plugin.newLocale
     }
 
+    /** Get language of a [ServerOperator]. */
     fun getLanguage(sender: ServerOperator): String {
         // Get user setting as default if exists, otherwise the global default.
         return when (sender) {

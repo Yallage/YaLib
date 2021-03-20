@@ -5,7 +5,9 @@ import com.rabbitown.yalib.module.locale.YLocale
 import org.bukkit.Bukkit
 
 /**
- * @author Yoooooory
+ * The logger of [YaLib].
+ *
+ * @author Milkory
  */
 object Logger {
 

@@ -8,7 +8,7 @@ import org.bukkit.entity.EntityType
 import java.util.*
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 class Entity(
         val type: EntityType,

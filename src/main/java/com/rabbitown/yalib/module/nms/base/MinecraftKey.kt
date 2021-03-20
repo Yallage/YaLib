@@ -5,7 +5,7 @@ import com.rabbitown.yalib.module.nms.NMSManager
 import com.rabbitown.yalib.util.ReflectUtil.Companion.access
 
 /**
- * @author Yoooooory
+ * @author Milkory
  */
 class MinecraftKey internal constructor(
     override val nms: Any

@@ -1,11 +1,19 @@
 package com.rabbitown.yalib.util
 
 /**
- * @author Yoooooory
+ * A util class to operator the stack trace.
+ *
+ * @author Milkory
  */
 class StackTraceUtil private constructor() {
     companion object {
 
+        /**
+         * Get the method invoker.
+         *
+         * @param exclude What to exclude, can be an empty array.
+         * @return The invoker class' name from [StackTraceElement.getClassName].
+         */
         @JvmStatic
         fun getInvoker(exclude: Array<Regex> = emptyArray()): String {
             val elements = Thread.currentThread().stackTrace
