@@ -72,4 +72,9 @@ open class SimpleLocale(
         open fun build() = SimpleLocale(owner, fallbackLanguage.toTypedArray(), languageFolder, insideFolder)
     }
 
+    companion object {
+        @JvmStatic
+        fun newBuilder(owner: I18NPlugin) = Builder(owner)
+    }
+
 }
