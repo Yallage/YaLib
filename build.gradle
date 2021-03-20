@@ -11,8 +11,7 @@ version '1.0.0-alpha.26'
 
 repositories {
     mavenCentral()
-    maven { url 'https://maven.aliyun.com/repository/public'}
-
+    maven { url 'https://maven.aliyun.com/repository/public' }
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots' }
     maven { url 'https://repo.codemc.org/repository/maven-public' }
 }
@@ -20,14 +19,16 @@ repositories {
 dependencies {
     implementation 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
     implementation 'io.netty:netty-all:4.1.58.Final'
+    implementation 'com.google.code.findbugs:annotations:3.0.1'
     shadow 'io.github.bananapuncher714:nbteditor:7.16.1' // TODO: scheduled to be removed.
     shadow 'org.ow2.asm:asm:9.1'
 
     implementation fileTree('libs')
-
-    shadow 'org.jetbrains.kotlin:kotlin-stdlib'
     testImplementation group: 'junit', name: 'junit', version: '4.12'
-    implementation 'com.google.code.findbugs:annotations:3.0.1'
+
+    shadow 'io.github.bananapuncher714:nbteditor:7.16.1'
+    shadow 'org.jetbrains.kotlin:kotlin-stdlib'
+    shadow 'org.nanohttpd:nanohttpd:2.3.0'
 }
 
 idea {
